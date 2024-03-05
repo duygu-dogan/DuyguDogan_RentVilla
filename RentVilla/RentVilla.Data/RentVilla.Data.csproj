@@ -24,8 +24,4 @@
     <ProjectReference Include="..\RentVilla.Shared\RentVilla.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Concrete\Repositories\" />
-  </ItemGroup>
-
 </Project>

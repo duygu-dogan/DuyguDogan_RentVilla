@@ -11,4 +11,8 @@
     <ProjectReference Include="..\RentVilla.Shared\RentVilla.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Concrete\" />
+  </ItemGroup>
+
 </Project>

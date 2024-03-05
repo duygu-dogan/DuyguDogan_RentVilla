@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using RentVilla.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,11 +10,9 @@ namespace RentVilla.Data.Concrete.Contexts
 {
     public class RentVillaDbContext: DbContext
     {
-        protected readonly IConfiguration Configuration;
 
-        public RentVillaDbContext(IConfiguration configuration)
+        public RentVillaDbContext(DbContextOptions options):base(options)
         {
-            Configuration = configuration;
         }
 
         public DbSet<Product> Products { get; set; }
@@ -27,10 +24,6 @@ namespace RentVilla.Data.Concrete.Contexts
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(Product).Assembly);
             base.OnModelCreating(modelBuilder);
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("PostgreSqlConnection"));
         }
 
     }

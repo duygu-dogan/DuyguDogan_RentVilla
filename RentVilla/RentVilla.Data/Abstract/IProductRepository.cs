@@ -9,7 +9,7 @@ namespace RentVilla.Data.Abstract
 {
     public interface IProductRepository: IGenericRepository<Product>
     {
-        Task<List<Product>> GetProductWithAttributesAsync(Guid AttributeId);
+        Task<Product> GetProductWithAttributesAsync(Guid ProductId);
         Task<List<Product>> GetProductsByAttributeIdAsync(Guid AttributeId);
 
     }

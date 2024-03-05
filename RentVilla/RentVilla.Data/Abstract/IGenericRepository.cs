@@ -10,7 +10,7 @@ namespace RentVilla.Data.Abstract
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> GetAllAsync(Expression<Func<TEntity, bool>> options = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include=null);
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> options = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include=null);
         Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> options = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include=null);
         Task<TEntity> CreateAsync(TEntity entity);
         Task Update(TEntity entity);
