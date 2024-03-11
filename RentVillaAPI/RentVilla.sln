@@ -13,6 +13,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentVilla.Entity", "RentVil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentVilla.Shared", "RentVilla.Shared\RentVilla.Shared.csproj", "{E5D05B87-8221-4434-BEBD-ADE317F2B1C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5326E068-5759-4CFF-AAC8-D2EAB780FA60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{F60190D3-7DAA-4B92-AE82-54279DB98C21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{54090EF7-5CBE-4E86-B393-3085F47A1A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentVilla.Domain", "RentVilla.Domain\RentVilla.Domain.csproj", "{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentVilla.Application", "RentVilla.Application\RentVilla.Application.csproj", "{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentVilla.Infrastructure", "Infrastructure\RentVilla.Infrastructure\RentVilla.Infrastructure.csproj", "{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentVilla.Persistance", "Infrastructure\RentVilla.Persistance\RentVilla.Persistance.csproj", "{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +53,32 @@ Global
 		{E5D05B87-8221-4434-BEBD-ADE317F2B1C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5D05B87-8221-4434-BEBD-ADE317F2B1C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5D05B87-8221-4434-BEBD-ADE317F2B1C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E74692E3-3A66-457C-A021-91A8BEC96F2F} = {F60190D3-7DAA-4B92-AE82-54279DB98C21}
+		{B91E4E4C-7DE3-4D9F-913C-A1AAEDE3E600} = {5326E068-5759-4CFF-AAC8-D2EAB780FA60}
+		{6C232CCC-6B7C-4BC7-8781-E05E4DB9622F} = {5326E068-5759-4CFF-AAC8-D2EAB780FA60}
+		{4121A4B0-E3CB-44D5-9A21-C5EEC63CF7C5} = {54090EF7-5CBE-4E86-B393-3085F47A1A76}
+		{DD4E90BC-E93D-42FB-827A-A1A6B4F6F799} = {54090EF7-5CBE-4E86-B393-3085F47A1A76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFD4A63C-3415-489C-AF89-F0FEB5871A8C}
