@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using RentVilla.Domain.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,6 @@ namespace RentVilla.Application.Abstract.Repositories
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> options = null, Func<IQueryable<TEntity>,IIncludableQueryable<TEntity, object>> include=null);
-        Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> options = null, Func<IQueryable<TEntity>,IIncludableQueryable<TEntity, object>> include=null);
-        Task<TEntity> CreateAsync(TEntity entity);
-        Task Update(TEntity entity);
-        Task Delete(TEntity entity);
+        DbSet<TEntity> AppDbContext {get;}        
     }
 }

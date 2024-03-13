@@ -20,11 +20,5 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<AttributeType> AttributeTypes { get; set; }
         public DbSet<ItemAttribute> ItemAttributes { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(Product).Assembly);
-        //    base.OnModelCreating(modelBuilder);
-        //}
-
     }
 }

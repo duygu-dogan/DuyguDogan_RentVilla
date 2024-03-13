@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentVilla.Application.Abstract.Repositories;
+using RentVilla.Application.Abstract.Repositories.Product;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Persistance.Contexts;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistance.Concrete.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class ProductRepository : GenericRepository<Product>, IProductReadRepository
     {
         public ProductRepository(RentVillaDbContext _context) : base(_context)
         {

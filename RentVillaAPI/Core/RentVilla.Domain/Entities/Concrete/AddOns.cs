@@ -10,9 +10,9 @@ namespace RentVilla.Domain.Entities.Concrete
 {
     public class AddOns : IMainEntity
     {
-        public Guid Id { get; set; }
         public AdditionalServices AdditionalServices { get; set; }
         public decimal Price { get; set; }
         public ICollection<Reservation> Reservation { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Application.Abstract.Repositories
+namespace RentVilla.Application.Abstract.Repositories.Attribute
 {
-    public interface IAttributeRepository: IGenericRepository<Attribute>
+    internal interface IAttributeReadRepository
     {
-
     }
 }
