@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Configs
 {
-    public class AttributeTypeConfig : IEntityTypeConfiguration<AttributeType>
+    public class AttributesConfig : IEntityTypeConfiguration<Attributes>
     {
-        public void Configure(EntityTypeBuilder<AttributeType> builder)
+        public void Configure(EntityTypeBuilder<Attributes> builder)
         {
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id).ValueGeneratedOnAdd();
-            builder.Property(a => a.Name).HasMaxLength(100).IsRequired();
+            builder.Property(a => a.Description).HasMaxLength(100).IsRequired();
+
+
         }
     }
 }

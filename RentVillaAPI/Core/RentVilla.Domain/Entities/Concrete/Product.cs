@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.Concrete
 {
-    public class Product : BaseEntity, IMainEntity
+    public class Product : BaseEntity
     {
-        public Guid Id { get; set ; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public decimal Price { get; set; }
         public decimal Deposit { get; set; }
         public List<string> ImageUrl { get; set; }
@@ -22,6 +23,6 @@ namespace RentVilla.Domain.Entities.Concrete
         public string Rating { get; set; }
         public ReservationStatus Status { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
-        public ICollection<ItemAttribute> Attributes { get; set; }
+        public ICollection<ProductAttribute> Attributes { get; set; }
     }
 }

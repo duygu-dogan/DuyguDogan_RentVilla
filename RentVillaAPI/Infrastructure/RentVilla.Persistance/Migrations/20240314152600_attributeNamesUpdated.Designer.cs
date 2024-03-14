@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentVilla.Persistance.Contexts;
@@ -12,9 +13,11 @@ using RentVilla.Persistance.Contexts;
 namespace RentVilla.Persistence.Migrations
 {
     [DbContext(typeof(RentVillaDbContext))]
-    partial class RentVillaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314152600_attributeNamesUpdated")]
+    partial class attributeNamesUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,10 +278,10 @@ namespace RentVilla.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AttributeTypeId")
+                    b.Property<Guid?>("AttributeDescId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AttributesId")
+                    b.Property<Guid?>("AttributeTypeId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -298,9 +301,9 @@ namespace RentVilla.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeTypeId");
+                    b.HasIndex("AttributeDescId");
 
-                    b.HasIndex("AttributesId");
+                    b.HasIndex("AttributeTypeId");
 
                     b.HasIndex("ProductId");
 
@@ -427,21 +430,21 @@ namespace RentVilla.Persistence.Migrations
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.ProductAttribute", b =>
                 {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Attributes", "AttributeDesc")
+                        .WithMany()
+                        .HasForeignKey("AttributeDescId");
+
                     b.HasOne("RentVilla.Domain.Entities.Concrete.AttributeType", "AttributeType")
                         .WithMany()
                         .HasForeignKey("AttributeTypeId");
-
-                    b.HasOne("RentVilla.Domain.Entities.Concrete.Attributes", "Attributes")
-                        .WithMany()
-                        .HasForeignKey("AttributesId");
 
                     b.HasOne("RentVilla.Domain.Entities.Concrete.Product", "Product")
                         .WithMany("Attributes")
                         .HasForeignKey("ProductId");
 
-                    b.Navigation("AttributeType");
+                    b.Navigation("AttributeDesc");
 
-                    b.Navigation("Attributes");
+                    b.Navigation("AttributeType");
 
                     b.Navigation("Product");
                 });

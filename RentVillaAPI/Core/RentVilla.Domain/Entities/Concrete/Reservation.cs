@@ -4,14 +4,12 @@ using RentVilla.Domain.Entities.ComplexTypes;
 
 namespace RentVilla.Domain.Entities.Concrete
 {
-    public class Reservation : IMainEntity
+    public class Reservation : BaseEntity
     {
-        public Guid Id { get; set; }
         public User User { get; set; }
         public ICollection<Product> Products { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public DateTime CreatedDate { get; set; }
         public int AdultNumber { get; set; }
         public int ChildrenNumber { get; set; }
         public string Note { get; set; }
@@ -22,7 +20,6 @@ namespace RentVilla.Domain.Entities.Concrete
         public bool IsPaid { get; set; }
         public string ConversationId { get; set; }
         public string PaymentId { get; set; }
-        
         public PaymentMethod PaymentMethod { get; set; }
 
     }

@@ -14,6 +14,7 @@ namespace RentVilla.Persistence.Configs
         public void Configure(EntityTypeBuilder<AddOns> builder)
         {
             builder.HasKey(a => a.Id);
+            builder.Property(a => a.Id).ValueGeneratedOnAdd();
             builder.Property(a => a.Price).HasColumnType("decimal(18,2)").IsRequired();
         }
     }

@@ -16,7 +16,6 @@ namespace RentVilla.Domain.Entities.Concrete.Identity
         public string Address { get; set; }
         public string City { get; set; }
         public string ProfileImage { get; set; }
-
         public ICollection<Role> Roles { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
 
