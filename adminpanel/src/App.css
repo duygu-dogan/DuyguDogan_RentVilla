@@ -1,0 +1,25 @@
+/* Sidebar start*/
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-brand {
+  font-size: 25px;
+}
+
+.nav-icon-logo {
+  width: 25px;
+}
+
+.sidebar-nav .nav-title {
+  font-size: 100% !important;
+}
+
+.sidebar-nav>li>a {
+  font-size: 16px;
+}
+
+/* Sidebar end */

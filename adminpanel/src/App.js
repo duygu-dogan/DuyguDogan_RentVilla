@@ -1,21 +1,22 @@
 import './App.css';
-import SidebarComponent from './components/SidebarComponent'
-import FooterComponent from './components/FooterComponent'
-import HeaderComponent from './components/HeaderComponent'
-import ContentComponent from './components/ContentComponent'
+import '@coreui/coreui/dist/css/coreui.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import SidebarComponent from './components/SidebarComponent';
+import HeaderComponent from './components/HeaderComponent';
+import { CNavbarToggler } from '@coreui/react';
+import { useState } from 'react';
 
 function App() {
   return (
     <>
-      <div>
-        <SidebarComponent />
-        <div className="wrapper d-flex flex-column min-vh-100">
-          <HeaderComponent />
-          <div className="body flex-grow-1">
-            <ContentComponent />
-          </div>
-          <FooterComponent />
+      <div className='d-flex row'>
+        <div className='col-2'>
+          <SidebarComponent />
         </div>
+        <div className='col-10'>
+          <HeaderComponent />
+        </div>
+
       </div>
     </>
   );
