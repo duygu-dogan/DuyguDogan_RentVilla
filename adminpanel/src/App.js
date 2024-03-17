@@ -3,21 +3,28 @@ import '@coreui/coreui/dist/css/coreui.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import SidebarComponent from './components/SidebarComponent';
 import HeaderComponent from './components/HeaderComponent';
-import { CNavbarToggler } from '@coreui/react';
-import { useState } from 'react';
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NewProduct from './components/pages/NewProduct';
+import MainComponent from './components/MainComponent';
 function App() {
   return (
     <>
-      <div className='d-flex row'>
-        <div className='col-2'>
-          <SidebarComponent />
+      <BrowserRouter>
+        <div className='main-container'>
+          <div className='sidebar-comp'>
+            <SidebarComponent />
+          </div>
+          <div className='header-comp'>
+            <HeaderComponent />
+          </div>
+          <div className='main-comp'>
+            <Routes>
+              <Route path='/' element={<MainComponent />} />
+              <Route path='/newproduct' element={<NewProduct />} />
+            </Routes>
+          </div>
         </div>
-        <div className='col-10'>
-          <HeaderComponent />
-        </div>
-
-      </div>
+      </BrowserRouter>
     </>
   );
 }

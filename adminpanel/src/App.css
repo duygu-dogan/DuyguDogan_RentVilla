@@ -1,3 +1,37 @@
+.main-container {
+  display: grid;
+  height: 100vh;
+}
+
+.header-comp {
+  grid-column: 2/15;
+  grid-row: 1/2;
+  margin-right: 20px;
+}
+
+.sidebar-comp {
+  grid-row: 1/15;
+}
+
+/* main starts */
+.main-comp {
+  grid-row: 2/15;
+  grid-column: 2/15;
+  background-color: rgba(175, 174, 174, 0.3);
+}
+
+.main-widget-container {
+  justify-content: center;
+  padding: 30px 50px;
+}
+
+.main-widget {
+  height: 250px !important;
+}
+
+/* main ends */
+
+
 /* Sidebar start*/
 .sidebar-header {
   display: flex;
@@ -23,3 +57,12 @@
 }
 
 /* Sidebar end */
+/* Header starts */
+.header-icon {
+  color: darkslategrey !important;
+  width: 20px !important;
+  height: 25px !important;
+}
+
+
+/* Header ends */

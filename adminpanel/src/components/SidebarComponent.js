@@ -1,18 +1,18 @@
-import { cilAccountLogout, cilCalendar, cilCloudDownload, cilHome, cilLayers, cilPuzzle, cilRouter, cilSettings, cilSpeedometer, cilUser } from '@coreui/icons'
+import { cilAccountLogout, cilCalendar, cilHome, cilLayers, cilSettings, cilSpeedometer, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { CBadge, CNavGroup, CNavItem, CNavTitle, CSidebar, CSidebarBrand, CSidebarHeader, CSidebarNav } from '@coreui/react'
+import { CNavGroup, CNavItem, CNavTitle, CSidebar, CSidebarBrand, CSidebarHeader, CSidebarNav } from '@coreui/react'
 import React from 'react'
 
 const SidebarComponent = () => {
     return (
-        <CSidebar className="border-end vh-100" colorScheme="dark">
+        <CSidebar className="border-end h-100" colorScheme="dark">
             <CSidebarHeader className="border-bottom">
                 <CIcon className='fs-2' customClassName="nav-icon-logo" icon={cilHome} />
                 <CSidebarBrand style={{ background: 'none' }}>RentVilla</CSidebarBrand>
             </CSidebarHeader>
             <CSidebarNav>
                 <CNavTitle>Admin Panel</CNavTitle>
-                <CNavItem href="#"><CIcon customClassName="nav-icon" icon={cilSpeedometer} /> Dashboard</CNavItem>
+                <CNavItem href="/"><CIcon customClassName="nav-icon" icon={cilSpeedometer} /> Dashboard</CNavItem>
 
                 <CNavGroup
                     toggler={
@@ -22,7 +22,7 @@ const SidebarComponent = () => {
                     }
                 >
                     <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> List All Products</CNavItem>
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Add New Product</CNavItem>
+                    <CNavItem href="/newproduct"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Add New Product</CNavItem>
                 </CNavGroup>
                 <CNavGroup
                     toggler={

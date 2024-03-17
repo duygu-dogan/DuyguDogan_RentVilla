@@ -1,27 +1,42 @@
-import { CButton, CCollapse, CContainer, CDropdown, CDropdownDivider, CDropdownItem, CDropdownMenu, CDropdownToggle, CForm, CFormInput, CHeader, CHeaderBrand, CHeaderNav, CHeaderToggler, CNavItem, CNavLink, CNavbarToggler } from '@coreui/react'
-import React, { useState } from 'react'
+import { cilBell, cilEnvelopeOpen, cilList } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import { CAvatar, CButton, CContainer, CForm, CFormInput, CHeader, CHeaderBrand, CHeaderNav, CLink, CNavItem, CNavLink } from '@coreui/react'
+import React from 'react'
+import Avatar from '../assets/images/vesika.jpg';
 
 const HeaderComponent = () => {
-    const [visible, setVisible] = useState(true)
     return (
         <>
             <CHeader>
                 <CContainer fluid>
-                    <CNavbarToggler
-                        aria-label="Toggle navigation"
-                        aria-expanded={visible}
-                        onClick={() => setVisible(!visible)}
-                    />
+
                     <CHeaderBrand href="#">Dashboard</CHeaderBrand>
-                    <CHeaderToggler onClick={() => setVisible(visible)} />
-                    <CCollapse className="header-collapse" visible={visible}>
+                    <CHeaderNav className='d-flex flex-row gap-4'>
+                        <CNavItem className='d-flex gap-2 me-3'>
+                            <CNavLink>
+                                <CLink>
+                                    <CIcon className='header-icon' icon={cilBell} />
+                                </CLink>
+                            </CNavLink>
+                            <CNavLink>
+                                <CLink>
+                                    <CIcon className="header-icon" icon={cilList} />
+                                </CLink>
+                            </CNavLink>
+                            <CNavLink>
+                                <CLink>
+                                    <CIcon className="header-icon" icon={cilEnvelopeOpen} />
+                                </CLink>
+                            </CNavLink>
+                        </CNavItem>
                         <CForm className="d-flex">
                             <CFormInput className="me-2" type="search" placeholder="Search" />
                             <CButton type="submit" color="success" variant="outline">
                                 Search
                             </CButton>
                         </CForm>
-                    </CCollapse>
+                        <CAvatar className='mt-2' src={Avatar} />
+                    </CHeaderNav>
                 </CContainer>
             </CHeader>
         </>
