@@ -4,8 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import SidebarComponent from './components/SidebarComponent';
 import HeaderComponent from './components/HeaderComponent';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import NewProduct from './components/pages/NewProduct';
+import NewProduct from './components/pages/Products/NewProduct';
 import MainComponent from './components/MainComponent';
+import ProductList from './components/pages/Products/ProductList';
 function App() {
   return (
     <>
@@ -21,6 +22,7 @@ function App() {
             <Routes>
               <Route path='/' element={<MainComponent />} />
               <Route path='/newproduct' element={<NewProduct />} />
+              <Route path='/getproducts' element={<ProductList />} />
             </Routes>
           </div>
         </div>

@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.ComplexTypes
 {
-    public enum UserRoles
+    public enum PaymentType
     {
-        SuperAdmin = 0,
-        Admin = 1,
-        Guest = 2,
-        Landlord = 3
+        CreditCard = 0,
+        EFT = 1
     }
 }

@@ -1,6 +1,6 @@
 ﻿using RentVilla.Domain.Entities.Abstract;
 
-namespace RentVilla.Domain.Entities.Concrete
+namespace RentVilla.Domain.Entities.Concrete.Attribute
 {
     public class ProductAttribute : BaseEntity
     {

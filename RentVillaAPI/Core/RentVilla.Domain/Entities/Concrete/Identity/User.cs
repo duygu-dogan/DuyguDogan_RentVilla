@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RentVilla.Domain.Entities.Concrete.Region;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace RentVilla.Domain.Entities.Concrete.Identity
         public string Gender { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public UserAddress UserAddress { get; set; }
         public string ProfileImage { get; set; }
         public ICollection<Role> Roles { get; set; }
         public ICollection<Reservation> Reservations { get; set; }

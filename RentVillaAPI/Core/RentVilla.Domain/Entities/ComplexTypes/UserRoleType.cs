@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.ComplexTypes
 {
-    public enum AdditionalServices
+    public enum UserRoleType
     {
-        HotTub = 0,
-        DailyCleaning = 1,
-        AirportTransfer = 2,
-        Breakfast = 3
+        SuperAdmin = 0,
+        Admin = 1,
+        Guest = 2,
+        Landlord = 3
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete;
+using RentVilla.Domain.Entities.Concrete.Attribute;
+using RentVilla.Domain.Entities.Concrete.Region;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,12 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<AttributeType> AttributeTypes { get; set; }
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<ProductAddress> ProductAddresses { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var datas = ChangeTracker.Entries<BaseEntity>();

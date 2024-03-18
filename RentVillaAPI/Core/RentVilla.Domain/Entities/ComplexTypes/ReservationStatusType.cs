@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.ComplexTypes
 {
-    public enum PaymentMethod
+    public enum ReservationStatusType
     {
-        CreditCard = 0,
-        EFT = 1
+        Received = 0,
+        Checking = 1,
+        InUse = 2,
+        Cleaning =3,
+        Available = 4
     }
 }

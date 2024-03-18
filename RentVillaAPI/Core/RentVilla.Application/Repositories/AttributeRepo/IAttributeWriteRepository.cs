@@ -1,5 +1,5 @@
 ﻿using RentVilla.Application.Repositories;
-using RentVilla.Domain.Entities.Concrete;
+using RentVilla.Domain.Entities.Concrete.Attribute;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -21,8 +21,9 @@ const SidebarComponent = () => {
                         </>
                     }
                 >
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> List All Products</CNavItem>
+                    <CNavItem href="/getproducts"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> List All Products</CNavItem>
                     <CNavItem href="/newproduct"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Add New Product</CNavItem>
+                    <CNavItem href="/newproduct"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Attributes</CNavItem>
                 </CNavGroup>
                 <CNavGroup
                     toggler={

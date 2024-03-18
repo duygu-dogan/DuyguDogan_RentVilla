@@ -10,7 +10,7 @@ namespace RentVilla.Domain.Entities.Concrete.Identity
 {
     public class Role:IdentityRole
     {
-        public UserRoles UserRoles { get; set; }
+        public UserRoleType UserRoles { get; set; }
         public ICollection<User> Users { get; set; }
     }
 }

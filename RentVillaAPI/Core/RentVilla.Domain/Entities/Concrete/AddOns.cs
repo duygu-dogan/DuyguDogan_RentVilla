@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.Concrete
 {
-    public class AddOns: BaseEntity
+    public class AddOns: BaseEntity, IMainEntity
     {
-        public AdditionalServices AdditionalServices { get; set; }
+        public AdditionalServiceType AdditionalServices { get; set; }
         public decimal Price { get; set; }
         public ICollection<Reservation> Reservation { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

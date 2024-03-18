@@ -17,7 +17,7 @@ namespace RentVilla.API.Controllers
             _productReadRepository = productReadRepository;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task AddProduct()
         { 
             await _productWriteRepository.AddAsync(new Product
@@ -31,10 +31,15 @@ namespace RentVilla.API.Controllers
             
         }
         [HttpGet]
-        public IActionResult GetProducts()
+        public IQueryable GetProducts()
         {
             var products =  _productReadRepository.GetAll();
-            return Ok(products);
+            return products;
+        }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Merhaba");
         }
 
     }

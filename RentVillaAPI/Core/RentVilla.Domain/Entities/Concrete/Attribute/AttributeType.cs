@@ -1,4 +1,4 @@
-﻿namespace RentVilla.Domain.Entities.Concrete
+﻿namespace RentVilla.Domain.Entities.Concrete.Attribute
 {
     public class AttributeType
     {

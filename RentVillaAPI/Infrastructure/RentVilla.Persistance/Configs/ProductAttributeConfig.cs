@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RentVilla.Domain.Entities.Concrete;
+using RentVilla.Domain.Entities.Concrete.Attribute;
 
 namespace RentVilla.Persistence.Configs
 {

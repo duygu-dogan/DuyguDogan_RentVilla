@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.ComplexTypes
 {
-    public enum ReservationStatus
+    public enum AdditionalServiceType
     {
-        Received = 0,
-        Checking = 1,
-        InUse = 2,
-        Cleaning =3,
-        Available = 4
+        HotTub = 0,
+        DailyCleaning = 1,
+        AirportTransfer = 2,
+        Breakfast = 3
     }
 }
