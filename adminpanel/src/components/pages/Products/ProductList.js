@@ -1,25 +1,51 @@
 import { CTable } from '@coreui/react'
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate';
+import PaginationButtons from '../../helpers/PaginationButtons';
 
 const ProductList = () => {
-    const items = [];
-    axios.get('http://localhost:5006/api/products/getproducts')
-        .then((res) => {
-            res.data.forEach(item => {
-                items.push({
+    const [itemsPerPage, setItemsPerPage] = useState(1);
+
+    const handleDropdownChange = (event) => {
+        setItemsPerPage(Number(event.target.value));
+        console.log(`Items per page: ${event.target.value}`)
+    };
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:5006/api/products/get')
+            .then((res) => {
+                const newItems = res.data.map(item => ({
                     name: item.name,
                     description: item.description,
                     price: item.price,
                     deposit: item.deposit,
                     _cellProps: { id: { scope: 'row' }, class: { colSpan: 2 } }
-                })
-                console.log(items);
-            });
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+                }));
+                setItems(newItems);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, []);
+    const [itemOffset, setItemOffset] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
+    const [currentItems, setCurrentItems] = useState([]);
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+        setCurrentItems(items.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(items.length / itemsPerPage));
+    }, [itemOffset, items, itemsPerPage]);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % items.length;
+        console.log(
+            `User requested page number ${event.selected}, which is offset ${newOffset}`
+        );
+        setItemOffset(newOffset);
+    };
 
     const columns = [
         {
@@ -29,6 +55,7 @@ const ProductList = () => {
         },
         {
             key: 'description',
+            label: 'Description',
             _props: { scope: 'col' },
         },
         {
@@ -42,29 +69,39 @@ const ProductList = () => {
             _props: { scope: 'col' },
         },
     ]
-    // const items = [
-    //     {
-    //         id: 1,
-    //         name: 'Mark',
-    //         description: 'Otto',
-    //         heading_2: '@mdo',
-    //         _cellProps: { id: { scope: 'row' } },
-    //     },
-    //     {
-    //         id: 2,
-    //         class: 'Jacob',
-    //         heading_1: 'Thornton',
-    //         heading_2: '@fat',
-    //         _cellProps: { id: { scope: 'row' } },
-    //     },
-    //     {
-    //         id: 3,
-    //         class: 'Larry the Bird',
-    //         heading_2: '@twitter',
-    //         _cellProps: { id: { scope: 'row' }, class: { colSpan: 2 } },
-    //     },
-    // ]
-    return <CTable striped columns={columns} items={items} />
+    return (
+        <>
+            <div className='container'>
+                <div>
+                    <PaginationButtons onChange={handleDropdownChange} />
+                    {itemsPerPage === 10 && <CTable />}
+                    <CTable striped columns={columns} items={currentItems} />
+                </div>
+                <div className='d-flex justify-content-center fixed-bottom'>
+                    <ReactPaginate
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageCount={pageCount}
+                        pageRangeDisplayed={5}
+                        marginPagesDisplayed={2}
+                        previousLabel="< previous"
+                        pageClassName='page-item'
+                        pageLinkClassName='page-link'
+                        previousClassName='page-item'
+                        previousLinkClassName='page-link'
+                        nextClassName='page-item'
+                        nextLinkClassName='page-link'
+                        breakLabel="..."
+                        breakClassName='page-item'
+                        breakLinkClassName='page-link'
+                        containerClassName='pagination'
+                        activeClassName='active'
+                        renderOnZeroPageCount={null}
+                    />
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default ProductList

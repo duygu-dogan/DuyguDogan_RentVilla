@@ -1,11 +1,22 @@
 import { cilAccountLogout, cilCalendar, cilHome, cilLayers, cilSettings, cilSpeedometer, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle, CSidebar, CSidebarBrand, CSidebarHeader, CSidebarNav } from '@coreui/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const SidebarComponent = () => {
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsSmallScreen(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', checkScreenSize);
+
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
     return (
-        <CSidebar className="border-end h-100" colorScheme="dark">
+        <CSidebar className="border-end h-100" colorScheme="dark" narrow={isSmallScreen}>
             <CSidebarHeader className="border-bottom">
                 <CIcon className='fs-2' customClassName="nav-icon-logo" icon={cilHome} />
                 <CSidebarBrand style={{ background: 'none' }}>RentVilla</CSidebarBrand>

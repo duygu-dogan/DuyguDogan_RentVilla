@@ -5,7 +5,6 @@ using RentVilla.Application.Repositories;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
-using RentVilla.Application.Services;
 using RentVilla.Persistance.Contexts;
 using RentVilla.Persistence.Configs;
 using RentVilla.Persistence.Repositories;
