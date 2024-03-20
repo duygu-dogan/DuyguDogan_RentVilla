@@ -74,7 +74,6 @@ const ProductList = () => {
             <div className='container'>
                 <div>
                     <PaginationButtons onChange={handleDropdownChange} />
-                    {itemsPerPage === 10 && <CTable />}
                     <CTable striped columns={columns} items={currentItems} />
                 </div>
                 <div className='d-flex justify-content-center fixed-bottom'>
