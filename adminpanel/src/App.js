@@ -6,7 +6,9 @@ import HeaderComponent from './components/HeaderComponent';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NewProduct from './components/pages/Products/NewProduct';
 import MainComponent from './components/MainComponent';
-import ProductList from './components/pages/Products/ProductList';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'mdbreact/dist/css/mdb.css';
+import ListProducts from './components/pages/Products/ListProducts';
 function App() {
   return (
     <>
@@ -22,7 +24,7 @@ function App() {
             <Routes>
               <Route path='/' element={<MainComponent />} />
               <Route path='/newproduct' element={<NewProduct />} />
-              <Route path='/getproducts' element={<ProductList />} />
+              <Route path='/getproducts' element={<ListProducts />} />
             </Routes>
           </div>
         </div>

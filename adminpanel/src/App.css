@@ -66,3 +66,127 @@
 
 
 /* Header ends */
+
+/*Product Table*/
+.paginated-table {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  overflow: clip;
+  padding: 10px;
+}
+
+.table {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+  border: 1px solid #303740;
+  justify-content: space-evenly;
+  /* width: 500px; */
+}
+
+.table-headers>th {
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+td,
+th {
+  border: 1px solid #303740;
+  text-align: center;
+}
+
+#pagination {
+  padding-right: 20px;
+}
+
+.base-TablePagination-spacer {
+  display: inline;
+}
+
+.base-TablePagination-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 4px 0;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.base-TablePagination-selectLabel {
+  margin: 0;
+}
+
+.base-TablePagination-select {
+  font-family: 'IBM Plex Sans', sans-serif;
+  padding: 2px 0 2px 4px;
+  border: 1px solid #303740;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #303740;
+  transition: all 100ms ease;
+}
+
+.base-TablePagination-select:hover {
+  background-color: #303740;
+  border-color: #C7D0DD;
+}
+
+.base-TablePagination-select:focus {
+  outline: 3px solid #3399FF;
+  border-color: #3399FF;
+}
+
+.base-TablePagination-displayedRows {
+  margin: 0;
+
+  @media (min-width: 768px) {
+    margin-left: auto;
+  }
+}
+
+.base-TablePagination-actions {
+  display: flex;
+  gap: 6px;
+  border: transparent;
+  text-align: center;
+}
+
+.base-TablePagination-actions>button {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: transparent;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid #303740;
+  color: #C7D0DD;
+  transition: all 120ms ease;
+
+  >svg {
+    font-size: 22px;
+  }
+}
+
+.base-TablePagination-actions:hover {
+  background-color: #303740;
+  border-color: #6B7A90;
+}
+
+.base-TablePagination-actions:focus {
+  outline: 3px solid #3399FF;
+  border-color: #3399FF;
+}
+
+.base-TablePagination-actions:disabled {
+  opacity: 0.3;
+}
+
+.base-TablePagination-actions:hover {
+  border: 1px solid #303740;
+  background-color: transparent;
+}
+
+/*Product Table End*/

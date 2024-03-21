@@ -8,7 +8,7 @@ const HeaderComponent = () => {
     return (
         <>
             <CHeader>
-                <CContainer fluid>
+                <CContainer fluid className='mr-3'>
 
                     <CHeaderBrand href="#">Dashboard</CHeaderBrand>
                     <CHeaderNav className='d-flex flex-row gap-4'>
