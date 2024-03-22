@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Repositories.AttributeCRepo
 {
-    public class AttributeReadRepository : ReadRepository<ProductAttribute>, IAttributeReadRepository
+    public class AttributeReadRepository : ReadRepository<Attributes>, IAttributeReadRepository
     {
         public AttributeReadRepository(RentVillaDbContext context) : base(context)
         {

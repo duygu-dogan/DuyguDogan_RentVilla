@@ -30,6 +30,11 @@ namespace RentVilla.Persistence.Repositories
             }
             return query;
         }
+        public List<TEntity> GetAllList()
+        {
+            var entities = AppDbContext.ToList();
+            return entities;
+        }
 
         public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> options, bool tracking = true)
         {

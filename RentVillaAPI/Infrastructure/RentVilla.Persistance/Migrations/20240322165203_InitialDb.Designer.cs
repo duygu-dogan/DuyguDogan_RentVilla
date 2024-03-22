@@ -13,8 +13,8 @@ using RentVilla.Persistance.Contexts;
 namespace RentVilla.Persistence.Migrations
 {
     [DbContext(typeof(RentVillaDbContext))]
-    [Migration("20240318111029_AddressEntitiesAdded")]
-    partial class AddressEntitiesAdded
+    [Migration("20240322165203_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,9 @@ namespace RentVilla.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -237,10 +240,15 @@ namespace RentVilla.Persistence.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("UserAddressId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserAddressId");
 
                     b.ToTable("User");
                 });
@@ -281,13 +289,13 @@ namespace RentVilla.Persistence.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("ProductAddressId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Properties")
                         .HasColumnType("text");
 
                     b.Property<string>("Rating")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Region")
                         .HasColumnType("text");
 
                     b.Property<int>("ShortestRentPeriod")
@@ -300,6 +308,8 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductAddressId");
 
                     b.ToTable("Products");
                 });
@@ -604,6 +614,24 @@ namespace RentVilla.Persistence.Migrations
                     b.Navigation("Attributes");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Identity.User", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Region.UserAddress", "UserAddress")
+                        .WithMany()
+                        .HasForeignKey("UserAddressId");
+
+                    b.Navigation("UserAddress");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Product", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Region.ProductAddress", "ProductAddress")
+                        .WithMany()
+                        .HasForeignKey("ProductAddressId");
+
+                    b.Navigation("ProductAddress");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Region.City", b =>

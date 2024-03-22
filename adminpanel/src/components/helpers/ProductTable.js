@@ -52,7 +52,7 @@ const TableComponent = ({ rows }) => {
                                     {row.region}
                                 </td>
                                 <td style={{ width: 160 }} >
-                                    <div className="form-check form-switch">
+                                    <div className="form-check form-switch d-flex justify-content-center">
                                         <input
                                             className="form-check-input"
                                             type="checkbox"

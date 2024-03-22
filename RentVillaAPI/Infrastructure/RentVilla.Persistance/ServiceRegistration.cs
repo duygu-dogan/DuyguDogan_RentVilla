@@ -23,6 +23,8 @@ namespace RentVilla.Persistence
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
             services.AddScoped<IAttributeReadRepository, AttributeReadRepository>();
             services.AddScoped<IAttributeWriteRepository, AttributeWriteRepository>();
+            services.AddScoped<IAttributeTypeWriteRepository, AttributeTypeWriteRepository>();
+            services.AddScoped<IAttributeTypeReadRepository, AttributeTypeReadRepository>();
             services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
             services.AddScoped<IReservationWriteRepository, ReservationWriteRepository>();
         }

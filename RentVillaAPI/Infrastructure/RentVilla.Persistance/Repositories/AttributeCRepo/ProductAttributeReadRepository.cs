@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Repositories.AttributeCRepo
 {
-    public class AttributeWriteRepository : WriteRepository<Attributes>, IAttributeWriteRepository
+    public class ProductAttributeReadRepository : ReadRepository<ProductAttribute>, IProductAttributeReadRepository
     {
-        public AttributeWriteRepository(RentVillaDbContext context) : base(context)
+        public ProductAttributeReadRepository(RentVillaDbContext context) : base(context)
         {
         }
     }

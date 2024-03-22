@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Repositories.AttributeRepo
 {
-    public interface IAttributeReadRepository : IReadRepository<Attributes>
+    public interface IAttributeTypeWriteRepository : IWriteRepository<AttributeType>
     {
 
     }

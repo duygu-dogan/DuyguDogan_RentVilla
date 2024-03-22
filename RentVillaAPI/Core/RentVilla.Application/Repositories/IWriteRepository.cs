@@ -9,6 +9,7 @@ namespace RentVilla.Application.Repositories
     public interface IWriteRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         Task<bool> AddAsync(TEntity entity);
+        bool Add(TEntity entity);
         Task<bool> AddRangeAsync(List<TEntity> entities);
         bool Update(TEntity entity);
         Task<bool> DeleteAsync(string id);

@@ -26,6 +26,11 @@ namespace RentVilla.Persistence.Repositories
             EntityEntry<TEntity> entityEntry = await AppDbContext.AddAsync(entity);
             return entityEntry.State == EntityState.Added;
         }
+        public bool Add(TEntity entity)
+        {
+            var entityEntry = AppDbContext.Add(entity);
+            return entityEntry.State == EntityState.Added;
+        }
 
         public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
