@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.ViewModels.Attribute;
@@ -29,19 +30,7 @@ namespace RentVilla.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<Attributes> attributes = _attributeReadRepository.GetAllList();
-            var attributeTypes = _attributeTypeReadRepository.GetAll();
-            List<AttributeReadVM> models = new();
-            foreach (var item in attributes)
-            {
-                models.Add(new()
-                {
-                    Id = item.Id.ToString(),
-                    Description = item.Description,
-                    IsActive = item.IsActive,
-                    Name = attributeTypes.FirstOrDefault((x => x.Id.ToString() == item.AttributeType.Id.ToString())).Name
-                });
-            }
+            var models = _attributeReadRepository.GetAttributes();
             return Ok(models);
         }
         [HttpGet("{id}")]
@@ -57,20 +46,20 @@ namespace RentVilla.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AttributeCreateVM model)
         {
-            _attributeTypeWriteRepository.Add(new()
-            {
-                Name = model.Name
-            });
-            await _attributeTypeWriteRepository.SaveAsync();
-            AttributeType attributeType = await _attributeTypeReadRepository.GetSingleAsync(x => x.Name == model.Name);
-            _attributeWriteRepository.Add(new()
-            {
-                Description = model.Description,
-                IsActive = model.IsActive,
-                AttributeType = attributeType
-            });
-            await _attributeWriteRepository.SaveAsync();
-            return StatusCode((int)HttpStatusCode.Created);
+                var attributeType = await _attributeTypeReadRepository.GetSingleAsync(x => x.Name == model.Name);
+
+                if (attributeType == null)
+                {
+                    attributeType = new AttributeType { Name = model.Name };
+                }
+                attributeType.Attributes.Add(new Attributes
+                {
+                    Description = model.Description,
+                    IsActive = model.IsActive,
+                    AttributeType = attributeType
+                });
+                await _attributeWriteRepository.SaveAsync();
+                return Ok(model);
         }
         [HttpPut]
         public async Task<IActionResult> Update(AttributeUpdateVM model)

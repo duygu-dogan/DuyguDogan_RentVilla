@@ -14,6 +14,7 @@ namespace RentVilla.Persistence.Configs
         public void Configure(EntityTypeBuilder<Attributes> builder)
         {
             builder.HasKey(a => a.Id);
+
             builder.Property(a => a.Id).ValueGeneratedOnAdd();
             builder.Property(a => a.Description).HasMaxLength(100).IsRequired();
 

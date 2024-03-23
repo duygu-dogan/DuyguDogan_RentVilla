@@ -21,7 +21,7 @@ const AttributeTable = ({ rows }) => {
         setPage(0);
     };
     const handleSwitchChange = (row) => {
-        const updatedRow = { ...row, isactive: !row.isactive }
+        const updatedRow = { ...row, isactive: !row.isActive }
         setSwitchState(updatedRow.isactive);
     }
 
@@ -45,14 +45,14 @@ const AttributeTable = ({ rows }) => {
                     </thead>
 
                     <tbody>
-                        {(rowsPerPage > 0
+                        {(Array.isArray(rows) && rowsPerPage > 0
                             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             : rows
                         ).map((row) => (
                             <tr key={row.name}>
                                 <td style={{ width: 160 }}>{row.name}</td>
                                 <td style={{ width: 160 }} align="right">
-                                    {row.price}
+                                    {row.description}
                                 </td>
                                 <td style={{ width: 160 }} >
                                     <div className="form-check form-switch d-flex justify-content-center">
@@ -60,8 +60,7 @@ const AttributeTable = ({ rows }) => {
                                             className="form-check-input"
                                             type="checkbox"
                                             id="flexSwitchCheckDefault"
-                                            // checked={row.isactive}
-                                            checked={switchState}
+                                            value={row.isactive}
                                             onChange={() => handleSwitchChange(row)}
                                         />
                                     </div>

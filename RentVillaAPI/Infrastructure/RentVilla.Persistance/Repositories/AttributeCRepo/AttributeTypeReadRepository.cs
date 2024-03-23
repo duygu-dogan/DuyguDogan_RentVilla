@@ -11,8 +11,13 @@ namespace RentVilla.Persistence.Repositories.AttributeCRepo
 {
     public class AttributeTypeReadRepository : ReadRepository<AttributeType>, IAttributeTypeReadRepository
     {
+        private readonly RentVillaDbContext _context;
         public AttributeTypeReadRepository(RentVillaDbContext context) : base(context)
         {
+        }
+        private RentVillaDbContext RentVillaDbContext
+        {
+            get { return _context as RentVillaDbContext; }
         }
     }
 }

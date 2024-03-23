@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentVilla.Persistance.Contexts;
@@ -12,9 +13,11 @@ using RentVilla.Persistance.Contexts;
 namespace RentVilla.Persistence.Migrations
 {
     [DbContext(typeof(RentVillaDbContext))]
-    partial class RentVillaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322223016_AttributeRelation")]
+    partial class AttributeRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,6 +85,25 @@ namespace RentVilla.Persistence.Migrations
                     b.ToTable("AddOns");
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttToAttType", b =>
+                {
+                    b.Property<Guid>("AttributesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AttributeTypeId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AttributesId", "AttributeTypeId");
+
+                    b.HasIndex("AttributeTypeId")
+                        .IsUnique();
+
+                    b.HasIndex("AttributesId")
+                        .IsUnique();
+
+                    b.ToTable("AttributeTypeName");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -102,9 +124,6 @@ namespace RentVilla.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AttributeTypeId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -112,8 +131,6 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AttributeTypeId");
 
                     b.ToTable("Attributes");
                 });
@@ -583,11 +600,21 @@ namespace RentVilla.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", b =>
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttToAttType", b =>
                 {
                     b.HasOne("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", "AttributeType")
-                        .WithMany("Attributes")
-                        .HasForeignKey("AttributeTypeId");
+                        .WithOne("attToAtt")
+                        .HasForeignKey("RentVilla.Domain.Entities.Concrete.Attribute.AttToAttType", "AttributeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", "Attribute")
+                        .WithOne("AttributeType")
+                        .HasForeignKey("RentVilla.Domain.Entities.Concrete.Attribute.AttToAttType", "AttributesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
 
                     b.Navigation("AttributeType");
                 });
@@ -760,7 +787,12 @@ namespace RentVilla.Persistence.Migrations
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", b =>
                 {
-                    b.Navigation("Attributes");
+                    b.Navigation("attToAtt");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", b =>
+                {
+                    b.Navigation("AttributeType");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Identity.User", b =>

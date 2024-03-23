@@ -1,4 +1,5 @@
 ﻿using RentVilla.Application.Repositories;
+using RentVilla.Application.ViewModels.Attribute;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using System;
 using System.Collections.Generic;

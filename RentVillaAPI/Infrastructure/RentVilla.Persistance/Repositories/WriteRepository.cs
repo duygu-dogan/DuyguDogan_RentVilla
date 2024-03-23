@@ -12,7 +12,7 @@ namespace RentVilla.Persistence.Repositories
 {
     public class WriteRepository<TEntity> : IWriteRepository<TEntity> where TEntity : class
     {
-        private readonly RentVillaDbContext _context;
+        protected readonly RentVillaDbContext _context;
 
         public WriteRepository(RentVillaDbContext context)
         {

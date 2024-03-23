@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentVilla.Persistance.Contexts;
@@ -12,9 +13,11 @@ using RentVilla.Persistance.Contexts;
 namespace RentVilla.Persistence.Migrations
 {
     [DbContext(typeof(RentVillaDbContext))]
-    partial class RentVillaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322231237_AttributeRelationDrop")]
+    partial class AttributeRelationDrop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -586,7 +589,7 @@ namespace RentVilla.Persistence.Migrations
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", b =>
                 {
                     b.HasOne("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", "AttributeType")
-                        .WithMany("Attributes")
+                        .WithMany()
                         .HasForeignKey("AttributeTypeId");
 
                     b.Navigation("AttributeType");
@@ -756,11 +759,6 @@ namespace RentVilla.Persistence.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", b =>
-                {
-                    b.Navigation("Attributes");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Identity.User", b =>

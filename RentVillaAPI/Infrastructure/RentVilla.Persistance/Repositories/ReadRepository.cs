@@ -13,7 +13,7 @@ namespace RentVilla.Persistence.Repositories
 {
     public class ReadRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
     {
-        private readonly RentVillaDbContext _context;
+        protected readonly RentVillaDbContext _context;
 
         public ReadRepository(RentVillaDbContext context)
         {

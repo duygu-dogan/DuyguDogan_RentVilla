@@ -1,25 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import APIPostComponent from '../../helpers/APIPostComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-const NewAttribute = ({ onFormChange }) => {
-    // const [name, setName] = useState('');
-    // const [description, setDescription] = useState('');
-    // const [isActive, setIsActive] = useState(true);
-    // const handleNameChange = (e) => {
-    //     setName(e.target.value);
-    // }
-    // const handleDescriptionChange = (e) => {
-    //     setDescription(e.target.value);
-    // }
-    // const handleIsActiveChange = (e) => {
-    //     setIsActive(e.target.checked);
-    // }
-    const [inputs, setInputs] = useState([]);
-    const handleFormChange = (newInputs) => {
-        setInputs(newInputs);
-        if (onFormChange) onFormChange(newInputs);
+const NewAttribute = () => {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [isActive, setIsActive] = useState(true);
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+    }
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+    }
+    const handleIsActiveChange = (e) => {
+        setIsActive(e.target.checked);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (name && description && isActive !== undefined) {
+            axios.post('http://localhost:5006/api/Attributes/Add', { name, description, isActive })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     }
     return (
         <div>
@@ -34,23 +42,23 @@ const NewAttribute = ({ onFormChange }) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body mt-5">
-                            <form className="row g-3">
+                            <form onSubmit={handleSubmit} className="row g-3">
                                 <div className="mb-3 row">
                                     <label htmlFor="inputName" class="col-sm-2 col-form-label">Name</label>
                                     <div className="col-sm-10">
-                                        <input type="text" className="form-control" id="inputName" value={inputs.name} onChange={handleFormChange} />
+                                        <input type="text" className="form-control" id="inputName" value={name} onChange={handleNameChange} />
                                     </div>
                                 </div>
                                 <div className="mb-3 row">
                                     <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Description</label>
                                     <div className="col-sm-10">
-                                        <input type="text" className="form-control" id="inputDescription" value={inputs.description} onChange={handleFormChange} />
+                                        <input type="text" className="form-control" id="inputDescription" value={description} onChange={handleDescriptionChange} />
                                     </div>
                                 </div>
                                 <div className="mb-3 row">
                                     <label htmlFor="flexSwitchCheckChecked" className="col-sm-2 form-check-label">Is Active</label>
                                     <div className="form-check form-switch col-sm-9 ps-5 ms-3">
-                                        <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" value={inputs.isActive} onChange={handleFormChange} />
+                                        <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" value={isActive} onChange={handleIsActiveChange} />
                                     </div>
                                 </div>
                                 <div className="modal-footer">
@@ -58,7 +66,7 @@ const NewAttribute = ({ onFormChange }) => {
                                     <button type="submit" className="btn btn-success">Save</button>
                                 </div>
                             </form>
-                            {/* <APIPostComponent name={name} description={description} isactive={isActive} /> */}
+
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,5 @@ namespace RentVilla.Application.Repositories.AttributeRepo
 {
     public interface IAttributeTypeReadRepository : IReadRepository<AttributeType>
     {
-
     }
 }
