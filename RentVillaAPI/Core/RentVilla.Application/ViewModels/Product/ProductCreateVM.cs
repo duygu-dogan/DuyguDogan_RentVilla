@@ -19,10 +19,10 @@ namespace RentVilla.Application.ViewModels.Product
         public List<string> ImageUrl { get; set; }
         public string MapId { get; set; }
         public string Address { get; set; }
-        public ProductAddress ProductAddress { get; set; }
+        //public ProductAddress ProductAddress { get; set; }
         public int ShortestRentPeriod { get; set; }
         public string Properties { get; set; }
-        public ICollection<ProductAttribute> Attributes { get; set; }
+        //public ICollection<ProductAttribute> Attributes { get; set; }
         public bool IsActive { get; set; } = true;
 
     }

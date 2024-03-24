@@ -45,9 +45,9 @@ namespace RentVilla.API.Controllers
                 Description = model.Description,
                 ImageUrl = model.ImageUrl,
                 Address = model.Address,
-                Attributes = model.Attributes,
+                //Attributes = model.Attributes,
                 MapId = model.MapId,
-                ProductAddress = model.ProductAddress,
+                //ProductAddress = model.ProductAddress,
                 Properties = model.Properties,
                 ShortestRentPeriod = model.ShortestRentPeriod
             });

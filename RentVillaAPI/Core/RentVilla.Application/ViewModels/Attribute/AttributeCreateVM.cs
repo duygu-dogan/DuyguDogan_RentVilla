@@ -8,7 +8,7 @@ namespace RentVilla.Application.ViewModels.Attribute
 {
     public class AttributeCreateVM
     {
-        public string Name { get; set; }
+        public string AttributeTypeId { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; } = true;
     }
