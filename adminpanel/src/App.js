@@ -11,7 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import ListProducts from './components/pages/Products/ListProducts';
 import Attributes from './components/pages/Products/Attributes';
-import NewAttribute from './components/pages/Products/NewAttribute';
+import NewAttributeModal from './components/modals/NewAttributeModal';
+import DeletedAttributeTable from './components/helpers/DeletedAttributeTable';
 function App() {
   return (
     <>
@@ -29,7 +30,8 @@ function App() {
               <Route path='/newproduct' element={<NewProduct />} />
               <Route path='/getproducts' element={<ListProducts />} />
               <Route path='/getattributes' element={<Attributes />} />
-              <Route path='/newattribute' element={<NewAttribute />} />
+              <Route path='/newattribute' element={<NewAttributeModal />} />
+              <Route path='/getdeletedattributetypes' element={<DeletedAttributeTable />} />
             </Routes>
           </div>
         </div>

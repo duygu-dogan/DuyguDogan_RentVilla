@@ -26,14 +26,17 @@ namespace RentVilla.API.Controllers
             _attributeTypeReadRepository = attributeTypeReadRepository;
             _attributeTypeWriteRepository = attributeTypeWriteRepository;
         }
-
+        
         [HttpGet]
+        [ActionName("GetTypes")]
         public IActionResult GetAttributeTypes()
         {
-            var models = _attributeTypeReadRepository.GetAll();
+            var models = _attributeTypeReadRepository.GetNonDeletedAttributeTypes();
             return Ok(models);
         }
+        
         [HttpGet]
+        [ActionName("GetTypeById")]
         public async Task<IActionResult> GetAttributeTypeById(string id)
         {
             var attributeType = await _attributeTypeReadRepository.GetByIdAsync(id, false);
@@ -43,21 +46,49 @@ namespace RentVilla.API.Controllers
             }
             return Ok(attributeType);
         }
+        [HttpGet]
+        [ActionName("GetDeletedTypes")]
+        public IActionResult GetDeletedAttributeTypes()
+        {
+            var models = _attributeTypeReadRepository.GetDeletedAttributeTypes();
+            return Ok(models);
+        }
         [HttpPost]
+        [ActionName("AddType")]
         public async Task<IActionResult> AddAttributeTypeAsync(string name)
         {
             var AttributeType = await _attributeTypeWriteRepository.AddAsync(new AttributeType { Name = name });
             await _attributeTypeWriteRepository.SaveAsync();
             return Ok(AttributeType);
-
         }
+        [HttpPut]
+        [ActionName("UpdateType")]
+        public async Task<IActionResult> Update(AttributeTypeUpdateVM model)
+        {
+            var attributeType = await _attributeTypeReadRepository.GetByIdAsync(model.Id);
+            attributeType.Name = model.Name;
+            await _attributeTypeWriteRepository.SaveAsync();
+            return Ok();
+        }
+        [HttpDelete]
+        [ActionName("DeleteType")]
+        public async Task<IActionResult> DeleteAttributeTypeAsync(string id)
+        {
+            var attributType = await _attributeTypeReadRepository.GetByIdAsync(id);
+            attributType.IsDeleted = !attributType.IsDeleted;
+            await _attributeTypeWriteRepository.SaveAsync();
+            return Ok();
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetAttributes()
+        [ActionName("Get")]
+        public IActionResult GetAttributes()
         {
             var models = _attributeReadRepository.GetAttributes();
             return Ok(models);
         }
         [HttpGet("{id}")]
+        [ActionName("GetById")]
         public async Task<IActionResult> GetAttributeById(string id)
         {
             var attribute = await _attributeReadRepository.GetByIdAsync(id, false);
@@ -68,9 +99,10 @@ namespace RentVilla.API.Controllers
             return Ok(attribute);
         }
         [HttpPost]
+        [ActionName("Add")]
         public async Task<IActionResult> AddAttributeAsync(AttributeCreateVM model)
         {
-                var attribute = await _attributeWriteRepository.AddAsync(new Attributes
+                await _attributeWriteRepository.AddAsync(new Attributes
                 {
                     Description = model.Description,
                     IsActive = model.IsActive,
@@ -83,8 +115,6 @@ namespace RentVilla.API.Controllers
         public async Task<IActionResult> Update(AttributeUpdateVM model)
         {
             Attributes attributes = await _attributeReadRepository.GetByIdAsync(model.Id);
-            AttributeType attributeType = attributes.AttributeType;
-            attributeType.Name = model.Name;
             attributes.Description = model.Description;
             attributes.IsActive = model.IsActive;
             await _attributeWriteRepository.SaveAsync();

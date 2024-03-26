@@ -1,18 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import AttributeTable from '../../helpers/AttributeTable';
-import NewAttribute from './NewAttribute';
-import DynamicForm from '../../helpers/DynamicForm';
+import NewAttributeTypeModal from '../../modals/NewAttributeTypeModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const Attributes = () => {
     const [items, setItems] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:5006/api/attributes/get')
+        axios.get('http://localhost:5006/api/attributes/gettypes')
             .then((res) => {
                 const newItems = res.data.map(item => ({
-                    name: item.name,
-                    description: item.description,
-                    isactive: item.isActive
+                    id: item.id,
+                    name: item.name
                 }));
                 setItems(newItems);
                 console.log(newItems)
@@ -21,25 +21,17 @@ const Attributes = () => {
                 console.log(err)
             })
     }, []);
-    // const handleFormChange = (newInputs) => {
-    //     setItems(newInputs);
-    //     axios.post('http://localhost:5006/api/Attributes/Add', { newInputs })
-    //         .then(response => {
-    //             console.log(response);
-    //         })
-    //         .catch(error => {
-    //             console.error(error);
-    //         });
-    // };
 
     return (
         <div className='container d-flex flex-column gap-3 mt-3'>
-            {/* <button onClick={}>Add Attribute</button> */}
-            <div className='col-md-11'>
-                <NewAttribute />
+            <div className='col-md-11 d-flex gap-3 mt-3 justify-content-end'>
+                <div>
+                    <NewAttributeTypeModal />
+                </div>
+                <div>
+                    <a href='/getdeletedattributetypes' style={{ borderRadius: '3px' }} className='btn btn-danger btn-sm fs-6'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} />  Recycle Bin</a>
+                </div>
             </div>
-            {/* <DynamicForm initialInputs={items} onFormChange={handleFormChange} /> */}
-
             <div>
                 <AttributeTable rows={items} />
             </div>

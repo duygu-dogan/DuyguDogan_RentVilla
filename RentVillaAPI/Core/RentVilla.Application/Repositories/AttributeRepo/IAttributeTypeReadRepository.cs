@@ -10,5 +10,7 @@ namespace RentVilla.Application.Repositories.AttributeRepo
 {
     public interface IAttributeTypeReadRepository : IReadRepository<AttributeType>
     {
+        public List<AttributeType> GetNonDeletedAttributeTypes();
+        public List<AttributeType> GetDeletedAttributeTypes();
     }
 }

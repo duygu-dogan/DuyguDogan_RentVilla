@@ -10,6 +10,6 @@ namespace RentVilla.Application.Repositories.AttributeRepo
 {
     public interface IAttributeTypeWriteRepository : IWriteRepository<AttributeType>
     {
-
+        public bool SoftDelete (string id);
     }
 }

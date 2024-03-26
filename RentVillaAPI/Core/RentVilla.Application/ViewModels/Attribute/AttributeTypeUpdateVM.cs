@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.ViewModels.Attribute
 {
-    public class AttributeUpdateVM
+    public class AttributeTypeUpdateVM
     {
         public string Id { get; set; }
-        public string Description { get; set; }
-        public bool IsActive { get; set; } = true;
+        public string Name { get; set; }
     }
 }

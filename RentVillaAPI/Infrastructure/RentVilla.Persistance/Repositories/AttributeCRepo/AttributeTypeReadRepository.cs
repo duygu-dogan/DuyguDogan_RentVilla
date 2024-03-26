@@ -14,10 +14,33 @@ namespace RentVilla.Persistence.Repositories.AttributeCRepo
         private readonly RentVillaDbContext _context;
         public AttributeTypeReadRepository(RentVillaDbContext context) : base(context)
         {
+            _context = context;
         }
-        private RentVillaDbContext RentVillaDbContext
+
+        public List<AttributeType> GetDeletedAttributeTypes()
         {
-            get { return _context as RentVillaDbContext; }
+            var attributeTypes = _context.AttributeTypes.Where(x => x.IsDeleted == true).ToList();
+            if (attributeTypes != null)
+            {
+                return attributeTypes;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public List<AttributeType> GetNonDeletedAttributeTypes()
+        {
+            var attributeTypes = _context.AttributeTypes.Where(x => x.IsDeleted == false).ToList();
+            if (attributeTypes != null)
+            {
+                return attributeTypes;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
