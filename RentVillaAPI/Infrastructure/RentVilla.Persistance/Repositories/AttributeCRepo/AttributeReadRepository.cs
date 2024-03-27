@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Repositories.AttributeCRepo
 {
-    public class AttributeReadRepository : ReadRepository<Attributes>, IAttributeReadRepository
+    public class AttributeReadRepository : ReadRepository<Attributes>, IRegionReadRepository
     {
         public AttributeReadRepository(RentVillaDbContext context) : base(context)
         {
@@ -35,6 +35,30 @@ namespace RentVilla.Persistence.Repositories.AttributeCRepo
                 });
             }
             return models;
+        }
+        public List<AttributeReadVM> GetAttributesByTypeId(string typeId)
+        {
+            AttributeType attributeType = _context.AttributeTypes.FirstOrDefault(x => x.Id.ToString() == typeId);
+            if (attributeType == null)
+            {
+                throw new Exception("Attribute type not found");
+            }
+            else
+            {
+                var attributes = _context.Attributes.Where(x => x.AttributeType.Id == attributeType.Id).ToList();
+                List<AttributeReadVM> models = new();
+                foreach (var item in attributes)
+                {
+                    models.Add(new AttributeReadVM
+                    {
+                        Id = item.Id.ToString(),
+                        Name = item.AttributeType.Name,
+                        Description = item.Description,
+                        IsActive = item.IsActive
+                    });
+                }
+                return models;
+            }
         }
     }
 }

@@ -14,12 +14,12 @@ namespace RentVilla.API.Controllers
     [ApiController]
     public class AttributesController : ControllerBase
     {
-        private readonly IAttributeReadRepository _attributeReadRepository;
+        private readonly IRegionReadRepository _attributeReadRepository;
         private readonly IAttributeWriteRepository _attributeWriteRepository;
         private readonly IAttributeTypeReadRepository _attributeTypeReadRepository;
         private readonly IAttributeTypeWriteRepository _attributeTypeWriteRepository;
 
-        public AttributesController(IAttributeReadRepository attributeReadRepository, IAttributeWriteRepository attributeWriteRepository, IAttributeTypeReadRepository attributeTypeReadRepository, IAttributeTypeWriteRepository attributeTypeWriteRepository)
+        public AttributesController(IRegionReadRepository attributeReadRepository, IAttributeWriteRepository attributeWriteRepository, IAttributeTypeReadRepository attributeTypeReadRepository, IAttributeTypeWriteRepository attributeTypeWriteRepository)
         {
             _attributeReadRepository = attributeReadRepository;
             _attributeWriteRepository = attributeWriteRepository;
@@ -97,6 +97,17 @@ namespace RentVilla.API.Controllers
                 return NotFound();
             }
             return Ok(attribute);
+        }
+        [HttpGet("typeId")]
+        [ActionName("GetByTypeId")]
+        public IActionResult GetAttributesByTypeId(string typeId)
+        {
+            var attributes = _attributeReadRepository.GetAttributesByTypeId(typeId);
+            if (attributes == null)
+            {
+                return NotFound();
+            }
+            return Ok(attributes);
         }
         [HttpPost]
         [ActionName("Add")]

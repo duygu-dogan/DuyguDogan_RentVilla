@@ -132,7 +132,6 @@ th {
 
 .base-TablePagination-select:hover {
   background-color: #C7D0DD;
-  border-color: #303740;
 }
 
 .base-TablePagination-select:focus {
@@ -162,18 +161,13 @@ th {
   border: transparent;
   border-radius: 50%;
   background-color: transparent;
-  border: 1px solid #303740;
+  border: 1px solid #a4b9d4;
   color: #C7D0DD;
   transition: all 120ms ease;
 
   >svg {
     font-size: 22px;
   }
-}
-
-.base-TablePagination-actions:hover {
-  background-color: #303740;
-  border-color: #6B7A90;
 }
 
 .base-TablePagination-actions:focus {
@@ -185,9 +179,10 @@ th {
   opacity: 0.3;
 }
 
-.base-TablePagination-actions:hover {
-  border: 1px solid #303740;
-  background-color: transparent;
+.base-TablePagination-actions>button:hover {
+  cursor: pointer;
+  background-color: #C7D0DD;
+  color: aliceblue;
 }
 
 /*Product Table End*/

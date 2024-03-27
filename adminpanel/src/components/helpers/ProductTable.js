@@ -1,4 +1,4 @@
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faList, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
@@ -30,28 +30,30 @@ const TableComponent = ({ rows }) => {
             <div className='paginated-table col-md-11'  >
                 <table className='table' aria-label="custom pagination table">
                     <thead>
-                        <tr className='table-headers'>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Region</th>
-                            <th>IsActive</th>
-                            <th>#</th>
+                        <tr className='table-headers row justify-content-center text-center align-items-center'>
+                            <th className='col-1'>No</th>
+                            <th className='col-2'>Name</th>
+                            <th className='col-2'>Price</th>
+                            <th className='col-2'>Region</th>
+                            <th className='col-2'>IsActive</th>
+                            <th className='col-3'>#</th>
                         </tr>
                     </thead>
                     <tbody>
                         {(rowsPerPage > 0
                             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             : rows
-                        ).map((row) => (
-                            <tr key={row.name}>
-                                <td style={{ width: 160 }}>{row.name}</td>
-                                <td style={{ width: 160 }} align="right">
+                        ).map((row, index) => (
+                            <tr key={row.name} className='row justify-content-center text-center'>
+                                <th className='col-1'>{index + 1}</th>
+                                <td className='col-2'>{row.name}</td>
+                                <td className='col-2'>
                                     {row.price}
                                 </td>
-                                <td style={{ width: 160 }} align="right">
+                                <td className='col-2'>
                                     {row.region}
                                 </td>
-                                <td style={{ width: 160 }} >
+                                <td className='col-2'>
                                     <div className="form-check form-switch d-flex justify-content-center">
                                         <input
                                             className="form-check-input"
@@ -63,10 +65,10 @@ const TableComponent = ({ rows }) => {
                                         />
                                     </div>
                                 </td>
-                                <td style={{ width: 160 }} align="right">
+                                <td className='col-3 d-flex gap-2 justify-content-center'>
                                     <button style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></button>
                                     <button style={{ borderRadius: "3px" }} className='btn btn-danger btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} /></button>
-                                    <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm w-75'>Details</button>
+                                    <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm'> <FontAwesomeIcon style={{ fontSize: "15px" }} icon={faList} /></button>
                                 </td>
                             </tr>
                         ))}

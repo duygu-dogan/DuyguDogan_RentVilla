@@ -1,7 +1,81 @@
-import { CButton, CCard, CCol, CContainer, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CFormText, CFormTextarea, CInputGroup, CInputGroupText } from '@coreui/react'
-import React from 'react'
+import { CButton, CCol, CContainer, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CInputGroup } from '@coreui/react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
 
 const NewProduct = () => {
+    const [States, setStates] = useState([]);
+    const [SelectedState, setSelectedState] = useState(null);
+    const [Cities, setCities] = useState([]);
+    const [selectedCity, setSelectedCity] = useState(null);
+    const [Districts, setDistricts] = useState([]);
+    const [attributeTypes, setAttributeTypes] = useState([]);
+    const [selectedOption, setSelectedOption] = useState([]);
+    const [options, setOptions] = useState([]);
+    useEffect(() => {
+        axios('http://localhost:5006/api/region/getallstates')
+            .then(data => {
+                setStates(data.data);
+                console.log(data)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }, []);
+    const handleStateChange = (e) => {
+        const stateId = e.target.value;
+        setSelectedState(stateId);
+        axios.get(`http://localhost:5006/api/region/getallcities?stateId=${stateId}`)
+            .then((res) => {
+                setCities(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const handleCityChange = (e) => {
+        const cityId = e.target.value;
+        setSelectedCity(cityId);
+        axios.get(`http://localhost:5006/api/region/getalldistricts?cityId=${cityId}`)
+            .then((res) => {
+                setDistricts(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const handleDistrictChange = (e) => {
+        const districtId = e.target.value;
+    }
+
+    useEffect(() => {
+        axios.get('http://localhost:5006/api/attributes/gettypes')
+            .then((res) => {
+                setAttributeTypes(res.data);
+                Promise.all(attributeTypes.map(type =>
+                    axios.get(`http://localhost:5006/api/attributes/getbytypeid/typeid?typeId=${type.id}`)
+                ))
+                    .then((responses) => {
+                        const newOptions = responses.map((response, index) => ({
+                            key: index,
+                            label: attributeTypes[index].name,
+                            options: response.data.map((item) => ({
+                                value: item.id,
+                                label: item.description
+                            }))
+                        }));
+                        setOptions(newOptions);
+                        console.log(options)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            })
+    }, []);
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        console.log(`Option selected:`, selectedOption);
+    };
     return (
         <CContainer className='p-5 w-75'>
             <CForm className="row g-3">
@@ -15,21 +89,27 @@ const NewProduct = () => {
                     <CFormInput id="inputAddress" label="Address" placeholder="1234 Main St" />
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputRegion" label="Region">
+                    <CFormSelect id="inputRegion" label="Region" onChange={handleStateChange}>
                         <option>Choose...</option>
-                        <option>...</option>
+                        {States.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                        ))}
                     </CFormSelect>
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputCity" label="City">
+                    <CFormSelect id="inputCity" label="City" onChange={handleCityChange}>
                         <option>Choose...</option>
-                        <option>...</option>
+                        {Cities.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                        ))}
                     </CFormSelect>
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputDistrict" label="District">
+                    <CFormSelect id="inputDistrict" label="District" onChange={handleDistrictChange}>
                         <option>Choose...</option>
-                        <option>...</option>
+                        {Districts.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                        ))}
                     </CFormSelect>
                 </CCol>
                 <CCol xs={6}>
@@ -47,12 +127,17 @@ const NewProduct = () => {
                         text="Must be 8-20 words long."
                     ></CFormTextarea>
                 </CCol>
-                <CCol xs={12} className='d-flex justify-content-between'>
-
-                    <CFormCheck type="checkbox" id="gridCheck" label="Check me out" />
-                    <CFormCheck type="checkbox" id="gridCheck" label="Check me out" />
-                    <CFormCheck type="checkbox" id="gridCheck" label="Check me out" />
-                    <CFormCheck type="checkbox" id="gridCheck" label="Check me out" />
+                <CCol xs={12} className='d-flex justify-content-between row row-cols-5'>
+                    {options.map((item, index) => (
+                        <Select
+                            key={index}
+                            className='col'
+                            isMulti
+                            name={item.label}
+                            options={item.options}
+                            onChange={handleChange}
+                        />
+                    ))}
                 </CCol>
                 <CCol xs={12}>
                     <CButton color="primary" type="submit">Save Changes</CButton>

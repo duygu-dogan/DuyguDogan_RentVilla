@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
-const NewAttributeTypeModal = () => {
+const NewAttributeTypeModal = ({ onModalClose }) => {
     const [name, setName] = useState('');
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -15,6 +16,7 @@ const NewAttributeTypeModal = () => {
             axios.post(`http://localhost:5006/api/attributes/addtype?name=${name}`)
                 .then(response => {
                     console.log(response);
+                    onModalClose();
                 })
                 .catch(error => {
                     console.error(error);

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-const NewAttributeModal = ({ attributeTypeId }) => {
+const NewAttributeModal = ({ attributeTypeId, onModalClose }) => {
     const [description, setDescription] = useState('');
     const [isActive, setIsActive] = useState(true);
     const handleDescriptionChange = (e) => {
@@ -19,6 +20,7 @@ const NewAttributeModal = ({ attributeTypeId }) => {
             axios.post('http://localhost:5006/api/Attributes/Add', { attributeTypeId, description, isActive })
                 .then(response => {
                     console.log(response);
+                    onModalClose();
                 })
                 .catch(error => {
                     console.error(error);
@@ -28,7 +30,7 @@ const NewAttributeModal = ({ attributeTypeId }) => {
     return (
         <div>
             <button style={{ borderRadius: "3px" }} type="button" className="btn btn-success btn-sm float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
-                <FontAwesomeIcon icon={faPlus} style={{ fontSize: "15px" }} /> Add
+                <FontAwesomeIcon icon={faPlus} /> Add
             </button>
             <div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -53,7 +55,7 @@ const NewAttributeModal = ({ attributeTypeId }) => {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" className="btn btn-success">Save</button>
+                                    <button type="submit" className="btn btn-success" data-bs-dismiss="modal">Save</button>
                                 </div>
                             </form>
                         </div>

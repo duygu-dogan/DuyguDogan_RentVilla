@@ -6,13 +6,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NewProduct from './components/pages/Products/NewProduct';
 import MainComponent from './components/MainComponent';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-// import 'mdbreact/dist/css/mdb.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
-
+import 'react-toastify/dist/ReactToastify.css';
 import ListProducts from './components/pages/Products/ListProducts';
-import Attributes from './components/pages/Products/Attributes';
-import NewAttributeModal from './components/modals/NewAttributeModal';
 import DeletedAttributeTable from './components/helpers/DeletedAttributeTable';
+import ListAttributes from './components/pages/Products/ListAttributes';
+import ListAttributeTypes from './components/pages/Products/ListAttributeTypes';
 function App() {
   return (
     <>
@@ -28,10 +27,10 @@ function App() {
             <Routes>
               <Route path='/' element={<MainComponent />} />
               <Route path='/newproduct' element={<NewProduct />} />
-              <Route path='/getproducts' element={<ListProducts />} />
-              <Route path='/getattributes' element={<Attributes />} />
-              <Route path='/newattribute' element={<NewAttributeModal />} />
-              <Route path='/getdeletedattributetypes' element={<DeletedAttributeTable />} />
+              <Route path='/products' element={<ListProducts />} />
+              <Route path='/attributetypes' element={<ListAttributeTypes />} />
+              <Route path='/deletedattributetypes' element={<DeletedAttributeTable />} />
+              <Route path='/attributes/:id' element={<ListAttributes />} />
             </Routes>
           </div>
         </div>

@@ -1,15 +1,16 @@
-import { faRecycle, faRedo } from '@fortawesome/free-solid-svg-icons';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import 'react-toastify/dist/ReactToastify.css';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const DeletedAttributeTable = () => {
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    // const [switchState, setSwitchState] = useState(true);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -23,7 +24,7 @@ const DeletedAttributeTable = () => {
         setPage(0);
     };
 
-    useEffect(() => {
+    const fetchItems = useCallback(() => {
         axios.get('http://localhost:5006/api/attributes/getdeletedtypes')
             .then((res) => {
                 const newItems = res.data.map(item => ({
@@ -37,12 +38,18 @@ const DeletedAttributeTable = () => {
                 console.log(err)
             })
     }, []);
+    useEffect(() => {
+        fetchItems();
+    }, [fetchItems]);
+
     const handleSubmit = (e, rowId) => {
         e.preventDefault();
         console.log(rowId)
         axios.delete(`http://localhost:5006/api/attributes/deletetype?id=${rowId}`)
             .then(response => {
                 console.log(response);
+                fetchItems();
+                toast('Attribute type recycled successfully', { type: 'success' })
             })
             .catch(error => {
                 console.error(error);
@@ -51,12 +58,23 @@ const DeletedAttributeTable = () => {
 
     return (
         <div className='d-flex flex-column container'>
+            <ToastContainer
+                position='bottom-right'
+                autoClose={3000}
+                hideProgressBar={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+                theme='light'
+                transition='Bounce'
+            />
             <div className='mt-5 col-11'>
-                <a href='/getattributes' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Attribute Type Table
+                <a href='/attributetypes' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Attribute Type Table
                 </a>
             </div>
             <div className='mt-3'>
-
                 {rows.length === 0 &&
                     <div className='col-md-11'>
                         <div className="alert alert-info text-center" role="alert">
@@ -73,7 +91,6 @@ const DeletedAttributeTable = () => {
                                 <th>#</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {(Array.isArray(rows) && rowsPerPage > 0
                                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -104,7 +121,6 @@ const DeletedAttributeTable = () => {
                                                 </form>
                                             </div>
                                         </div>
-
                                     </td>
                                 </tr>
                             ))}

@@ -38,6 +38,7 @@ namespace RentVilla.Persistance.Contexts
                 {
                     EntityState.Added => data.CurrentValues[nameof(BaseEntity.CreatedAt)] = DateTime.UtcNow,
                     EntityState.Modified => data.CurrentValues[nameof(BaseEntity.UpdatedAt)] = DateTime.UtcNow,
+                    _ => DateTime.UtcNow
                 };
             }
             return await base.SaveChangesAsync(cancellationToken);
