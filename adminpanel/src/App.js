@@ -12,6 +12,7 @@ import ListProducts from './components/pages/Products/ListProducts';
 import DeletedAttributeTable from './components/helpers/DeletedAttributeTable';
 import ListAttributes from './components/pages/Products/ListAttributes';
 import ListAttributeTypes from './components/pages/Products/ListAttributeTypes';
+import DeletedProductTable from './components/helpers/DeletedProductTable';
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
               <Route path='/attributetypes' element={<ListAttributeTypes />} />
               <Route path='/deletedattributetypes' element={<DeletedAttributeTable />} />
               <Route path='/attributes/:id' element={<ListAttributes />} />
+              <Route path='/deletedproducts' element={<DeletedProductTable />} />
             </Routes>
           </div>
         </div>

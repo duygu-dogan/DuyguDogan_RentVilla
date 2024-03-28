@@ -10,6 +10,7 @@ namespace RentVilla.Application.ViewModels.Attribute
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string TypeId { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
     }

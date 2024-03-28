@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RentVilla.Application\RentVilla.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RentVilla.Infrastructure\RentVilla.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Persistance\RentVilla.Persistence.csproj" />
   </ItemGroup>
 

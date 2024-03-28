@@ -38,16 +38,6 @@ const ListAttributeTypes = () => {
     return (
         <div className='container d-flex flex-column gap-3 mt-3'>
             <ToastContainer
-                position='bottom-right'
-                autoClose={1000}
-                hideProgressBar={false}
-                closeOnClick={true}
-                rtl={false}
-                draggable
-                pauseOnHover
-                pauseOnFocusLoss={false}
-                theme='light'
-                transition='Bounce'
             />
 
             <div className='col-md-11 d-flex gap-3 px-3 mt-3 justify-content-between'>

@@ -1,4 +1,5 @@
-﻿using RentVilla.Application.Repositories;
+﻿using RentVilla.Application.DTOs;
+using RentVilla.Application.Repositories;
 using RentVilla.Domain.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace RentVilla.Application.Repositories.ProductRepo
         Task<IEnumerable<Product>> GetProductsByRegion(string region);
         //En kısa süreliğine kiralanabilir ürünleri getirir.
         Task<IEnumerable<Product>> GetProductsByShortestRentTime();
+        //ProductAddress ve ProductAttribute tablolarını join ederek ürünleri getirir.
+        Task<IEnumerable<Product>> GetJoinedProductByIdAsync(string id);
+        ICollection<ProductDTO> GetAllProducts();
 
     }
 }

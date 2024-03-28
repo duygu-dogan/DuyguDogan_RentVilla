@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import TableComponent from '../../helpers/ProductTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import ProductTable from '../../helpers/ProductTable';
 
 const ListProducts = () => {
     const [items, setItems] = useState([]);
+    const [pagination, setPagination] = useState(
+        {
+            Page: 0,
+            Size: 10
+        }
+    );
     useEffect(() => {
-        axios.get('http://localhost:5006/api/products/get')
+        axios.get(`http://localhost:5006/api/products/get/${pagination}`)
             .then((res) => {
                 const newItems = res.data.map(item => ({
+                    id: item.id,
                     name: item.name,
                     price: item.price,
-                    region: 'unknown',
-                    isactive: item.isactive
+                    region: item.productAddress.districtName,
+                    isactive: item.isActive
                 }));
                 setItems(newItems);
                 console.log(newItems)
@@ -22,13 +29,21 @@ const ListProducts = () => {
                 console.log(err)
             })
     }, []);
+    const handlePagination = (rowSize, pageSize) => {
+        setPagination(
+            { Page: pageSize, Size: rowSize }
+        );
+    }
     return (
         <div className='container d-flex flex-column gap-3 mt-3'>
             <div className='col-md-11 px-3'>
-                <a style={{ borderRadius: "3px" }} href='/newproduct' className='btn btn-success btn-sm float-end fs-6'><FontAwesomeIcon icon={faPlus} style={{ fontSize: "15px" }} /> Add Product</a>
+                <div className='d-flex gap-2 justify-content-end'>
+                    <a style={{ borderRadius: "3px" }} href='/newproduct' className='btn btn-success btn-sm float-end fs-6'><FontAwesomeIcon icon={faPlus} style={{ fontSize: "15px" }} /> Add Product</a>
+                    <a href='/deletedproducts' style={{ borderRadius: '3px' }} className='btn btn-danger btn-sm fs-6'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} />  Recycle Bin</a>
+                </div>
             </div>
             <div>
-                <TableComponent rows={items} />
+                <ProductTable rows={items} onPagination={handlePagination} />
             </div>
         </div>
     )

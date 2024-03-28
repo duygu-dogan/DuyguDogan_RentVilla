@@ -60,15 +60,6 @@ const DeletedAttributeTable = () => {
         <div className='d-flex flex-column container'>
             <ToastContainer
                 position='bottom-right'
-                autoClose={3000}
-                hideProgressBar={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover
-                theme='light'
-                transition='Bounce'
             />
             <div className='mt-5 col-11'>
                 <a href='/attributetypes' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Attribute Type Table
@@ -84,11 +75,11 @@ const DeletedAttributeTable = () => {
                 <div className='paginated-table col-md-11'  >
                     <table className='table' aria-label="custom pagination table">
                         <thead>
-                            <tr className='table-headers'>
-                                <th>NO</th>
-                                <th>TYPE</th>
-                                <th>ID</th>
-                                <th>#</th>
+                            <tr className='table-headers row justify-content-center text-center align-items-center'>
+                                <th className='col-1'>NO</th>
+                                <th className='col-2'>TYPE</th>
+                                <th className='col-4'>ID</th>
+                                <th className='col-4'>#</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,11 +87,11 @@ const DeletedAttributeTable = () => {
                                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : rows
                             ).map((row, index) => (
-                                <tr key={row.name}>
-                                    <td style={{ width: 50 }} >{index + 1}</td>
-                                    <td style={{ width: 100 }}>{row.name}</td>
-                                    <td style={{ width: 200 }}>{row.id}</td>
-                                    <td style={{ width: 160 }} align="right">
+                                <tr key={row.name} className='row justify-content-center text-center'>
+                                    <td className='col-1'>{index + 1}</td>
+                                    <td className='col-2'>{row.name}</td>
+                                    <td className='col-4'>{row.id}</td>
+                                    <td className='col-4' align="right">
                                         <div className='d-flex justify-content-center'>
                                             <div>
                                                 <button type='button' style={{ borderRadius: "3px" }} className='btn btn-success btn-sm me-2' data-bs-toggle="modal" data-bs-target="#exampleModal" ><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faRedo} /> </button>

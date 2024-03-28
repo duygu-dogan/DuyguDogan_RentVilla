@@ -14,12 +14,12 @@ namespace RentVilla.API.Controllers
     [ApiController]
     public class AttributesController : ControllerBase
     {
-        private readonly IRegionReadRepository _attributeReadRepository;
+        private readonly IAttributeReadRepository _attributeReadRepository;
         private readonly IAttributeWriteRepository _attributeWriteRepository;
         private readonly IAttributeTypeReadRepository _attributeTypeReadRepository;
         private readonly IAttributeTypeWriteRepository _attributeTypeWriteRepository;
 
-        public AttributesController(IRegionReadRepository attributeReadRepository, IAttributeWriteRepository attributeWriteRepository, IAttributeTypeReadRepository attributeTypeReadRepository, IAttributeTypeWriteRepository attributeTypeWriteRepository)
+        public AttributesController(IAttributeReadRepository attributeReadRepository, IAttributeWriteRepository attributeWriteRepository, IAttributeTypeReadRepository attributeTypeReadRepository, IAttributeTypeWriteRepository attributeTypeWriteRepository)
         {
             _attributeReadRepository = attributeReadRepository;
             _attributeWriteRepository = attributeWriteRepository;

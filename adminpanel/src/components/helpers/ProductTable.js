@@ -1,32 +1,44 @@
-import { faList, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faList, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
 import React, { useState } from 'react'
+import DeleteProductModal from '../modals/Products/DeleteProductModal';
+import { ToastContainer, toast } from 'react-toastify';
 
-const TableComponent = ({ rows }) => {
+const ProductTable = ({ rows, onPagination }) => {
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [switchState, setSwitchState] = useState(true);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [switchState, setSwitchState] = useState(rows.isactive);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        onPagination(page, rowsPerPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
+        onPagination(page, rowsPerPage);
         setPage(0);
     };
     const handleSwitchChange = (row) => {
-        const updatedRow = { ...row, isactive: !row.isactive }
+        const updatedRow = !row.isactive;
         setSwitchState(updatedRow.isactive);
     }
-
+    const handleModalClose = (message, type) => {
+        toast(message, { type: type });
+    }
+    const isIdEmpty = (row) => {
+        console.log(row)
+    }
     return (
         <div className='container-fluid'>
+            <ToastContainer
+                position='bottom-right'
+            />
             <div className='paginated-table col-md-11'  >
                 <table className='table' aria-label="custom pagination table">
                     <thead>
@@ -66,8 +78,8 @@ const TableComponent = ({ rows }) => {
                                     </div>
                                 </td>
                                 <td className='col-3 d-flex gap-2 justify-content-center'>
-                                    <button style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></button>
-                                    <button style={{ borderRadius: "3px" }} className='btn btn-danger btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} /></button>
+                                    <button onClick={() => isIdEmpty(row)} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></button>
+                                    <DeleteProductModal id={row.id} onModalClose={handleModalClose} />
                                     <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm'> <FontAwesomeIcon style={{ fontSize: "15px" }} icon={faList} /></button>
                                 </td>
                             </tr>
@@ -108,9 +120,8 @@ const TableComponent = ({ rows }) => {
                     </tfoot>
                 </table>
             </div>
-        </div>
+        </div >
     )
 }
 
-
-export default TableComponent
+export default ProductTable

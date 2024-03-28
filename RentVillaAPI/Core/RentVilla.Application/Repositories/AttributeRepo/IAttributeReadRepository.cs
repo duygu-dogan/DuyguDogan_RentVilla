@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Repositories.AttributeRepo
 {
-    public interface IRegionReadRepository : IReadRepository<Attributes>
+    public interface IAttributeReadRepository : IReadRepository<Attributes>
     {
         public List<AttributeReadVM> GetAttributes();
+        public Task<Attributes> GetByIdWithTypeAsync(string id);
         public List<AttributeReadVM> GetAttributesByTypeId(string typeId);
     }
 }

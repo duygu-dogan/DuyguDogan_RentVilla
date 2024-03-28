@@ -1,7 +1,8 @@
-import { CButton, CCol, CContainer, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CInputGroup } from '@coreui/react'
+import { CButton, CCol, CContainer, CForm, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CInputGroup } from '@coreui/react'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import Select from 'react-select';
+import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 const NewProduct = () => {
     const [States, setStates] = useState([]);
@@ -9,14 +10,13 @@ const NewProduct = () => {
     const [Cities, setCities] = useState([]);
     const [selectedCity, setSelectedCity] = useState(null);
     const [Districts, setDistricts] = useState([]);
-    const [attributeTypes, setAttributeTypes] = useState([]);
-    const [selectedOption, setSelectedOption] = useState([]);
-    const [options, setOptions] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState([]);
+    const [validated, setValidated] = useState(false);
+
     useEffect(() => {
         axios('http://localhost:5006/api/region/getallstates')
             .then(data => {
                 setStates(data.data);
-                console.log(data)
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -47,46 +47,90 @@ const NewProduct = () => {
     const handleDistrictChange = (e) => {
         const districtId = e.target.value;
     }
-
-    useEffect(() => {
-        axios.get('http://localhost:5006/api/attributes/gettypes')
-            .then((res) => {
-                setAttributeTypes(res.data);
-                Promise.all(attributeTypes.map(type =>
-                    axios.get(`http://localhost:5006/api/attributes/getbytypeid/typeid?typeId=${type.id}`)
-                ))
-                    .then((responses) => {
-                        const newOptions = responses.map((response, index) => ({
-                            key: index,
-                            label: attributeTypes[index].name,
-                            options: response.data.map((item) => ({
-                                value: item.id,
-                                label: item.description
-                            }))
-                        }));
-                        setOptions(newOptions);
-                        console.log(options)
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            })
-    }, []);
-    const handleChange = (selectedOption) => {
-        setSelectedOption(selectedOption);
-        console.log(`Option selected:`, selectedOption);
+    const handleAttributeChange = (attributes) => {
+        setSelectedAttributes(attributes);
     };
+
+    const removeAttribute = (attributeToRemove) => {
+        setSelectedAttributes(selectedAttributes.filter(attribute => attribute !== attributeToRemove));
+    };
+    const handleSubmit = (e) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        axios.post('http://localhost:5006/api/products/add', {
+            name: e.target.inputName.value,
+            description: e.target.inputDescription.value,
+            price: e.target.inputPrice.value,
+            deposit: e.target.inputDeposit.value,
+            mapId: e.target.inputMapId.value,
+            address: e.target.inputAddress.value,
+            shortestRentPeriod: e.target.inputRentPeriod.value,
+            productaddress: {
+                stateId: e.target.inputRegion.value,
+                cityId: e.target.inputCity.value,
+                districtId: e.target.inputDistrict.value
+            },
+            properties: e.target.inputAdditionalInfo.value,
+            attributeIDs: selectedAttributes.map(attribute => attribute.value)
+        })
+            .then((res) => {
+                console.log(res);
+                toast('Product added successfully', { type: 'success' })
+            })
+            .catch((err) => {
+                console.log(err);
+                toast('An error occurred while adding product.', { type: 'error' });
+            });
+        setValidated(true);
+    }
+
     return (
         <CContainer className='p-5 w-75'>
-            <CForm className="row g-3">
-                <CCol md={6}>
-                    <CFormInput type="text" id="inputName" label="Name" />
+            <ToastContainer />
+            <CForm className="row g-3 needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
+                <CCol md={3} className='position-relative'>
+                    <CFormInput type="text" id="inputName" label="Name"
+                        feedbackInvalid="Please enter a valid name."
+                        feedbackValid="Looks good!"
+                        required
+                        tooltipFeedback
+                    />
                 </CCol>
-                <CCol md={6}>
-                    <CFormInput type="text" id="inputPrice" label="Price" />
+                <CCol md={3} className='position-relative'>
+                    <CFormInput type="text" id="inputPrice" label="Price"
+                        feedbackInvalid="Price should be greater than 0."
+                        feedbackValid="Looks good!"
+                        required
+                        tooltipFeedback />
                 </CCol>
-                <CCol xs={12}>
-                    <CFormInput id="inputAddress" label="Address" placeholder="1234 Main St" />
+                <CCol md={3} className='position-relative'>
+                    <CFormInput type="text" id="inputDeposit" label="Deposit"
+                        feedbackInvalid="Deposit should be greater than 0."
+                        feedbackValid="Looks good!"
+                        required
+                        tooltipFeedback
+                    />
+                </CCol>
+                <CCol md={3} className='position-relative'>
+                    <CFormInput type="text" id="inputRentPeriod" label="Shortest Rent Period"
+                        feedbackInvalid="Shortest rent period should be greater than 0." feedback="Looks good!"
+                        required
+                        tooltipFeedback
+                    />
+                </CCol>
+                <CCol xs={8} className='position-relative'>
+                    <CFormInput id="inputAddress" label="Address" placeholder="1234 Main St"
+                        feedbackInvalid="Please enter a valid address."
+                        feedbackValid="Looks good!"
+                        required
+                        tooltipFeedback
+                    />
+                </CCol>
+                <CCol xs={4}>
+                    <CFormInput id="inputMapId" label="MapId" />
                 </CCol>
                 <CCol md={4}>
                     <CFormSelect id="inputRegion" label="Region" onChange={handleStateChange}>
@@ -121,26 +165,37 @@ const NewProduct = () => {
                 </CCol>
                 <CCol xs={12}>
                     <CFormTextarea
-                        id="exampleFormControlTextarea1"
-                        label=""
+                        id="inputDescription"
+                        label="Description"
                         rows={3}
                         text="Must be 8-20 words long."
                     ></CFormTextarea>
                 </CCol>
-                <CCol xs={12} className='d-flex justify-content-between row row-cols-5'>
-                    {options.map((item, index) => (
-                        <Select
-                            key={index}
-                            className='col'
-                            isMulti
-                            name={item.label}
-                            options={item.options}
-                            onChange={handleChange}
-                        />
-                    ))}
+                <CCol xs={12}>
+                    <ProductAttributesModal onAttributeChange={handleAttributeChange} />
+                    <div className="selected-attributes d-flex mt-4 gap-3">
+                        {selectedAttributes.map(attribute => (
+                            <div key={attribute.value} style={{ backgroundColor: 'rgba(247, 245, 245, 0.99)' }} className="attribute-box btn btn-light btn-sm d-flex gap-2 align-items-center py-1 px-2">
+                                <span>{attribute.label}</span>
+                                <button className='p-0' style={{ border: 'none', backgroundColor: 'transparent', fontSize: '23px' }} onClick={() => removeAttribute(attribute)}>&times;</button>
+                            </div>
+                        ))}
+                    </div>
                 </CCol>
                 <CCol xs={12}>
-                    <CButton color="primary" type="submit">Save Changes</CButton>
+                    <CFormTextarea
+                        id="inputAdditionalInfo"
+                        label="Additional Properties"
+                        rows={3}
+                        text="Must be 8-20 words long."
+                    ></CFormTextarea>
+                </CCol>
+                <CCol xs={12}>
+                    <hr />
+                </CCol>
+                <CCol xs={12} className='d-flex gap-2 justify-content-end'>
+                    <CButton color="secondary" type="button" href='/products'>Back to Products</CButton>
+                    <CButton color="success" type="submit">Add Product</CButton>
                 </CCol>
             </CForm>
         </CContainer>

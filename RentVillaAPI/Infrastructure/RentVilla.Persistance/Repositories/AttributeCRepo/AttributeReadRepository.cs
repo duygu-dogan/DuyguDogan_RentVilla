@@ -1,4 +1,5 @@
-﻿using RentVilla.Application.Repositories.AttributeRepo;
+﻿using Microsoft.EntityFrameworkCore;
+using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.ViewModels.Attribute;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Persistance.Contexts;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Repositories.AttributeCRepo
 {
-    public class AttributeReadRepository : ReadRepository<Attributes>, IRegionReadRepository
+    public class AttributeReadRepository : ReadRepository<Attributes>, IAttributeReadRepository
     {
         public AttributeReadRepository(RentVillaDbContext context) : base(context)
         {
@@ -59,6 +60,13 @@ namespace RentVilla.Persistence.Repositories.AttributeCRepo
                 }
                 return models;
             }
+        }
+
+        public async Task<Attributes> GetByIdWithTypeAsync(string id)
+        {
+            var attribute = await _context.Attributes.Include(x => x.AttributeType).FirstOrDefaultAsync(x => x.Id.ToString() == id);
+            
+            return attribute;
         }
     }
 }

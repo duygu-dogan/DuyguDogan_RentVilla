@@ -24,12 +24,18 @@ namespace RentVilla.Persistence
             services.AddDbContext<RentVillaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString));
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
-            services.AddScoped<IRegionReadRepository, AttributeReadRepository>();
+
+            services.AddScoped<IAttributeReadRepository, AttributeReadRepository>();
             services.AddScoped<IAttributeWriteRepository, AttributeWriteRepository>();
             services.AddScoped<IAttributeTypeWriteRepository, AttributeTypeWriteRepository>();
             services.AddScoped<IAttributeTypeReadRepository, AttributeTypeReadRepository>();
+            services.AddScoped<IProductAttributeReadRepository, ProductAttributeReadRepository>();
+            services.AddScoped<IProductAttributeWriteRepository, ProductAttributeWriteRepository>();
+
             services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
             services.AddScoped<IReservationWriteRepository, ReservationWriteRepository>();
+
+            services.AddScoped<ICountryReadRepository, CountryReadRepository>();
             services.AddScoped<IStateReadRepository, StateReadRepository>();
             services.AddScoped<ICityReadRepository, CityReadRepository>();
             services.AddScoped<IDistrictReadRepository, DistrictReadRepository>();

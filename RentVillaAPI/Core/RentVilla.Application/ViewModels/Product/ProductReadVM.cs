@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.ViewModels.Product
 {
-    public class ProductCreateVM
+    public class ProductReadVM
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -23,7 +23,7 @@ namespace RentVilla.Application.ViewModels.Product
         public int ShortestRentPeriod { get; set; }
         public string Properties { get; set; }
         public ICollection<string> AttributeIDs { get; set; }
-        public bool IsActive { get; set; } = true;
-        public bool IsDeleted { get; set; } = false;
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
