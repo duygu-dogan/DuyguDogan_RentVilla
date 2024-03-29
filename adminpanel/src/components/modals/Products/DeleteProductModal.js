@@ -38,6 +38,9 @@ const DeleteProductModal = ({ id, onModalClose }) => {
                 <div class="modal fade" id={modalId} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
                             <div class="modal-body">
                                 If you want to delete this product permanently, click the delete button. If you want to move it to the recycle bin, click the recycle bin button. If you delete this product, you can't recover it.
                             </div>

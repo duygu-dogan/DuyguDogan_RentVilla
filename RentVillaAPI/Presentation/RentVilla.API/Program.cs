@@ -1,14 +1,18 @@
 using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using RentVilla.Application.Validators;
+using RentVilla.Infrastructure;
+using RentVilla.Infrastructure.Enums;
 using RentVilla.Infrastructure.Filters;
+using RentVilla.Infrastructure.Services.Storage.Local;
 using RentVilla.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
+builder.Services.AddInfrastructureServices();
+builder.Services.AddStorage(StorageType.Local);
+//builder.Services.AddStorage<LocalStorage>();
+//builder.Services.AddStorage(StorageType.Azure);
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().AllowAnyMethod()
 ));
@@ -25,6 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles();
 app.UseCors();
 app.UseHttpsRedirection();
 

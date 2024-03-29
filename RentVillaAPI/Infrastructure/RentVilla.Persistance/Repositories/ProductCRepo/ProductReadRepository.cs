@@ -22,11 +22,11 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
         public ICollection<ProductDTO> GetAllProducts()
         {
             var products = _context.Products.ToList();
-            var productAttibutes = _context.ProductAttributes
-        .Include(pat => pat.Attributes)
-        .Include(pat => pat.AttributeType)
-        .ToList();
-            var productAddresses = _context.ProductAddresses
+            var attributes = _context.ProductAttributes
+                .Include(pat => pat.Attributes)
+                .Include(pat => pat.AttributeType)
+                .ToList();
+            var addresses = _context.ProductAddresses
                 .Include(pa => pa.Country)
                 .Include(pa => pa.State)
                 .Include(pa => pa.City)
@@ -35,6 +35,19 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
             var productDTOs = new List<ProductDTO>();
             foreach(var product in products)
             {
+                var productAddress = addresses.Where(x => x.ProductId == product.Id).FirstOrDefault();
+                var productAttributes = attributes.Where(x => x.Product.Id == product.Id).ToList();
+                List<ProductAttributeDTO> productAttributesDTOs = new();
+                foreach(var productAttibutes in productAttributes)
+                {
+                    productAttributesDTOs.Add(new ProductAttributeDTO
+                    {
+                        Id = productAttibutes.Id.ToString(),
+                        Attribute = productAttibutes.Attributes.Description,
+                        AttributeType = productAttibutes.AttributeType.Name
+                    });
+                }
+                
                 productDTOs.Add(new ProductDTO
                 {
                     Id = product.Id.ToString(),
@@ -50,21 +63,13 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                     Rating = product.Rating,
                     Status = product.Status,
                     Reservations = product.Reservations,
-                    Attributes = new List<ProductAttributeDTO>
-                    {
-                        new ProductAttributeDTO
-                        {
-                            Id = productAttibutes.FirstOrDefault().Id.ToString(),
-                            Attribute = productAttibutes.FirstOrDefault().Attributes.Description,
-                            AttributeType = productAttibutes.FirstOrDefault().AttributeType.Name
-                        }
-                    },
+                    Attributes = productAttributesDTOs,
                     ProductAddress = new ProductAddressDTO
                     {
-                        CountryName = productAddresses.FirstOrDefault().Country.Name,
-                        StateName = productAddresses.FirstOrDefault().State.Name,
-                        CityName = productAddresses.FirstOrDefault().City.Name,
-                        DistrictName = productAddresses.FirstOrDefault().District.Name
+                        CountryName = productAddress.Country.Name,
+                        StateName = productAddress.State.Name,
+                        CityName = productAddress.City.Name,
+                        DistrictName = productAddress.District.Name
                     },
                     IsActive = product.IsActive,
                     IsDeleted = product.IsDeleted

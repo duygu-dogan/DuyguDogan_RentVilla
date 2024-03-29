@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
 import { ToastContainer, toast } from 'react-toastify';
+import FileUploadComponent from '../../helpers/FileUploadComponent';
 
 const NewProduct = () => {
     const [States, setStates] = useState([]);
@@ -46,15 +47,18 @@ const NewProduct = () => {
     };
     const handleDistrictChange = (e) => {
         const districtId = e.target.value;
+        console.log(Districts)
     }
     const handleAttributeChange = (attributes) => {
         setSelectedAttributes(attributes);
+        console.log(selectedAttributes)
     };
 
     const removeAttribute = (attributeToRemove) => {
         setSelectedAttributes(selectedAttributes.filter(attribute => attribute !== attributeToRemove));
     };
     const handleSubmit = (e) => {
+        e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault();
@@ -157,11 +161,7 @@ const NewProduct = () => {
                     </CFormSelect>
                 </CCol>
                 <CCol xs={6}>
-                    <CInputGroup className="mb-3 d-flex flex-column">
-                        <CFormLabel >Image Upload</CFormLabel>
-                        {/* <CInputGroupText as="label" htmlFor="inputGroupFile01">Upload</CInputGroupText> */}
-                        <CFormInput className='w-50' type="file" id="inputGroupFile01" />
-                    </CInputGroup>
+                    <FileUploadComponent modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl="http://localhost:5006/api/Products/Upload" />
                 </CCol>
                 <CCol xs={12}>
                     <CFormTextarea

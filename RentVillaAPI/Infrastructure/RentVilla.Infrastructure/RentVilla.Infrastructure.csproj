@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Core\RentVilla.Application\RentVilla.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Storage\Azure\" />
+  </ItemGroup>
+
 </Project>

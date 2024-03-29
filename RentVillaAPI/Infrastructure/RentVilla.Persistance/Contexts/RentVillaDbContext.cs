@@ -3,11 +3,6 @@ using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Domain.Entities.Concrete.Region;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentVilla.Persistance.Contexts
 {
@@ -29,6 +24,8 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<District> Districts { get; set; }
         public DbSet<ProductAddress> ProductAddresses { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
+        public DbSet<Domain.Entities.Concrete.File> Files { get; set; }
+        public DbSet<ProductImageFile> ProductImageFiles { get; set; }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var datas = ChangeTracker.Entries<BaseEntity>();

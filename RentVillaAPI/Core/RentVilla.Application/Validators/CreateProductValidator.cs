@@ -37,6 +37,10 @@ namespace RentVilla.Application.Validators
                 .NotNull().WithMessage("Deposit cannot be empty.")
                 .GreaterThan(0)
                 .WithMessage("Deposit must be greater than 0.");
+            RuleFor(p => p.ProductAddress)
+                .NotNull().WithMessage("Product address cannot be empty.");
+            RuleFor(p => p.AttributeIDs)
+                .NotNull().WithMessage("Product attributes cannot be empty.");
         }
     }
 }

@@ -35,15 +35,6 @@ const AttributeTypeTable = ({ rows }) => {
         <div className='container-fluid'>
             <ToastContainer
                 position='bottom-right'
-                autoClose={3000}
-                hideProgressBar={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover
-                theme='light'
-                transition='Bounce'
             />
             {rows.length === 0 &&
                 <div className='col-md-11'>

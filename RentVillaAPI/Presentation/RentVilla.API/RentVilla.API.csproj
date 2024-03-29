@@ -28,4 +28,8 @@
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Persistance\RentVilla.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

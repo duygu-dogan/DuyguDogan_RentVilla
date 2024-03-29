@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RentVilla.Application.Abstraction.Storage;
 using RentVilla.Application.Repositories.AttributeRepo;
+using RentVilla.Application.Repositories.FileRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
 using RentVilla.Application.RequestParameters;
@@ -24,8 +26,12 @@ namespace RentVilla.API.Controllers
         private readonly ICountryReadRepository _countryReadRepository;
         private readonly IProductAttributeWriteRepository _productAttributeWriteRepository;
         private readonly IProductAttributeReadRepository _productAttributeReadRepository;
-
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IAttributeReadRepository attributeReadRepository, ICityReadRepository cityReadRepository, IStateReadRepository stateReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IProductAttributeWriteRepository productAttributeWriteRepository)
+        private readonly IFileWriteRepository _fileWriteRepository;
+        private readonly IFileReadRepository _fileReadRepository;
+        private readonly IProductImageFileReadRepository _productImageFileReadRepository;
+        private readonly IProductImageFileWriteRepository _productImageFileWriteRepository;
+        private readonly IStorageService _storageService;
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IAttributeReadRepository attributeReadRepository, ICityReadRepository cityReadRepository, IStateReadRepository stateReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IProductAttributeWriteRepository productAttributeWriteRepository, IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, IProductImageFileReadRepository productImageFileReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IStorageService storageService, IProductAttributeReadRepository productAttributeReadRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
@@ -36,13 +42,19 @@ namespace RentVilla.API.Controllers
             _countryReadRepository = countryReadRepository;
             _productAttributeWriteRepository = productAttributeWriteRepository;
             _productReadRepository = productReadRepository;
+            _fileWriteRepository = fileWriteRepository;
+            _fileReadRepository = fileReadRepository;
+            _productImageFileReadRepository = productImageFileReadRepository;
+            _productImageFileWriteRepository = productImageFileWriteRepository;
+            _storageService = storageService;
+            _productAttributeReadRepository = productAttributeReadRepository;
         }
 
         [HttpGet]
         public IActionResult Get([FromQuery]Pagination pagination)
         {
             var products = _productReadRepository.GetAllProducts();
-            var nonDeletedProducts = products.Where(x => x.IsDeleted == false).Take(pagination.Page * pagination.Size).Skip(pagination.Size);
+            var nonDeletedProducts = products.Where(x => x.IsDeleted == false).Skip(pagination.Page * pagination.Size).Take(pagination.Size);
             return Ok(nonDeletedProducts);
         }
 
@@ -139,6 +151,19 @@ namespace RentVilla.API.Controllers
             product.IsActive = !product.IsActive;
             _productWriteRepository.Update(product);
             await _productWriteRepository.SaveAsync();
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upload()
+        {
+            var datas = await _storageService.UploadAsync("resource/product-images", Request.Form.Files);
+            await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImageFile()
+            {
+                FileName = d.fileName,
+                Path = d.pathOrContainerName,
+                Storage= _storageService.StorageName
+            }).ToList());
+            await _productImageFileWriteRepository.SaveAsync();
             return Ok();
         }
     }

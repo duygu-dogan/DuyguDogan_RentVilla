@@ -1,7 +1,7 @@
 import { faList, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TablePagination } from '@mui/base';
-import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
+import { ChevronLeftRounded, ChevronRightRounded, FileUpload, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
 import React, { useState } from 'react'
 import DeleteProductModal from '../modals/Products/DeleteProductModal';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 const ProductTable = ({ rows, onPagination }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [switchState, setSwitchState] = useState(rows.isactive);
+    const [switchState, setSwitchState] = useState(true);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -57,7 +57,7 @@ const ProductTable = ({ rows, onPagination }) => {
                             : rows
                         ).map((row, index) => (
                             <tr key={row.name} className='row justify-content-center text-center'>
-                                <th className='col-1'>{index + 1}</th>
+                                <th className='col-1'>{page * rowsPerPage + index + 1}</th>
                                 <td className='col-2'>{row.name}</td>
                                 <td className='col-2'>
                                     {row.price}
