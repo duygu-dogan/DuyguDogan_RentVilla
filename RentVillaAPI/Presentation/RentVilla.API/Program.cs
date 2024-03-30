@@ -3,6 +3,7 @@ using RentVilla.Application.Validators;
 using RentVilla.Infrastructure;
 using RentVilla.Infrastructure.Enums;
 using RentVilla.Infrastructure.Filters;
+using RentVilla.Infrastructure.Services.Storage.Azure;
 using RentVilla.Infrastructure.Services.Storage.Local;
 using RentVilla.Persistence;
 
@@ -10,9 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
-builder.Services.AddStorage(StorageType.Local);
+//builder.Services.AddStorage(StorageType.Local);
 //builder.Services.AddStorage<LocalStorage>();
-//builder.Services.AddStorage(StorageType.Azure);
+builder.Services.AddStorage<AzureStorage>();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().AllowAnyMethod()
 ));

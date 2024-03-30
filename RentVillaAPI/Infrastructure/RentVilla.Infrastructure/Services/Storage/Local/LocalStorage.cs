@@ -4,7 +4,7 @@ using RentVilla.Application.Abstraction.Storage.Local;
 
 namespace RentVilla.Infrastructure.Services.Storage.Local
 {
-    public class LocalStorage : ILocalStorage
+    public class LocalStorage : Storage, ILocalStorage
     {
         readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -49,8 +49,9 @@ namespace RentVilla.Infrastructure.Services.Storage.Local
             List<(string fileName, string path)> datas = new();
             foreach (IFormFile file in files)
             { 
-                await CopyFileAsync($"{uploadPath}\\{file.FileName}", file);
-                datas.Add((file.FileName, $"{path}\\{file.FileName}"));
+                string newFileName = await FileRenameAsync(uploadPath, file.FileName, HasFile);
+                await CopyFileAsync($"{uploadPath}\\{newFileName}", file);
+                datas.Add((newFileName, $"{path}\\{newFileName}"));
             }
             return datas;
         }

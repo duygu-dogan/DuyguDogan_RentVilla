@@ -156,7 +156,7 @@ namespace RentVilla.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload()
         {
-            var datas = await _storageService.UploadAsync("resource/product-images", Request.Form.Files);
+            var datas = await _storageService.UploadAsync("product-images", Request.Form.Files);
             await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImageFile()
             {
                 FileName = d.fileName,
