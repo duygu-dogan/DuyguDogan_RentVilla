@@ -1,10 +1,11 @@
-import { faList, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faList, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FileUpload, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DeleteProductModal from '../modals/Products/DeleteProductModal';
 import { ToastContainer, toast } from 'react-toastify';
+import FileUploadComponent from './FileUploadComponent';
 
 const ProductTable = ({ rows, onPagination }) => {
     const [page, setPage] = useState(0);
@@ -31,9 +32,6 @@ const ProductTable = ({ rows, onPagination }) => {
     const handleModalClose = (message, type) => {
         toast(message, { type: type });
     }
-    const isIdEmpty = (row) => {
-        console.log(row)
-    }
     return (
         <div className='container-fluid'>
             <ToastContainer
@@ -44,8 +42,9 @@ const ProductTable = ({ rows, onPagination }) => {
                     <thead>
                         <tr className='table-headers row justify-content-center text-center align-items-center'>
                             <th className='col-1'>No</th>
-                            <th className='col-2'>Name</th>
-                            <th className='col-2'>Price</th>
+                            <th className='col-2'>Image</th>
+                            <th className='col-1'>Name</th>
+                            <th className='col-1'>Price</th>
                             <th className='col-2'>Region</th>
                             <th className='col-2'>IsActive</th>
                             <th className='col-3'>#</th>
@@ -58,8 +57,11 @@ const ProductTable = ({ rows, onPagination }) => {
                         ).map((row, index) => (
                             <tr key={row.name} className='row justify-content-center text-center'>
                                 <th className='col-1'>{page * rowsPerPage + index + 1}</th>
-                                <td className='col-2'>{row.name}</td>
                                 <td className='col-2'>
+                                    <img src={row.image ? row.image.path : 'https://rentvilla.blob.core.windows.net/product-images/no-image.jpg'} alt="product" style={{ width: '50px', height: '50px' }} />
+                                </td>
+                                <td className='col-1'>{row.name}</td>
+                                <td className='col-1'>
                                     {row.price}
                                 </td>
                                 <td className='col-2'>
@@ -78,9 +80,16 @@ const ProductTable = ({ rows, onPagination }) => {
                                     </div>
                                 </td>
                                 <td className='col-3 d-flex gap-2 justify-content-center'>
-                                    <button onClick={() => isIdEmpty(row)} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></button>
+
+                                    <FileUploadComponent id={row.id} modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl={`http://localhost:5006/api/Products/UploadProductImage/${row.id}`} />
+                                    <div>
+                                        <a href={`/admin/editproduct/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></a>
+                                    </div>
                                     <DeleteProductModal id={row.id} onModalClose={handleModalClose} />
-                                    <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm'> <FontAwesomeIcon style={{ fontSize: "15px" }} icon={faList} /></button>
+                                    <div>
+                                        <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm'> <FontAwesomeIcon style={{ fontSize: "15px" }} icon={faList} /></button>
+                                    </div>
+
                                 </td>
                             </tr>
                         ))}

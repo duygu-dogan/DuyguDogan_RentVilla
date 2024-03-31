@@ -1,9 +1,8 @@
-import { CButton, CCol, CContainer, CForm, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CInputGroup } from '@coreui/react'
+import { CButton, CCol, CContainer, CForm, CFormInput, CFormSelect, CFormTextarea } from '@coreui/react'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
 import { ToastContainer, toast } from 'react-toastify';
-import FileUploadComponent from '../../helpers/FileUploadComponent';
 
 const NewProduct = () => {
     const [States, setStates] = useState([]);
@@ -159,9 +158,6 @@ const NewProduct = () => {
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </CFormSelect>
-                </CCol>
-                <CCol xs={6}>
-                    <FileUploadComponent modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl="http://localhost:5006/api/Products/Upload" />
                 </CCol>
                 <CCol xs={12}>
                     <CFormTextarea

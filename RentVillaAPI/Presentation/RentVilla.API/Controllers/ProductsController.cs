@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Storage;
+using RentVilla.Application.DTOs;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.FileRepo;
 using RentVilla.Application.Repositories.ProductRepo;
@@ -66,9 +68,20 @@ namespace RentVilla.API.Controllers
             return Ok(deletedProducts);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetProductImages(string id)
         {
-            var product = await _productReadRepository.GetByIdAsync(id, false);
+           Product? product = _productReadRepository.AppDbContext.Include(x => x.ProductImageFiles).FirstOrDefault(x => x.Id == Guid.Parse(id)); 
+            if (product != null)
+            {
+                return Ok(product.ProductImageFiles.Select(p => new { p.FileName, p.Path }));
+            }
+            return NotFound();
+        }
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var product = await _productReadRepository.GetJoinedProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -105,7 +118,6 @@ namespace RentVilla.API.Controllers
                 Price = model.Price,
                 Deposit = model.Deposit,
                 Description = model.Description,
-                ImageUrl = model.ImageUrl,
                 Address = model.Address,
                 Attributes = productAttributes,
                 MapId = model.MapId,
@@ -116,6 +128,29 @@ namespace RentVilla.API.Controllers
             await _productWriteRepository.SaveAsync();
             return StatusCode((int)HttpStatusCode.Created);
         }
+        [HttpPost("{id}")]
+        public async Task<IActionResult> UploadProductImage(string id)
+        {
+            List<(string fileName, string containerName)> result = await _storageService.UploadAsync("product-images", Request.Form.Files);
+            Product product = await _productReadRepository.GetByIdAsync(id, true);
+            try
+            {
+                await _productImageFileWriteRepository.AddRangeAsync(result.Select(r => new ProductImageFile
+                {
+                    FileName = r.fileName,
+                    Path = r.containerName,
+                    Storage = _storageService.StorageName,
+                    Product = new List<Product> () { product }
+                }).ToList());
+                await _productImageFileWriteRepository.SaveAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                throw;
+            }
+        }
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateVM model)
         {
@@ -124,7 +159,6 @@ namespace RentVilla.API.Controllers
             product.Price = model.Price;
             product.Deposit = model.Deposit;
             product.Description = model.Description;
-            product.ImageUrl = model.ImageUrl;
             product.Address = model.Address;
             product.Attributes = model.Attributes;
             product.MapId = model.MapId;
@@ -137,8 +171,25 @@ namespace RentVilla.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
-            var product = await _productReadRepository.GetJoinedProductByIdAsync(id);
-            _productAttributeWriteRepository.DeleteRange(product.SelectMany(x => x.Attributes).ToList());
+            var productDTO = await _productReadRepository.GetJoinedProductByIdAsync(id);
+            var productAttributes = new List<ProductAttribute>();
+            foreach (var productAttribute in productDTO.Attributes)
+            {
+                productAttributes.Add(new ProductAttribute
+                {
+                    Id = Guid.Parse(productAttribute.Id),
+                    Attributes = new Attributes
+                    {
+                        Description = productAttribute.Attribute
+                    },
+                    AttributeType = new AttributeType
+                    {
+                        Name = productAttribute.AttributeType
+                    },
+                    Product= _productReadRepository.GetByIdAsync(id).Result
+                });
+            }
+            _productAttributeWriteRepository.DeleteRange(productAttributes);
             await _productWriteRepository.DeleteAsync(id);
             await _productWriteRepository.SaveAsync();
             return Ok();

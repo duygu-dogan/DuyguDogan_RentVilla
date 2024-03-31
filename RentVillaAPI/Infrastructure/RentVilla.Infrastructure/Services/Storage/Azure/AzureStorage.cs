@@ -44,7 +44,7 @@ namespace RentVilla.Infrastructure.Services.Storage.Azure
                string newFileName = await FileRenameAsync(containerName, file.FileName, HasFile);
                BlobClient blobClient = _blobContainerClient.GetBlobClient(newFileName);
                await blobClient.UploadAsync(file.OpenReadStream());
-               datas.Add((newFileName,containerName));
+               datas.Add((newFileName,$"https://rentvilla.blob.core.windows.net/{containerName}/{newFileName}"));
             }
             return datas;
         }

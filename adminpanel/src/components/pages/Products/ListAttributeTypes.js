@@ -49,7 +49,7 @@ const ListAttributeTypes = () => {
                         <NewAttributeTypeModal onModalClose={handleModalClose} />
                     </div>
                     <div>
-                        <a href='/deletedattributetypes' style={{ borderRadius: '3px' }} className='btn btn-danger btn-sm fs-6'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} />  Recycle Bin</a>
+                        <a href='/admin/deletedattributetypes' style={{ borderRadius: '3px' }} className='btn btn-danger btn-sm fs-6'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashCan} />  Recycle Bin</a>
                     </div>
                 </div>
             </div>

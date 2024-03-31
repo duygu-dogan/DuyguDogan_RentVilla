@@ -65,10 +65,10 @@ const AttributeTypeTable = ({ rows }) => {
                                 <td className='col-4' >
                                     <div className='d-flex justify-content-center'>
                                         <div>
-                                            <a href={`/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-secondary btn-sm me-2'><FontAwesomeIcon icon={faList} /></a>
+                                            <a href={`/admin/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-secondary btn-sm me-2'><FontAwesomeIcon icon={faList} /></a>
                                         </div>
                                         <div>
-                                            <a href={`/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm me-2'><FontAwesomeIcon icon={faPenToSquare} /></a>
+                                            <a href={`/admin/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm me-2'><FontAwesomeIcon icon={faPenToSquare} /></a>
                                         </div>
                                         <div>
                                             <DeleteAttributeTypeModal id={row.id} onModalClose={handleModalClose} />

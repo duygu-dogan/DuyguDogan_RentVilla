@@ -78,7 +78,7 @@ const DeletedProductTable = () => {
                 position='bottom-right'
             />
             <div className='mt-5 col-11'>
-                <a href='/products' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Back to Products
+                <a href='/admin/products' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Back to Products
                 </a>
             </div>
             <div className='mt-3'>

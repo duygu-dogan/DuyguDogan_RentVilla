@@ -46,7 +46,7 @@ const ListAttributes = () => {
 
                 <div className='d-flex align-items-end gap-2'>
                     <NewAttributeModal attributeTypeId={id} onModalClose={handleModalClose} />
-                    <a href='/attributetypes' className='btn btn-secondary btn-sm'><FontAwesomeIcon icon={faArrowCircleLeft} /> Geri Dön</a>
+                    <a href='/admin/attributetypes' className='btn btn-secondary btn-sm'><FontAwesomeIcon icon={faArrowCircleLeft} /> Geri Dön</a>
                 </div>
             </div>
             <div>

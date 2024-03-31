@@ -62,7 +62,7 @@ const DeletedAttributeTable = () => {
                 position='bottom-right'
             />
             <div className='mt-5 col-11'>
-                <a href='/attributetypes' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Attribute Type Table
+                <a href='/admin/attributetypes' style={{ borderRadius: "3px" }} className="btn btn-success btn-sm float-end fs-6" > Attribute Type Table
                 </a>
             </div>
             <div className='mt-3'>

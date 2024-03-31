@@ -32,9 +32,9 @@ const SidebarComponent = () => {
                         </>
                     }
                 >
-                    <CNavItem href="/products"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> List All Products</CNavItem>
-                    <CNavItem href="/newproduct"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Add New Product</CNavItem>
-                    <CNavItem href="/attributetypes"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Attributes</CNavItem>
+                    <CNavItem href="/admin/products"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> List All Products</CNavItem>
+                    <CNavItem href="/admin/newproduct"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Add New Product</CNavItem>
+                    <CNavItem href="/admin/attributetypes"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Attributes</CNavItem>
                 </CNavGroup>
                 <CNavGroup
                     toggler={
