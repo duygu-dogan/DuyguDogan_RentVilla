@@ -11,31 +11,19 @@
         <!--Spinner Start-->
         @await Component.InvokeAsync("Spinner")
         <!--Spinner End-->
-        <!-- Topbar Start -->
-         @await Component.InvokeAsync("Topbar")
-        <!-- Topbar End -->
 
         <!-- Navbar & Hero Start -->
             @await Component.InvokeAsync("Navbar")
 
     </header>
-    <div class="container-fluid position-relative p-0">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <!-- Footer Start -->
-    <div class="container-fluid footer py-5">
+    <body>
+        @RenderBody()
+    </body>
+    <footer>
+        @await Component.InvokeAsync("Booking")
         @await Component.InvokeAsync("Footer")
-    </div>
-    <!-- Footer End -->
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright text-body py-4">
         @await Component.InvokeAsync("Copyright")
-    </div>
-    </div>
-    <!-- Copyright End -->
+    </footer>
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 

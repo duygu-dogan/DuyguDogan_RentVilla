@@ -38,7 +38,7 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                     Properties = product.Properties,
                     Rating = product.Rating,
                     Status = product.Status,
-                    Reservations = product.Reservations,
+                    //Reservations = product.Reservations,
                     IsActive = product.IsActive,
                     IsDeleted = product.IsDeleted,
                     Attributes = _context.ProductAttributes
@@ -82,6 +82,18 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
             var product = await _context.Products.FindAsync(Guid.Parse(id));
             var productAddress = _context.ProductAddresses.Where(x => x.ProductId == product.Id).Include(x => x.City).Include(x => x.State).Include(x=> x.District).Include(x => x.Country).FirstOrDefault();
             var productAttributes = _context.ProductAttributes.Where(x => x.Product.Id == product.Id).Include(x => x.Attributes).Include(x => x.AttributeType).ToList();
+            var productImages = _context.ProductImageFiles.Where(x => x.Product.Any(p => p.Id == product.Id)).Include(x => x.Product).ToList();
+            List<ProductImageDTO> productImageDTOs = new();
+            foreach (var item in productImages)
+            {
+                ProductImageDTO productImageDTO = new()
+                {
+                    FileName = item.FileName,
+                    Path = item.Path
+                };
+                productImageDTOs.Add(productImageDTO);
+            }
+           
             List<ProductAttributeDTO> productAttributesDTOs = new();
             foreach (var productAttibutes in productAttributes)
             {
@@ -99,14 +111,12 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                 Description = product.Description,
                 Price = product.Price,
                 Deposit = product.Deposit,
-                //ImageUrl = product.ImageUrl,
                 MapId = product.MapId,
                 Address = product.Address,
                 ShortestRentPeriod = product.ShortestRentPeriod,
                 Properties = product.Properties,
                 Rating = product.Rating,
                 Status = product.Status,
-                Reservations = product.Reservations,
                 IsActive = product.IsActive,
                 IsDeleted = product.IsDeleted,
                 ProductAddress = new ProductAddressDTO
@@ -116,7 +126,8 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                     CityName = productAddress.City.Name,
                     DistrictName = productAddress.District.Name
                 },
-                Attributes = productAttributesDTOs
+                Attributes = productAttributesDTOs,
+                ProductImages = productImageDTOs
             };
             return productDTO;
         }

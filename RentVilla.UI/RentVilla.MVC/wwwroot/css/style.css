@@ -157,7 +157,7 @@
 .navbar-light .navbar-nav .nav-link {
     font-family: 'Roboto', sans-serif;
     position: relative;
-    padding: 20px 15px;
+    padding: 25px 15px;
     color: var(--bs-white) !important;
     font-size: 17px;
     font-weight: 400;
@@ -179,7 +179,7 @@
     color: var(--bs-white);
 }
 
-.sticky-top.navbar-light .navbar-brand h1 {
+.sticky-top.navbar-light .navbar-brand h3 {
     color: var(--bs-primary);
 }
 
@@ -200,7 +200,9 @@
     vertical-align: middle;
     margin-left: 8px;
 }
-
+.dropdown-menu {
+    left: -65px !important;
+}
 @media (min-width: 1200px) {
     .navbar .nav-item .dropdown-menu {
         display: block;
@@ -395,7 +397,7 @@
 
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
-    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/breadcrumb-bg.jpg);
+    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/2150799687.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

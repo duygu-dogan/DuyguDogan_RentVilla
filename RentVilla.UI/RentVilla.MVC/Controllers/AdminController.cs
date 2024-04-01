@@ -6,7 +6,7 @@ namespace RentVilla.MVC.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return File("~/admin/index.html", "text/html");
         }
     }
 }

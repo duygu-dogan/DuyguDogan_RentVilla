@@ -9,7 +9,6 @@ using RentVilla.Application.Repositories.RegionRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
 using RentVilla.Persistance.Contexts;
 using RentVilla.Persistence.Configs;
-using RentVilla.Persistence.Repositories;
 using RentVilla.Persistence.Repositories.AttributeCRepo;
 using RentVilla.Persistence.Repositories.FileCRepo;
 using RentVilla.Persistence.Repositories.ProductCRepo;
@@ -41,6 +40,8 @@ namespace RentVilla.Persistence
             services.AddScoped<IStateReadRepository, StateReadRepository>();
             services.AddScoped<ICityReadRepository, CityReadRepository>();
             services.AddScoped<IDistrictReadRepository, DistrictReadRepository>();
+            services.AddScoped<IProductAddressReadRepository, ProductAddressReadRepository>();
+            services.AddScoped<IProductAddressWriteRepository, ProductAddressWriteRepository>();
 
             services.AddScoped<IFileReadRepository, FileReadRepository>();
             services.AddScoped<IFileWriteRepository, FileWriteRepository>();

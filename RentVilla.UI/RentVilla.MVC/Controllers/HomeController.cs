@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RentVilla.MVC.Models;
+using RentVilla.MVC.Models.Product;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
 {
@@ -13,20 +14,18 @@ namespace RentVilla.MVC.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<ProductVM> response = new();
+            using (HttpClient httpClient = new())
+            {
+                HttpResponseMessage responseApi = await httpClient.GetAsync($"http://localhost:5006/api/products/get");
+                string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
+                response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
+            }
+            return View(response);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        
     }
 }

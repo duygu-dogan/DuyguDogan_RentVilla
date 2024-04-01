@@ -2,7 +2,7 @@
   "name": "adminpanel",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://localhost:5161/admin",
+  "homepage": "http://localhost:5161/admin",
   "dependencies": {
     "@coreui/coreui": "^4.3.2",
     "@coreui/icons": "^3.0.1",

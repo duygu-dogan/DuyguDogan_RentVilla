@@ -18,7 +18,7 @@ const ListProducts = () => {
     useEffect(() => {
         axios.get(`http://localhost:5006/api/products/get`, { params: pagination })
             .then((res) => {
-                const newItems = res.data.map(item => ({
+                const newItems = res.data.nonDeletedProducts.map(item => ({
                     id: item.id,
                     image: item.productImages[0],
                     name: item.name,

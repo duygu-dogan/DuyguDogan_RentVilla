@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using RentVilla.Application;
 using RentVilla.Application.Validators;
 using RentVilla.Infrastructure;
 using RentVilla.Infrastructure.Enums;
@@ -11,11 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 //builder.Services.AddStorage(StorageType.Local);
 //builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddStorage<AzureStorage>();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://localhost:5006", "http://localhost:5006").AllowAnyHeader().AllowAnyMethod()
+    policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5161", "https://localhost:5161").AllowAnyHeader().AllowAnyMethod()
 ));
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
