@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RentVilla.Application.Abstraction.Storage;
+using RentVilla.Application.Abstraction.Token;
 using RentVilla.Infrastructure.Enums;
 using RentVilla.Infrastructure.Services;
 using RentVilla.Infrastructure.Services.Storage;
 using RentVilla.Infrastructure.Services.Storage.Azure;
 using RentVilla.Infrastructure.Services.Storage.Local;
+using RentVilla.Infrastructure.Services.Token;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace RentVilla.Infrastructure
         public static void AddInfrastructureServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IStorageService, StorageService>();
+            serviceCollection.AddScoped<ITokenHandler, TokenHandler>();
 
         }
         public static void AddStorage<T>(this IServiceCollection serviceCollection) where T : Storage, IStorage

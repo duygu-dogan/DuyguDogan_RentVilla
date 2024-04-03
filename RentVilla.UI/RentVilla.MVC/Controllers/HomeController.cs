@@ -8,24 +8,26 @@ namespace RentVilla.MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<ProductVM> response = new();
+            string baseUrl = _configuration["API:Url"];
+            List<ProductVM>? response = new();
             using (HttpClient httpClient = new())
             {
-                HttpResponseMessage responseApi = await httpClient.GetAsync($"http://localhost:5006/api/products/get");
+                httpClient.BaseAddress = new Uri(baseUrl);
+                HttpResponseMessage responseApi = await httpClient.GetAsync("products/get");
                 string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                 response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
             }
             return View(response);
-        }
-
-        
+        }   
     }
 }

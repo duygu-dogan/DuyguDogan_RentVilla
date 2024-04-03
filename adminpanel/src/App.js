@@ -2,8 +2,6 @@ import './App.css';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import SidebarComponent from './components/SidebarComponent';
 import HeaderComponent from './components/HeaderComponent';
-import { BrowserRouter, Route, RouterProvider, Routes } from 'react-router-dom';
-import NewProduct from './components/pages/Products/NewProduct';
 import MainComponent from './components/MainComponent';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css'

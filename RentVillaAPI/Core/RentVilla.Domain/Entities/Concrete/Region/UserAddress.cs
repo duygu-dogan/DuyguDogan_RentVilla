@@ -1,4 +1,6 @@
-﻿using RentVilla.Domain.Entities.Abstract;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using RentVilla.Domain.Entities.Abstract;
+using RentVilla.Domain.Entities.Concrete.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +9,12 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Domain.Entities.Concrete.Region
 {
-    public class UserAddress : BaseEntity, IAdressEntity
+    public class UserAddress : BaseEntity
     {
-        public Country Country { get; set ; }
-        public Guid CountryId { get; set; }
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public State State { get; set; }
-        public Guid StateId { get; set; }
         public City City { get; set; }
-        public Guid CityId { get; set; }
         public District District { get; set; }
-        public Guid DistrictId { get; set; }
     }
 }

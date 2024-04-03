@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import '@coreui/coreui/dist/css/coreui.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-toastify/dist/ReactToastify.css';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ListProducts from './components/pages/Products/ListProducts';
 import NewProduct from './components/pages/Products/NewProduct';

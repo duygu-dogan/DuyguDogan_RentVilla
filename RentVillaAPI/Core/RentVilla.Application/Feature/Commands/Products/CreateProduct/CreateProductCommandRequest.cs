@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using RentVilla.Application.DTOs;
+using RentVilla.Application.DTOs.ProductDTOs;
 using RentVilla.Domain.Entities.Concrete.Region;
 using System;
 using System.Collections.Generic;

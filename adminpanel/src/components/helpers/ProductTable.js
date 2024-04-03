@@ -81,7 +81,7 @@ const ProductTable = ({ rows, onPagination }) => {
                                 </td>
                                 <td className='col-3 d-flex gap-2 justify-content-center'>
 
-                                    <FileUploadComponent id={row.id} modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl={`http://localhost:5006/api/Products/UploadProductImage/${row.id}`} />
+                                    <FileUploadComponent id={row.id} modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl={`http://localhost:5006/api/Products/UploadProductImage/?ProductId=${row.id}`} />
                                     <div>
                                         <a href={`/admin/editproduct/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></a>
                                     </div>

@@ -7,6 +7,7 @@ using RentVilla.Application.Repositories.FileRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
+using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Persistance.Contexts;
 using RentVilla.Persistence.Configs;
 using RentVilla.Persistence.Repositories.AttributeCRepo;
@@ -22,7 +23,17 @@ namespace RentVilla.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
+            services.AddIdentity<AppUser, AppRole>(options => 
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;  
+            }).AddEntityFrameworkStores<RentVillaDbContext>();
+            
             services.AddDbContext<RentVillaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString));
+
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
 

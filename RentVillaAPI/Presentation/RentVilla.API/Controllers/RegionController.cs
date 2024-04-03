@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RentVilla.Application.DTOs.RegionDTOs;
+using RentVilla.Application.Feature.Queries.Region.GetAllStates;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.RegionRepo;
 
@@ -11,18 +14,20 @@ namespace RentVilla.API.Controllers
         private readonly IDistrictReadRepository _districtReadRepository;
         private readonly IStateReadRepository _stateReadRepository;
         private readonly ICityReadRepository _cityReadRepository;
+        private readonly IMediator _mediator;
 
-        public RegionController(IDistrictReadRepository districtReadRepository, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository)
+        public RegionController(IDistrictReadRepository districtReadRepository, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IMediator mediator)
         {
             _districtReadRepository = districtReadRepository;
             _stateReadRepository = stateReadRepository;
             _cityReadRepository = cityReadRepository;
+            _mediator = mediator;
         }
         [HttpGet]
-        public IActionResult GetAllStates()
+        public async Task<IActionResult> GetAllStates([FromQuery]GetAllStatesQueryRequest getAllStatesQueryRequest)
         {
-            var states = _stateReadRepository.GetAllList();
-            return Ok(states);
+            GetAllStatesQueryResponse response = await _mediator.Send(getAllStatesQueryRequest);
+            return Ok(response.StateDTOs);
         }
         [HttpGet]
         public IActionResult GetAllDistricts(string cityId)

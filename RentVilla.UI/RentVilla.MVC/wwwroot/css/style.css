@@ -31,7 +31,7 @@
 /*** Button Start ***/
 .btn {
     font-weight: 600;
-    transition: .5s;
+    transition: 1s;
 }
 
 .btn-square {
@@ -83,9 +83,26 @@
     box-shadow: inset 300px 0 0 0 var(--bs-primary);
     color: var(--bs-light) !important;
 }
+.btn.btn-primary.btn-lg {
+    box-shadow: inset 0 0 0 0 var(--bs-primary);
+}
+
+.btn.btn-primary.btn-lg:hover {
+    box-shadow: inset 800px 0 0 0 var(--bs-light) !important;
+    color: var(--bs-primary) !important;
+}
+
+.btn.btn-light.btn-lg {
+    box-shadow: inset 0 0 0 0 var(--bs-primary);
+}
+
+.btn.btn-light.btn-lg:hover {
+    box-shadow: inset 800px 0 0 0 var(--bs-primary);
+    color: var(--bs-light) !important;
+}
 
 .btn-hover {
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 .btn-hover:hover {
@@ -403,6 +420,22 @@
     background-size: cover;
     background-attachment: fixed;
     padding: 150px 0 50px 0;
+}
+.bg-register {
+    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/2150799725.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    padding: 80px 0 50px 0;
+}
+.bg-login {
+    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/logo_make_11_06_2023_62.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 80px 0 50px 0;
 }
 
 .bg-breadcrumb .breadcrumb-item a {

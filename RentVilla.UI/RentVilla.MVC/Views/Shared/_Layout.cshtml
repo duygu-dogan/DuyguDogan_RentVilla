@@ -8,28 +8,27 @@
 </head>
 <body>
     <header>
-        <!--Spinner Start-->
         @await Component.InvokeAsync("Spinner")
-        <!--Spinner End-->
-
-        <!-- Navbar & Hero Start -->
-            @await Component.InvokeAsync("Navbar")
+        @await Component.InvokeAsync("Navbar")
 
     </header>
-    <body>
+    <main>
         @RenderBody()
-    </body>
+    </main>
     <footer>
         @await Component.InvokeAsync("Booking")
         @await Component.InvokeAsync("Footer")
         @await Component.InvokeAsync("Copyright")
+       
+
     </footer>
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-
     <!-- JavaScript Libraries -->
     @await Html.PartialAsync("_Scripts")
+    @await Component.InvokeAsync("Notyf")
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

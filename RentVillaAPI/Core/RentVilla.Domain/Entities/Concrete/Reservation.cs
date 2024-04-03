@@ -6,7 +6,8 @@ namespace RentVilla.Domain.Entities.Concrete
 {
     public class Reservation : BaseEntity
     {
-        public User User { get; set; }
+        public AppUser AppUser { get; set; }
+        public string AppUserId { get; set; }
         public ICollection<Product> Products { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

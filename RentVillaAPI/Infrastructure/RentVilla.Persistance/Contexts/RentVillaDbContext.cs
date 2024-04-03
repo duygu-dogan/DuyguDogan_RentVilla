@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Attribute;
+using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.Concrete.Region;
 
 namespace RentVilla.Persistance.Contexts
 {
-    public class RentVillaDbContext: DbContext
+    public class RentVillaDbContext: IdentityDbContext<AppUser, AppRole, string>
     {
 
         public RentVillaDbContext(DbContextOptions options):base(options)
@@ -23,7 +25,7 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<ProductAddress> ProductAddresses { get; set; }
-        public DbSet<UserAddress> UserAddresses { get; set; }
+        public DbSet<UserAddress> UserAddress { get; set; }
         public DbSet<Domain.Entities.Concrete.File> Files { get; set; }
         public DbSet<ProductImageFile> ProductImageFiles { get; set; }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

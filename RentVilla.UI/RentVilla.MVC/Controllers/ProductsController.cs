@@ -6,22 +6,34 @@ namespace RentVilla.MVC.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        public ProductsController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<IActionResult> Index()
         {
-            List<ProductVM> response = new();
+            string baseUrl = _configuration["API:Url"];
+            List<ProductVM>? response = new();
             using (HttpClient httpClient = new())
             {
-                HttpResponseMessage responseApi = await httpClient.GetAsync($"http://localhost:5006/api/products/get");
+                httpClient.BaseAddress = new Uri(baseUrl);
+                HttpResponseMessage responseApi = await httpClient.GetAsync("products/get");
                 string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                 response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
             }
             return View(response);
         }
         public async Task<IActionResult> GetById(string id)
-        {             ProductVM response = new();
-                   using (HttpClient httpClient = new())
+        {
+            string baseUrl = _configuration["API:Url"];
+            ProductVM? response = new();
+            using (HttpClient httpClient = new())
             {
-                HttpResponseMessage responseApi = await httpClient.GetAsync($"http://localhost:5006/api/products/getbyid/{id}");
+                httpClient.BaseAddress = new Uri(baseUrl);
+                HttpResponseMessage responseApi = await httpClient.GetAsync($"products/getbyid/{id}");
                 string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                 response = JsonSerializer.Deserialize<ProductVM>(contentResponseApi);
             }

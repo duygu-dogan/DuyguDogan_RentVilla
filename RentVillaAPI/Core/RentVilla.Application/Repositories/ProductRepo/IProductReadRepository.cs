@@ -1,4 +1,4 @@
-﻿using RentVilla.Application.DTOs;
+﻿using RentVilla.Application.DTOs.ProductDTOs;
 using RentVilla.Application.Repositories;
 using RentVilla.Domain.Entities.Concrete;
 using System;
