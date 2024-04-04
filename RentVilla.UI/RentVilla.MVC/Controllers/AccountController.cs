@@ -26,6 +26,7 @@ namespace RentVilla.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
+
             RegisterVM model = new();
             List<StateVM>? response = new();
             string baseUrl = _configuration["API:Url"];
@@ -106,7 +107,7 @@ namespace RentVilla.MVC.Controllers
               using (HttpClient client = new HttpClient())
               {
                     client.BaseAddress = new Uri(baseUrl);
-                    HttpResponseMessage responseApi = await client.PostAsJsonAsync("users/login", model);
+                    HttpResponseMessage responseApi = await client.PostAsJsonAsync("auth/login", model);
                 if (responseApi.IsSuccessStatusCode)
                 {
                     string contentResponseApi = await responseApi.Content.ReadAsStringAsync();

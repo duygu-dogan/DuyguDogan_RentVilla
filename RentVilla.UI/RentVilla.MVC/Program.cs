@@ -4,6 +4,7 @@ using AspNetCoreHero.ToastNotification.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Routing.Patterns;
+using RentVilla.MVC.Helpers.ErrorHandling;
 
 namespace RentVilla.MVC
 {
@@ -33,9 +34,11 @@ namespace RentVilla.MVC
 
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -1,0 +1,33 @@
+﻿
+<!-- Header Start -->
+<div class="container-fluid bg-login">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+        </h3>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Packages Start -->
+<div class="container-fluid packages py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">An Error Occured</h5>
+        </div>
+        <div class="container w-50 mt-5">
+            <hr />
+            @{
+                ErrorViewModel errorViewModel = ViewBag.errorMessages;
+                if (errorViewModel != null)
+                {
+                    <h3>Error Details</h3>
+                    <p>Path: @errorViewModel.Path</p>
+                    foreach (var message in errorViewModel.ErrorMessages)
+                    {
+                        <p>Error Message: @message</p>
+                    }
+                }
+            }
+        </div>
+
+    </div>
+</div>
