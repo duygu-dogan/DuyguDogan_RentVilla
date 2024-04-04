@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RentVilla.MVC.Models;
 
 namespace RentVilla.MVC.Helpers.ErrorHandling
@@ -13,6 +14,7 @@ namespace RentVilla.MVC.Helpers.ErrorHandling
         }
         public async Task Invoke(HttpContext context)
         {
+            
             try
             {
                 await _next(context);

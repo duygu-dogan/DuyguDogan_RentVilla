@@ -11,5 +11,6 @@ namespace RentVilla.Application.Abstraction.Token
     public interface ITokenHandler
     {
         TokenDTO CreateAccessToken(AppUser user, int minute);
+        string CreateRefreshToken();
     }
 }

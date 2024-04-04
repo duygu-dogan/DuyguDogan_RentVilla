@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.Application.Feature.Commands.ProductImages.UploadProductImages;
 using RentVilla.Application.Feature.Commands.Products.CreateProduct;

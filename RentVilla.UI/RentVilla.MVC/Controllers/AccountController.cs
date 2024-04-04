@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+using RentVilla.MVC.DTOs;
 using RentVilla.MVC.Models.Account;
 using RentVilla.MVC.Models.Address;
+using RentVilla.MVC.Services;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
 {
@@ -115,34 +114,14 @@ namespace RentVilla.MVC.Controllers
                     string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                     tokenModel = System.Text.Json.JsonSerializer.Deserialize<TokenVM>(contentResponseApi);
                     
-                    if (!string.IsNullOrEmpty(tokenModel?.Token.AccessToken) || tokenModel.Token.Expiration > DateTime.UtcNow)
+                    if (!string.IsNullOrEmpty(tokenModel?.Token.AccessToken) || tokenModel?.Token.Expiration > DateTime.UtcNow)
                     {
-                        var handler = new JsonWebTokenHandler();
-                       
-                        var jsonToken = handler.ReadToken(tokenModel?.Token.AccessToken) as JsonWebToken;
-                       
-                        var userName = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;;
-                        var role = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-                        var expireAt = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)?.Value;
-                        
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Hash, tokenModel.Token.AccessToken),
-                            new Claim(ClaimTypes.Name, userName),
-                            new Claim(ClaimTypes.Expiration, expireAt)
-                            //new Claim(ClaimTypes.Role, role)
-                        };
-                        var userIdentity = new ClaimsIdentity("Custom");
-                        userIdentity.AddClaims(claims);
+                        HttpContext.Response.Cookies.Delete("RentVilla.Cookie");
 
-                       //authProperties.IsPersistent = model.RememberMe;
-                       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), new AuthenticationProperties
-                        {
-                            ExpiresUtc = tokenModel.Token.Expiration,
-                            IsPersistent = false,
-                            AllowRefresh = false
-                        });
+                        await TokenCookieHandler(tokenModel?.Token);
+
+                        if (tokenModel.Token.RefreshToken != null)
+                        HttpContext.Response.Cookies.Append("RentVilla.Cookie_RT", tokenModel?.Token.RefreshToken);
 
                         var returnUrl = TempData["ReturnUrl"]?.ToString();
                         _notifyService.Success("You are successfully logged in. Enjoy your stay!");
@@ -177,6 +156,33 @@ namespace RentVilla.MVC.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+        [NonAction]
+        public async Task TokenCookieHandler(TokenDTO token, HttpContext context = null)
+        {
+            var handler = new JsonWebTokenHandler();
+
+            var jsonToken = handler.ReadToken(token.AccessToken) as JsonWebToken;
+
+            var userName = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value; ;
+            var role = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            var expireAt = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)?.Value;
+
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Hash, token.AccessToken),
+                    new Claim(ClaimTypes.Name, userName),
+                    new Claim(ClaimTypes.Expiration, expireAt),
+                    //new Claim(ClaimTypes.Role, role)
+                };
+            var userIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = token.Expiration,
+                IsPersistent = false,
+                AllowRefresh = true
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), authProperties);
         }
     }
 }

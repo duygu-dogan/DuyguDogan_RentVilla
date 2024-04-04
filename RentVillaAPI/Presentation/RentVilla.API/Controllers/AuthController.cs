@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.Application.Feature.Commands.AppUser.LoginUser;
+using RentVilla.Application.Feature.Commands.AppUser.RefreshTokenLogin;
 
 namespace RentVilla.API.Controllers
 {
@@ -30,6 +31,12 @@ namespace RentVilla.API.Controllers
 
                 throw new ArgumentOutOfRangeException();
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken(RefreshTokenLoginCommandRequest request)
+        {
+            RefreshTokenLoginCommandResponse response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }

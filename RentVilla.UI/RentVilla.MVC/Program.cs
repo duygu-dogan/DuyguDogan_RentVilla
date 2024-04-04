@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Routing.Patterns;
 using RentVilla.MVC.Helpers.ErrorHandling;
 using RentVilla.MVC.Helpers.TokenHandling;
+using RentVilla.MVC.Services;
 
 namespace RentVilla.MVC
 {
@@ -14,6 +15,8 @@ namespace RentVilla.MVC
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddScoped<ITokenCookieHandlerService, TokenCookieHandlerService>();
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
             

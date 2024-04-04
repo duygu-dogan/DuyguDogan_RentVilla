@@ -24,7 +24,7 @@ namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
 
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
-            var token = await _authService.LoginAsync(request.UsernameOrEmail, request.Password, 60);
+            var token = await _authService.LoginAsync(request.UsernameOrEmail, request.Password, 30);
             return new LoginUserSuccessCommandResponse
             {
                 Token = token

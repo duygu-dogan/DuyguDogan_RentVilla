@@ -64,7 +64,6 @@ namespace RentVilla.Persistence
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
-
         }
     }
 }
