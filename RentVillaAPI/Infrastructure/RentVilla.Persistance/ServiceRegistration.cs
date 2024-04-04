@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Repositories;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.FileRepo;
@@ -16,6 +17,7 @@ using RentVilla.Persistence.Repositories.ProductCRepo;
 using RentVilla.Persistence.Repositories.RegionCRepo;
 using RentVilla.Persistence.Repositories.RepoCRepo;
 using RentVilla.Persistence.Repositories.ReservationCRepo;
+using RentVilla.Persistence.Services;
 
 namespace RentVilla.Persistence
 {
@@ -31,6 +33,7 @@ namespace RentVilla.Persistence
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;  
             }).AddEntityFrameworkStores<RentVillaDbContext>();
+
             
             services.AddDbContext<RentVillaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString));
 
@@ -58,6 +61,9 @@ namespace RentVilla.Persistence
             services.AddScoped<IFileWriteRepository, FileWriteRepository>();
             services.AddScoped<IProductImageFileReadRepository, ProductImageFileReadRepository>();
             services.AddScoped<IProductImageFileWriteRepository, ProductImageFileWriteRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
 
         }
     }

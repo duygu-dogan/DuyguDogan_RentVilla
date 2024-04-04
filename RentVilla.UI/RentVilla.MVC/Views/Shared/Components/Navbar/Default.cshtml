@@ -1,4 +1,5 @@
-﻿<!-- Navbar & Hero Start -->
+﻿
+<!-- Navbar & Hero Start -->
 <div class="container-fluid position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
         <a href="" class="navbar-brand p-0">
@@ -16,21 +17,41 @@
                 <a href="/contact" class="nav-item nav-link">Contact</a>
             </div >
             <a href="" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Book Now</a>
-            <div class="navbar-nav ms-auto py-0">
-                <a href="/account/register"><small class="nav-item nav-link text-light"><i class="fa fa-user"></i></small></a>
-                <a href="/account/login"><small class="nav-item nav-link text-light px-1"><i class="fa fa-sign-in-alt"></i></small></a>
-                <div class="dropdown">
-                    <a role="button" href="#" class="nav-item nav-link dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i></small></a>
-                    <div class="dropdown-menu rounded">
-                        <a href="#" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+            <div class="navbar-nav ms-auto py-0 d-flex align-items-center justify-content-center">
+            @if(!User.Identity.IsAuthenticated)
+            {
+                    <div class="d-flex justify-content-center aling-items-center">
+                        <a asp-controller="Account" asp-action="Register"><small class="nav-item nav-link text-light"><i class="fa fa-user"></i>  Sign Up</small></a>
                     </div>
-                </div>
-            </div>
-            
+                    <div class="d-flex justify-content-center aling-items-center">
+                        <a asp-controller="Account" asp-action="Login"><small class="nav-item nav-link text-light d-flex justify-content-center aling-items-center gap-2"><i class="fa fa-sign-in-alt" style="font-size: 23px"> </i> Sign In</small></a>
+                    </div>
+            }else
+            {
+               if(User.IsInRole("Admin"))
+                {
+                    <div class="dropdown">
+                        <a role="button" href="#" class="nav-item nav-link dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i></small></a>
+                        <div class="dropdown-menu rounded">
+                            <a href="/admin" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Admin Panel</a>
+                            <a asp-controller="Account" asp-action="Settings" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
+                            <a asp-controller="Account" asp-action="Logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                        </div>
+                        </div>
+                }else
+                {                
+                    <div class="dropdown">
+                            <a role="button" href="#" class="nav-item nav-link dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i></small></a>
+                            <div class="dropdown-menu rounded">
+
+                                <a asp-controller="Account" asp-action="Profile" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> @User.Identity.Name</a>
+                                <a asp-controller="Account" asp-action="Settings" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
+                                <a asp-controller="Account" asp-action="Logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                            </div>
+                        </div>
+                    }
+                }
+         </div>    
         </div>
     </nav>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

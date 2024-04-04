@@ -5,12 +5,6 @@ using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Domain.Entities.Concrete.Region;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Commands.Products.CreateProduct
 {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Commands.Products.CreateProduct
 {
-    public class CreateProductCommandRequest:IRequest<CreateProductCommandResponse>
+    public class CreateProductCommandRequest : IRequest<CreateProductCommandResponse>
     {
         public string Name { get; set; }
         public string Description { get; set; }

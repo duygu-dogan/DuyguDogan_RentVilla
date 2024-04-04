@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using RentVilla.Application.RequestParameters;
+using RentVilla.Application.modelParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -17,9 +17,11 @@
         <div class="packages-carousel owl-carousel">
             @foreach(var p in Model)
             {
+                if(p.ProductImages.Count > 0)
+                {
                 <div class="packages-item" style="height: 600px">
                     <div class="packages-img">
-                        <img src="@p.ProductImages[0].Path" class="img-fluid w-100 rounded-top" alt="Image" style="height: 300px">
+                        <img src="@p.ProductImages[0].Path?" class="img-fluid w-100 rounded-top" alt="Image" style="height: 300px">
                         <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
                             <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt me-2"></i>@p.ProductAddress.DistrictName - @p.ProductAddress.CityName</small>
                             <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt me-2"></i>@p.ShortestRentPeriod Days</small>
@@ -54,9 +56,8 @@
                         </div>
                     </div>
                 </div>
+                }
             }
-            
-            
         </div>
     </div>
 </div>

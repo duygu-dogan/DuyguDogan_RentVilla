@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Commands.Products.DeleteProduct
 {
-    public class DeleteProductCommandRequest: IRequest<DeleteProductCommandResponse>
+    public class DeleteProductCommandRequest : IRequest<DeleteProductCommandResponse>
     {
         public string ProductId { get; set; }
     }

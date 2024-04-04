@@ -24,7 +24,7 @@ namespace RentVilla.API.Controllers
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllStates([FromQuery]GetAllStatesQueryRequest getAllStatesQueryRequest)
+        public async Task<IActionResult> GetAllStates([FromQuery] GetAllStatesQueryRequest getAllStatesQueryRequest)
         {
             GetAllStatesQueryResponse response = await _mediator.Send(getAllStatesQueryRequest);
             return Ok(response.StateDTOs);

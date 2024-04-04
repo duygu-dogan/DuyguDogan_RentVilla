@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Commands.Products.UpdateProduct
 {
-    public class UpdateProductCommandRequest: IRequest<UpdateProductCommandResponse>
+    public class UpdateProductCommandRequest : IRequest<UpdateProductCommandResponse>
     {
         public ProductDTO Product { get; set; }
     }

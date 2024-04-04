@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Abstraction.Token;
 using RentVilla.Application.DTOs.TokenDTOs;
 using RentVilla.Application.Exceptions;
@@ -14,38 +15,20 @@ namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
     {
-        private readonly UserManager<Domain.Entities.Concrete.Identity.AppUser> _userManager;
-        private SignInManager<Domain.Entities.Concrete.Identity.AppUser> _signInManager;
-        private readonly ITokenHandler _tokenHandler;
+        private readonly IAuthService _authService;
 
-        public LoginUserCommandHandler(UserManager<Domain.Entities.Concrete.Identity.AppUser> userManager, SignInManager<Domain.Entities.Concrete.Identity.AppUser> signInManager, ITokenHandler tokenHandler)
+        public LoginUserCommandHandler(IAuthService authService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenHandler = tokenHandler;
+            _authService = authService;
         }
 
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Concrete.Identity.AppUser user = await _userManager.FindByNameAsync(request.UsernameOrEmail);
-            if(user == null)
+            var token = await _authService.LoginAsync(request.UsernameOrEmail, request.Password, 60);
+            return new LoginUserSuccessCommandResponse
             {
-                user = await _userManager.FindByEmailAsync(request.UsernameOrEmail);
-            }
-            if(user == null)
-            {
-                throw new NotFoundUserException();
-            }
-            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-            if(result.Succeeded)
-                {
-                TokenDTO token = _tokenHandler.CreateAccessToken("", "", 15);
-                return new LoginUserSuccessCommandResponse
-                {
-                    Token = token
-                };
-                }
-            throw new AuthenticationErrorException();
+                Token = token
+            };
         }
     }
 }

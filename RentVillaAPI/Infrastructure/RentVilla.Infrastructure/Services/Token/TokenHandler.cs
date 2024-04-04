@@ -2,10 +2,12 @@
 using Microsoft.IdentityModel.Tokens;
 using RentVilla.Application.Abstraction.Token;
 using RentVilla.Application.DTOs.TokenDTOs;
+using RentVilla.Domain.Entities.Concrete.Identity;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,17 +22,24 @@ namespace RentVilla.Infrastructure.Services.Token
             _configuration = configuration;
         }
 
-        public TokenDTO CreateAccessToken(string email, string role, int minute)
+        public TokenDTO CreateAccessToken(AppUser user, int minute)
         {
             TokenDTO token = new TokenDTO();
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["Token:SigningKey"]));
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
+            };
 
             token.Expiration = DateTime.UtcNow.AddMinutes(minute);
             JwtSecurityToken securityToken = new(
                 audience: _configuration["Token:Audience"],
                 issuer: _configuration["Token:Issuer"],
                 expires: token.Expiration,
+                claims: claims,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials);
 

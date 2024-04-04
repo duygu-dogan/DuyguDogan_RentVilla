@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Application.RequestParameters
+namespace RentVilla.Application.modelParameters
 {
     public record Pagination
     {

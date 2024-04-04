@@ -37,7 +37,7 @@ namespace RentVilla.API.Controllers
             return Ok(response);
         }
         [HttpGet]
-        public async Task<IActionResult> GetProductImages([FromQuery]GetProductImagesQueryRequest request)
+        public async Task<IActionResult> GetProductImages([FromQuery] GetProductImagesQueryRequest request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
@@ -68,7 +68,7 @@ namespace RentVilla.API.Controllers
 
         //Test edilecek
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]UpdateProductCommandRequest updateProductCommandRequest)
+        public async Task<IActionResult> Update([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
             await _mediator.Send(updateProductCommandRequest);
             return Ok();

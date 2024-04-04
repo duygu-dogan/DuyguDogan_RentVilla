@@ -1,14 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RentVilla.Application.Feature.Commands.AppUser.AddUser;
+using RentVilla.Application.Feature.Commands.AppUser.CreateUser;
 using RentVilla.Application.Feature.Commands.AppUser.LoginUser;
 
 namespace RentVilla.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Admin")]
+    //[Authorize(AuthenticationSchemes = "Admin")]
     public class UsersController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -19,10 +19,10 @@ namespace RentVilla.API.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> AddUser(AddUserCommandRequest addUserCommandRequest)
+        public async Task<IActionResult> CreateUser(CreateUserCommandRequest createUserCommandRequest)
         {
-            addUserCommandRequest.BirthDate = addUserCommandRequest.BirthDate.ToUniversalTime();
-            AddUserCommandResponse response = await _mediator.Send(addUserCommandRequest);
+            createUserCommandRequest.BirthDate = createUserCommandRequest.BirthDate.ToUniversalTime();
+            CreateUserCommandResponse response = await _mediator.Send(createUserCommandRequest);
             return Ok(response);
         }
         [HttpPost]

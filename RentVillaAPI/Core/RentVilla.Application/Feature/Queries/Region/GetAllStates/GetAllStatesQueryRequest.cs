@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Queries.Region.GetAllStates
 {
-    public class GetAllStatesQueryRequest:IRequest<GetAllStatesQueryResponse>
+    public class GetAllStatesQueryRequest : IRequest<GetAllStatesQueryResponse>
     {
     }
 }

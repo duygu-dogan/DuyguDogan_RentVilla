@@ -1,13 +1,13 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.JSInterop;
-using Newtonsoft.Json.Linq;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Newtonsoft.Json;
 using RentVilla.MVC.Models.Account;
 using RentVilla.MVC.Models.Address;
-using System.Net.Http;
-using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
@@ -34,7 +34,7 @@ namespace RentVilla.MVC.Controllers
                 httpClient.BaseAddress = new Uri(baseUrl);
                 HttpResponseMessage responseApi = await httpClient.GetAsync("Region/GetAllStates");
                 string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
-                response = JsonSerializer.Deserialize<List<StateVM>>(contentResponseApi);
+                response = System.Text.Json.JsonSerializer.Deserialize<List<StateVM>>(contentResponseApi);
             }
             model.UserAddress = new UserAddressVM()
             {
@@ -74,7 +74,7 @@ namespace RentVilla.MVC.Controllers
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(baseUrl);
-                HttpResponseMessage responseApi = httpClient.PostAsJsonAsync("users/adduser", postRegisterVM
+                HttpResponseMessage responseApi = httpClient.PostAsJsonAsync("users/createuser", postRegisterVM
                     ).Result;
                 if (responseApi.IsSuccessStatusCode)
                 {
@@ -89,32 +89,80 @@ namespace RentVilla.MVC.Controllers
             }
         }
                 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            if(returnUrl != null)
+            {
+                TempData["ReturnUrl"] = returnUrl;
+            }
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
             string baseUrl = _configuration["API:Url"];
             TokenVM? tokenModel = new();
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseUrl);
-                HttpResponseMessage responseApi = await client.PostAsJsonAsync("users/login", model);
-                string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
-                tokenModel = JsonSerializer.Deserialize<TokenVM>(contentResponseApi);
-                if (tokenModel.Token.AccessToken != null)
+              using (HttpClient client = new HttpClient())
+              {
+                    client.BaseAddress = new Uri(baseUrl);
+                    HttpResponseMessage responseApi = await client.PostAsJsonAsync("users/login", model);
+                if (responseApi.IsSuccessStatusCode)
                 {
-                    _notifyService.Success("You are successfully logged in. Enjoy your stay!");
-                    return RedirectToAction("Index", "Home");
+                    string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
+                    tokenModel = System.Text.Json.JsonSerializer.Deserialize<TokenVM>(contentResponseApi);
+                    if (!string.IsNullOrEmpty(tokenModel?.Token.AccessToken) || tokenModel.Token.Expiration < DateTime.UtcNow)
+                    {
+                        var handler = new JsonWebTokenHandler();
+                        var jsonToken = handler.ReadToken(tokenModel?.Token.AccessToken) as JsonWebToken;
+                        var userName = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;;
+                        var role = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                        
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Hash, tokenModel.Token.AccessToken),
+                            new Claim(ClaimTypes.Name, userName),
+                            //new Claim(ClaimTypes.Role, role)
+                        };
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var authProperties = new AuthenticationProperties();
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                        var returnUrl = TempData["ReturnUrl"]?.ToString();
+                        _notifyService.Success("You are successfully logged in. Enjoy your stay!");
+                        if (!String.IsNullOrEmpty(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        _notifyService.Error("An error occurred while logging in. Please try again.");
+                        return View();
+                    }
+                }
+                else if (responseApi.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    _notifyService.Error("Username/email or password is wrong!");
+                    return View();
                 }
                 else
-                {
-                    _notifyService.Error("An error occurred while logging in. Please try again.");
-                    return RedirectToAction("Login");
-                }
-            }
+                    return View();
+               }
+        }
+        public async Task<IActionResult> Logout()
+        {
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Response.Cookies.Delete("RentVilla.Cookie");
+            TempData["ReturnUrl"] = null;
+            _notifyService.Success("You are successfully logged out. See you soon!");
+            return Redirect("~/");
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

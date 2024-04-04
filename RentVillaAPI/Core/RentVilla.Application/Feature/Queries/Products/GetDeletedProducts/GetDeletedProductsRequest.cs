@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.Feature.Queries.Products.GetDeletedProducts
 {
-    public class GetDeletedProductsRequest: IRequest<GetDeletedProductsResponse>
+    public class GetDeletedProductsRequest : IRequest<GetDeletedProductsResponse>
     {
     }
 }
