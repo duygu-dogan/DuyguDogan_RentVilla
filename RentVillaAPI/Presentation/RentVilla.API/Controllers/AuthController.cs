@@ -19,7 +19,6 @@ namespace RentVilla.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
-            throw new ArgumentOutOfRangeException();
 
             try
             {

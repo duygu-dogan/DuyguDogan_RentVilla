@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RentVilla.MVC.Models.Account;
 using RentVilla.MVC.Models.Address;
@@ -103,31 +104,45 @@ namespace RentVilla.MVC.Controllers
         public async Task<IActionResult> Login(LoginVM model)
         {
             string baseUrl = _configuration["API:Url"];
-            TokenVM? tokenModel = new();
+              TokenVM? tokenModel = new();
+            if (ModelState.IsValid)
+            { 
               using (HttpClient client = new HttpClient())
               {
                     client.BaseAddress = new Uri(baseUrl);
                     HttpResponseMessage responseApi = await client.PostAsJsonAsync("auth/login", model);
-                if (responseApi.IsSuccessStatusCode)
-                {
+               
                     string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                     tokenModel = System.Text.Json.JsonSerializer.Deserialize<TokenVM>(contentResponseApi);
-                    if (!string.IsNullOrEmpty(tokenModel?.Token.AccessToken) || tokenModel.Token.Expiration < DateTime.UtcNow)
+                    
+                    if (!string.IsNullOrEmpty(tokenModel?.Token.AccessToken) || tokenModel.Token.Expiration > DateTime.UtcNow)
                     {
                         var handler = new JsonWebTokenHandler();
+                       
                         var jsonToken = handler.ReadToken(tokenModel?.Token.AccessToken) as JsonWebToken;
+                       
                         var userName = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;;
                         var role = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                        var expireAt = jsonToken?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)?.Value;
                         
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Hash, tokenModel.Token.AccessToken),
                             new Claim(ClaimTypes.Name, userName),
+                            new Claim(ClaimTypes.Expiration, expireAt)
                             //new Claim(ClaimTypes.Role, role)
                         };
-                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var authProperties = new AuthenticationProperties();
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        var userIdentity = new ClaimsIdentity("Custom");
+                        userIdentity.AddClaims(claims);
+
+                       //authProperties.IsPersistent = model.RememberMe;
+                       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), new AuthenticationProperties
+                        {
+                            ExpiresUtc = tokenModel.Token.Expiration,
+                            IsPersistent = false,
+                            AllowRefresh = false
+                        });
 
                         var returnUrl = TempData["ReturnUrl"]?.ToString();
                         _notifyService.Success("You are successfully logged in. Enjoy your stay!");
@@ -143,14 +158,12 @@ namespace RentVilla.MVC.Controllers
                         return View();
                     }
                 }
-                else if (responseApi.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                {
-                    _notifyService.Error("Username/email or password is wrong!");
-                    return View();
-                }
-                else
-                    return View();
-               }
+            }
+            else
+            {
+                _notifyService.Error("An error occurred while logging in. Please try again.");
+                return View();
+            }
         }
         public async Task<IActionResult> Logout()
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Routing.Patterns;
 using RentVilla.MVC.Helpers.ErrorHandling;
+using RentVilla.MVC.Helpers.TokenHandling;
 
 namespace RentVilla.MVC
 {
@@ -38,8 +39,6 @@ namespace RentVilla.MVC
                 app.UseHsts();
             }
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -47,6 +46,9 @@ namespace RentVilla.MVC
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<TokenExpirationValidationMiddleware>();
 
             app.MapControllerRoute(
                 name: "default",
