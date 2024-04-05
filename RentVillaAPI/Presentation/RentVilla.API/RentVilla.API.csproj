@@ -31,9 +31,11 @@
     <ProjectReference Include="..\..\Core\RentVilla.Application\RentVilla.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Infrastructure\RentVilla.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Persistance\RentVilla.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RentVilla.SignalR\RentVilla.SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

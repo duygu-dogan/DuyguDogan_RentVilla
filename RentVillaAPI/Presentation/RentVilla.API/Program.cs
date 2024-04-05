@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Tokens;
 using RentVilla.API.Configurations.ColumnWriters;
+using RentVilla.API.Extensions;
 using RentVilla.Application;
 using RentVilla.Application.Validators;
 using RentVilla.Infrastructure;
 using RentVilla.Infrastructure.Filters;
 using RentVilla.Infrastructure.Services.Storage.Azure;
 using RentVilla.Persistence;
+using RentVilla.SignalR;
+using RentVilla.SignalR.Hubs;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
@@ -21,6 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddSignalRServices();
 //builder.Services.AddStorage(StorageType.Local);
 //builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddStorage<AzureStorage>();
@@ -91,6 +95,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 
 app.UseStaticFiles();
 
@@ -111,5 +116,6 @@ app.Use(async (context, next) =>
 });
 
 app.MapControllers();
+app.MapHubs();
 
 app.Run();
