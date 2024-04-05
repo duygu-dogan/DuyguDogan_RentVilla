@@ -1,9 +1,12 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Abstraction.Token;
+using RentVilla.Application.DTOs.AuthDTOs;
 using RentVilla.Application.DTOs.TokenDTOs;
+using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Exceptions;
 using RentVilla.Domain.Entities.Concrete.Identity;
 
@@ -40,6 +43,7 @@ namespace RentVilla.Persistence.Services
             if (result.Succeeded)
             {
                 TokenDTO token = _tokenHandler.CreateAccessToken(user, accessTokenLifeTime);
+                
                 await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 30);
                 return token;
             }

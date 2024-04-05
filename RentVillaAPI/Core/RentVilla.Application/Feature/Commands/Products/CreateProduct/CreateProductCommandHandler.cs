@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
@@ -11,14 +12,14 @@ namespace RentVilla.Application.Feature.Commands.Products.CreateProduct
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandRequest, CreateProductCommandResponse>
     {
         private readonly IProductWriteRepository _productWriteRepository;
-        private readonly IProductAddressReadRepository _productAddressReadRepository;
         private readonly IAttributeReadRepository _attributeReadRepository;
+        readonly ILogger<CreateProductCommandHandler> _logger;
 
-        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository, IAttributeReadRepository attributeReadRepository, IProductAddressReadRepository productAddressReadRepository)
+        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository, IAttributeReadRepository attributeReadRepository, ILogger<CreateProductCommandHandler> logger)
         {
             _productWriteRepository = productWriteRepository;
-            _productAddressReadRepository = productAddressReadRepository;
             _attributeReadRepository = attributeReadRepository;
+            _logger = logger;
         }
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
@@ -55,6 +56,7 @@ namespace RentVilla.Application.Feature.Commands.Products.CreateProduct
                 ProductAddress = productAddress
             });
             await _productWriteRepository.SaveAsync();
+            _logger.LogInformation("Product created successfully");
             return new();
         }
     }

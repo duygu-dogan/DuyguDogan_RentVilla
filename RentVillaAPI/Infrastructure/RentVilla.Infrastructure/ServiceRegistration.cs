@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RentVilla.Application.Abstraction.Storage;
 using RentVilla.Application.Abstraction.Token;
+using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Infrastructure.Enums;
 using RentVilla.Infrastructure.Services;
 using RentVilla.Infrastructure.Services.Storage;

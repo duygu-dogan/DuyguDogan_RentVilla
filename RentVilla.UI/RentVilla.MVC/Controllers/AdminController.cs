@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RentVilla.MVC.Controllers
 {
-    //[Authorize(Roles = "Admin")]
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
+    //[Authorize]
     public class AdminController : Controller
     {
         public IActionResult Index()

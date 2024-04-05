@@ -3,6 +3,7 @@ using AspNetCoreHero.ToastNotification.Extensions;
 using AspNetCoreHero.ToastNotification.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing.Patterns;
 using RentVilla.MVC.Helpers.ErrorHandling;
 using RentVilla.MVC.Helpers.TokenHandling;
@@ -33,6 +34,7 @@ namespace RentVilla.MVC
                         SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
                     };
                 });
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
@@ -44,14 +46,19 @@ namespace RentVilla.MVC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMiddleware<TokenExpirationValidationMiddleware>();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

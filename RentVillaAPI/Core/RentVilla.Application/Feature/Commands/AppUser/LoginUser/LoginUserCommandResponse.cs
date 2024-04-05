@@ -1,9 +1,6 @@
-﻿using RentVilla.Application.DTOs.TokenDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RentVilla.Application.DTOs.AuthDTOs;
+using RentVilla.Application.DTOs.TokenDTOs;
+using RentVilla.Application.DTOs.UserDTOs;
 
 namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
 {
@@ -13,6 +10,7 @@ namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
     public class LoginUserSuccessCommandResponse: LoginUserCommandResponse
     {
         public TokenDTO Token { get; set; }
+        public LoginUserResponseDTO UserData { get; set; }
     }
     public class LoginUserFailCommandResponse: LoginUserCommandResponse
     {

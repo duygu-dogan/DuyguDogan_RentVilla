@@ -22,6 +22,9 @@ namespace RentVilla.Persistence.Mappings
             CreateMap<AppUser, CreateUserDTO>()
                 .ForMember(dto => dto.UserAddress, options=>
                 options.MapFrom(au => au.UserAddress)).ReverseMap();
+            CreateMap<AppUser, LoginUserResponseDTO>()
+                .ForMember(dto => dto.UserAddress, options =>
+                options.MapFrom(au => au.UserAddress)).ReverseMap();
         }
     }
 }
