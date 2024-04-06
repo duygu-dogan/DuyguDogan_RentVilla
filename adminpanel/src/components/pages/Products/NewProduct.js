@@ -58,6 +58,8 @@ const NewProduct = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
+        setValidated(true);
+        toast.dismiss();
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault();
@@ -80,14 +82,12 @@ const NewProduct = () => {
             attributeIDs: selectedAttributes.map(attribute => attribute.value)
         })
             .then((res) => {
-                console.log(res);
                 toast('Product added successfully', { type: 'success' })
             })
             .catch((err) => {
                 console.log(err);
                 toast('An error occurred while adding product.', { type: 'error' });
             });
-        setValidated(true);
     }
 
     return (
@@ -136,24 +136,24 @@ const NewProduct = () => {
                     <CFormInput id="inputMapId" label="MapId" />
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputRegion" label="Region" onChange={handleStateChange}>
-                        <option>Choose...</option>
+                    <CFormSelect id="inputRegion" label="Region" onChange={handleStateChange} required>
+                        {/* <option>Choose...</option> */}
                         {States.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </CFormSelect>
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputCity" label="City" onChange={handleCityChange}>
-                        <option>Choose...</option>
+                    <CFormSelect id="inputCity" label="City" onChange={handleCityChange} required>
+                        {/* <option>Choose...</option> */}
                         {Cities.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </CFormSelect>
                 </CCol>
                 <CCol md={4}>
-                    <CFormSelect id="inputDistrict" label="District" onChange={handleDistrictChange}>
-                        <option>Choose...</option>
+                    <CFormSelect id="inputDistrict" label="District" onChange={handleDistrictChange} required>
+                        {/* <option>Choose...</option> */}
                         {Districts.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}

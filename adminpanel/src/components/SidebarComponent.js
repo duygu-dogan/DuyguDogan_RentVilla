@@ -23,7 +23,7 @@ const SidebarComponent = () => {
             </CSidebarHeader>
             <CSidebarNav>
                 <CNavTitle>Admin Panel</CNavTitle>
-                <CNavItem href="/"><CIcon customClassName="nav-icon" icon={cilSpeedometer} /> Dashboard</CNavItem>
+                <CNavItem href="/admin"><CIcon customClassName="nav-icon" icon={cilSpeedometer} /> Dashboard</CNavItem>
 
                 <CNavGroup
                     toggler={

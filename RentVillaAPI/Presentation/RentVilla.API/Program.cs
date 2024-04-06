@@ -30,8 +30,7 @@ builder.Services.AddSignalRServices();
 builder.Services.AddStorage<AzureStorage>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5161", "https://localhost:5161", "http://localhost:7246", "https://localhost:7246", "http://localhost:5006", "https://localhost:5006", "https://localhost:7084", "http://localhost:7084").AllowAnyHeader().AllowAnyMethod()
-));
+    policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5161", "https://localhost:5161", "http://localhost:7246", "https://localhost:7246", "http://localhost:5006", "https://localhost:5006", "https://localhost:7084", "http://localhost:7084").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 Logger log = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt")
