@@ -20,10 +20,9 @@ namespace RentVilla.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
-
             try
             {
-                LoginUserCommandResponse response = await _mediator.Send(loginUserCommandRequest);
+                var response = await _mediator.Send(loginUserCommandRequest);
                 return Ok(response);
             }
             catch (Exception ex)

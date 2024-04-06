@@ -4,6 +4,8 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.MVC.Models.Account;
 using RentVilla.MVC.Services;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using RentVilla.MVC.DTOs;
 
 namespace RentVilla.MVC.Helpers.TokenHandling
 {
@@ -18,64 +20,58 @@ namespace RentVilla.MVC.Helpers.TokenHandling
             _configuration = configuration;
         }
 
-        public async Task Invoke(HttpContext context, ITokenCookieHandlerService tokenCookieHandlerService)
+        public async Task Invoke(HttpContext context, ITokenCookieHandlerService tokenCookieHandlerService, INotyfService notyfService)
         {
-            if (context.User.Identity.IsAuthenticated)
+            if (!context.User.Identity.IsAuthenticated && context.Request.Cookies.ContainsKey("RentVilla.Cookie_RT"))
             {
-                var claims = context.User.Claims.ToList();
-                var expiresAtClaim = claims.Where(x => x.Type.Contains("expiration")).FirstOrDefault();
-                if (expiresAtClaim != null && DateTime.TryParse(expiresAtClaim.Value, out DateTime expiresAt))
-                {
-                    if (expiresAt <= DateTime.UtcNow)
-                    {
-                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                        context.Response.Redirect("/Account/Login");
-                        return;
-                    }
-                }
+                await RefreshToken(context, tokenCookieHandlerService, notyfService);
+                //await _next(context);
             }
-            else if (context.Response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            else
             {
-                await RefreshToken(context, tokenCookieHandlerService);
-                return;
+                await _next(context);
             }
-
-            await _next(context);
         }
         [HttpPost]
-        public async Task RefreshToken(HttpContext context, ITokenCookieHandlerService tokenCookieHandlerService)
+        public async Task RefreshToken(HttpContext context, ITokenCookieHandlerService tokenService, INotyfService notyfService)
         {
-            string refreshToken = context.Request.Cookies["RentVilla.Cookies_RT"];
-            if (string.IsNullOrEmpty(refreshToken))
-            {
-                context.Response.Redirect("/Account/RefreshTokenLogin");
-                return;
-            }
-            string returnUrl = context.Request.Path;
-
+            
+            string refreshToken = context.Request.Cookies["RentVilla.Cookie_RT"];
             string baseUrl = _configuration["API:Url"];
-            TokenVM newToken = new();
-
-            using (HttpClient client = new HttpClient())
+            string returnUrl = context.Request.Path;
+            LoginResponseVM newToken = new();
+            if (!string.IsNullOrEmpty(refreshToken))
             {
-
-                client.BaseAddress = new Uri(baseUrl);
-                HttpResponseMessage responseApi = await client.PostAsJsonAsync("auth/refreshToken", refreshToken);
-                if (responseApi.IsSuccessStatusCode)
+                RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO { RefreshToken = refreshToken };
+                using (HttpClient client = new HttpClient())
                 {
-                    string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
-                    newToken = System.Text.Json.JsonSerializer.Deserialize<TokenVM>(contentResponseApi);
-                    if (newToken.Token.RefreshToken != null)
+                    client.BaseAddress = new Uri(baseUrl);
+                    HttpResponseMessage responseApi = await client.PostAsJsonAsync("auth/refreshToken", refreshTokenDTO);
+                    if (responseApi.IsSuccessStatusCode)
                     {
-                        await tokenCookieHandlerService.TokenCookieHandler(newToken.Token, context);
-                        context.Response.Cookies.Append("RentVilla.Cookies_RT", newToken.Token.RefreshToken);
-                        context.Response.Redirect(returnUrl);
+                        string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
+                        newToken = System.Text.Json.JsonSerializer.Deserialize<LoginResponseVM>(contentResponseApi);
+                        if (newToken.Token != null)
+                        {
+                            await tokenService.TokenCookieHandler(newToken, context);
+                        }
+                        else
+                        {
+                            notyfService.Information("Your session has expired. Please log in again.");
+                            context.Response.Redirect("/Account/Login");
+                        }
                     }
                     else
                     {
+                        notyfService.Information("Your session has expired. Please log in again.");
                         context.Response.Redirect("/Account/Login");
                     }
                 }
+            }
+            else
+            {
+                notyfService.Information("Your session has expired. Please log in again.");
+                context.Response.Redirect("/Account/Login");
             }
         }
     }

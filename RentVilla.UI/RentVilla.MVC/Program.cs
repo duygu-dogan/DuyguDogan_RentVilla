@@ -24,7 +24,7 @@ namespace RentVilla.MVC
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Account/Login";
+                    //options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                     options.Cookie = new Microsoft.AspNetCore.Http.CookieBuilder
@@ -33,6 +33,7 @@ namespace RentVilla.MVC
                         Name = "RentVilla.Cookie",
                         SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
                     };
+
                 });
             builder.Services.AddHttpContextAccessor();
 
@@ -54,11 +55,11 @@ namespace RentVilla.MVC
 
             app.UseRouting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseMiddleware<TokenExpirationValidationMiddleware>();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<TokenExpirationValidationMiddleware>();
 
             app.MapControllerRoute(
                 name: "default",

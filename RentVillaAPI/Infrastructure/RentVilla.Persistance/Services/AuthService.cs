@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Services;
@@ -27,24 +28,14 @@ namespace RentVilla.Persistence.Services
             _userService = userService;
         }
 
-        public async Task<TokenDTO> LoginAsync(string usernameOrEmail, string password, int accessTokenLifeTime)
+        public async Task<TokenDTO> LoginAsync(AppUser user, string password, int accessTokenLifeTime)
         {
-            AppUser user = await _userManager.FindByNameAsync(usernameOrEmail);
-            if (user == null)
-            {
-                user = await _userManager.FindByEmailAsync(usernameOrEmail);
-            }
-            if (user == null)
-            {
-                throw new NotFoundUserException();
-            }
             SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
             if (result.Succeeded)
             {
                 TokenDTO token = _tokenHandler.CreateAccessToken(user, accessTokenLifeTime);
-                
-                await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 30);
+                await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, accessTokenLifeTime);
                 return token;
             }
             else

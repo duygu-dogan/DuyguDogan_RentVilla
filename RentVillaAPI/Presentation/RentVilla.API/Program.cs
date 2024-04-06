@@ -72,10 +72,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new()
         {
-            ValidateAudience = true, //Kimin/hangi origin/sitenin kullanabileceğini belirler
-            ValidateIssuer = true, //Oluşturulacak token'ı kimin dağıttığını ifade eder
-            ValidateLifetime = true, //Token'ın ne kadar süre geçerli olduğunu belirler
-            ValidateIssuerSigningKey = true, //Token'ın hangi key ile oluşturulduğunu belirler, security key verisinin doğrulanmasıdır
+            ValidateAudience = true, 
+            ValidateIssuer = true, 
+            ValidateLifetime = true, 
+            ValidateIssuerSigningKey = true, 
 
             ValidAudience = builder.Configuration["Token:Audience"],
             ValidIssuer = builder.Configuration["Token:Issuer"],
@@ -83,7 +83,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             LifetimeValidator = (notBefore, expires, securityToken, valParams) => expires != null ? expires > DateTime.UtcNow : false,
 
             NameClaimType = ClaimTypes.Name
-
         };
         
     });

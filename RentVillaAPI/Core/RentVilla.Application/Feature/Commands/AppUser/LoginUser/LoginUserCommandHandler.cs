@@ -35,8 +35,8 @@ namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
             }
             LoginUserResponseDTO loginUser = _mapper.Map<LoginUserResponseDTO>(user);
             
-            TokenDTO token = await _authService.LoginAsync(request.UsernameOrEmail, request.Password, 30);
-            return new LoginUserSuccessCommandResponse
+            TokenDTO token = await _authService.LoginAsync(user, request.Password, 30);
+            return new LoginUserCommandResponse
             {
                 Token = token,
                 UserData = loginUser

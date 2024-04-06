@@ -16,11 +16,13 @@ namespace RentVilla.MVC.Controllers
     {
         public INotyfService _notifyService { get; }
         private readonly IConfiguration _configuration;
+        private readonly ITokenCookieHandlerService _tokenService;
 
-        public AccountController(INotyfService notifyService, IConfiguration configuration)
+        public AccountController(INotyfService notifyService, IConfiguration configuration, ITokenCookieHandlerService tokenService)
         {
             _notifyService = notifyService;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         [HttpGet]
@@ -116,10 +118,7 @@ namespace RentVilla.MVC.Controllers
                     
                     if (!string.IsNullOrEmpty(loginResponseModel?.Token.AccessToken) || loginResponseModel?.Token.Expiration > DateTime.UtcNow)
                     {
-                        await TokenCookieHandler(loginResponseModel);
-
-                        if (loginResponseModel.Token.RefreshToken != null)
-                        HttpContext.Response.Cookies.Append("RentVilla.Cookie_RT", loginResponseModel?.Token.RefreshToken);
+                        await _tokenService.TokenCookieHandler(loginResponseModel, HttpContext);
 
                         var returnUrl = TempData["ReturnUrl"]?.ToString();
                         _notifyService.Success("You are successfully logged in. Enjoy your stay!");
@@ -155,30 +154,6 @@ namespace RentVilla.MVC.Controllers
         {
             return View();
         }
-        [NonAction]
-        public async Task TokenCookieHandler(LoginResponseVM model)
-        {
-            
-            var handler = new JsonWebTokenHandler();
 
-            var jsonToken = handler.ReadToken(model.Token.AccessToken) as JsonWebToken;
-
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Hash, model.Token.AccessToken),
-                    new Claim(ClaimTypes.Name, model.UserData.UserName),
-                    new Claim(ClaimTypes.Expiration, model.Token.Expiration.ToString()),
-                    new Claim("RefreshToken", model.Token.RefreshToken.ToString()),
-                    new Claim(ClaimTypes.Role, "Administrator")
-                };
-            var userIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = model.Token.Expiration,
-                IsPersistent = true,
-                AllowRefresh = true
-            };
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(userIdentity), authProperties);
-        }
     }
 }
