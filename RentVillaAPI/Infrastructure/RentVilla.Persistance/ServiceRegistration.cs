@@ -61,6 +61,8 @@ namespace RentVilla.Persistence
             services.AddScoped<IFileWriteRepository, FileWriteRepository>();
             services.AddScoped<IProductImageFileReadRepository, ProductImageFileReadRepository>();
             services.AddScoped<IProductImageFileWriteRepository, ProductImageFileWriteRepository>();
+            services.AddScoped<IStateImageFileWriteRepository, StateImageFileWriteRepository>();
+            services.AddScoped<IStateImageFileReadRepository, StateImageFileReadRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();

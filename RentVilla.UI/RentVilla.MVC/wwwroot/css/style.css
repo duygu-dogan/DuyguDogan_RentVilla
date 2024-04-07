@@ -527,13 +527,11 @@
 .destination .tab-class .nav-item {
     padding: 0 0 20px 0;
 }
-.destination .tab-class .nav-item a.active {
-    background: var(--bs-primary) !important;
-}
-
-.destination .tab-class .nav-item a.active span {
-    color: var(--bs-white) !important;
-}
+    .destination .tab-class .nav-item a:hover {
+        background: var(--bs-primary) !important;
+        color: var(--bs-white) !important;
+       transition: 0.5s
+    }
 
 .destination .tab-class .tab-content .destination-img:hover .search-icon {
     background: rgba(19, 53, 123, 0.4);

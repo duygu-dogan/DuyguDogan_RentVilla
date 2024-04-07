@@ -73,7 +73,7 @@ const SidebarComponent = () => {
                         </>
                     }
                 >
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
+                    <CNavItem href="/admin/states"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> States</CNavItem>
                     <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
                 </CNavGroup>
 

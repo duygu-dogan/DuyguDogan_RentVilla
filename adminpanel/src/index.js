@@ -16,6 +16,7 @@ import DeletedProductTable from './components/helpers/DeletedProductTable';
 import SidebarComponent from './components/SidebarComponent';
 import HeaderComponent from './components/HeaderComponent';
 import MainComponent from './components/MainComponent';
+import ListStateImage from './components/pages/Settings/Region/ListStateImage';
 
 function Layout() {
   return (
@@ -46,7 +47,8 @@ const router = createBrowserRouter([
       { path: 'attributes', element: <ListAttributes /> },
       { path: 'editproduct/:id', element: <EditProduct /> },
       { path: 'deletedattributetypes', element: <DeletedAttributeTable /> },
-      { path: 'deletedproducts', element: <DeletedProductTable /> }
+      { path: 'deletedproducts', element: <DeletedProductTable /> },
+      { path: 'states', element: <ListStateImage /> }
     ]
   }
 ])

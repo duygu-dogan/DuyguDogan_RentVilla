@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly IConfiguration _configuration;

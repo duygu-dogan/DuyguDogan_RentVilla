@@ -17,7 +17,8 @@ namespace RentVilla.Persistence.Repositories.RegionCRepo
             {
                 Id = state.Id.ToString(),
                 Name = state.Name,
-                CountryId = state.CountryId.ToString()
+                CountryId = state.CountryId.ToString(),
+                Images = state.StateImageFiles.Select(x => x.Path).ToList()
             }).ToList();
             return states;
         }

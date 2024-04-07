@@ -9,5 +9,7 @@ namespace RentVilla.Application.Feature.Commands.ProductImages.DeleteProductImag
 {
     public class DeleteProductImagesRequest : IRequest<DeleteProductImagesResponse>
     {
+        public string pathOrContainerName { get; set; }
+        public string fileName { get; set; }
     }
 }

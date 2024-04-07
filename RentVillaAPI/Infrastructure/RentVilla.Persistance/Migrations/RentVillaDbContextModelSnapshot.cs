@@ -705,11 +705,33 @@ namespace RentVilla.Persistence.Migrations
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("StateStateImageFile", b =>
+                {
+                    b.Property<Guid>("StateImageFilesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StatesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("StateImageFilesId", "StatesId");
+
+                    b.HasIndex("StatesId");
+
+                    b.ToTable("StateStateImageFile");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.ProductImageFile", b =>
                 {
                     b.HasBaseType("RentVilla.Domain.Entities.Concrete.File");
 
                     b.HasDiscriminator().HasValue("ProductImageFile");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Region.StateImageFile", b =>
+                {
+                    b.HasBaseType("RentVilla.Domain.Entities.Concrete.File");
+
+                    b.HasDiscriminator().HasValue("StateImageFile");
                 });
 
             modelBuilder.Entity("AddOnsReservation", b =>
@@ -948,6 +970,21 @@ namespace RentVilla.Persistence.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("StateStateImageFile", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Region.StateImageFile", null)
+                        .WithMany()
+                        .HasForeignKey("StateImageFilesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Region.State", null)
+                        .WithMany()
+                        .HasForeignKey("StatesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", b =>

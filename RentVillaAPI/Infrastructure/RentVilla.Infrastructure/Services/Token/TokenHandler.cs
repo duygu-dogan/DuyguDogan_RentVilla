@@ -37,7 +37,7 @@ namespace RentVilla.Infrastructure.Services.Token
                 new Claim(ClaimTypes.Name, user.UserName)               
             };
 
-            token.Expiration = DateTime.UtcNow.AddSeconds(minute);
+            token.Expiration = DateTime.UtcNow.AddMinutes(minute);
             JwtSecurityToken securityToken = new(
                 audience: _configuration["Token:Audience"],
                 issuer: _configuration["Token:Issuer"],
