@@ -49,7 +49,7 @@ namespace RentVilla.API.Controllers
         public async Task<IActionResult> GetById([FromQuery] GetByIdProductQueryRequest request)
         {
            GetByIdProductQueryResponse response = await _mediator.Send(request);
-            return Ok(response);
+            return Ok(response.Product);
         }
 
         [HttpPost]

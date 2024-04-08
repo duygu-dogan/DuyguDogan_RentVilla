@@ -7,6 +7,8 @@ using RentVilla.Application.Repositories.AttributeRepo;
 using RentVilla.Application.Repositories.FileRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
+using RentVilla.Application.Repositories.ReservationCartItemRepo;
+using RentVilla.Application.Repositories.ReservationCartRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Persistance.Contexts;
@@ -16,6 +18,8 @@ using RentVilla.Persistence.Repositories.FileCRepo;
 using RentVilla.Persistence.Repositories.ProductCRepo;
 using RentVilla.Persistence.Repositories.RegionCRepo;
 using RentVilla.Persistence.Repositories.RepoCRepo;
+using RentVilla.Persistence.Repositories.ResCartItemRepo;
+using RentVilla.Persistence.Repositories.ResCartRepo;
 using RentVilla.Persistence.Repositories.ReservationCRepo;
 using RentVilla.Persistence.Services;
 
@@ -66,6 +70,13 @@ namespace RentVilla.Persistence
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<IResCartReadRepository, ResCartReadRepository>();
+            services.AddScoped<IResCartWriteRepository, ResCartWriteRepository>();
+            services.AddScoped<IResCartItemReadRepository, ResCartItemReadRepository>();
+            services.AddScoped<IResCartItemWriteRepository, ResCartItemWriteRepository>();
+            services.AddScoped<ICartService, CartService>();
+
         }
     }
 }

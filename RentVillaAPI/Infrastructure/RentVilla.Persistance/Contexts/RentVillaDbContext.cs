@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Attribute;
+using RentVilla.Domain.Entities.Concrete.Cart;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.Concrete.Region;
 
@@ -28,6 +29,19 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<UserAddress> UserAddress { get; set; }
         public DbSet<Domain.Entities.Concrete.File> Files { get; set; }
         public DbSet<ProductImageFile> ProductImageFiles { get; set; }
+        public DbSet<ReservationCart> ReservationCarts { get; set; }
+        public DbSet<ReservationCartItem> ReservationCartItems { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Reservation>()
+                .HasKey(r => r.Id);
+            builder.Entity<ReservationCart>()
+                .HasOne(rc => rc.Reservation)
+                .WithOne(r => r.ReservationCart)
+                .HasForeignKey<Reservation>(rc => rc.Id);
+            base.OnModelCreating(builder);
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var datas = ChangeTracker.Entries<BaseEntity>();

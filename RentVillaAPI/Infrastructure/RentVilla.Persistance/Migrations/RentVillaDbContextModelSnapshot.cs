@@ -194,10 +194,15 @@ namespace RentVilla.Persistence.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("ReservationCartItemId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReservationCartItemId");
 
                     b.ToTable("AddOns");
                 });
@@ -271,6 +276,73 @@ namespace RentVilla.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReservationCarts");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AdultNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ChildrenNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("ReservationCartId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReservationCartId");
+
+                    b.ToTable("ReservationCartItems");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.File", b =>
@@ -650,7 +722,6 @@ namespace RentVilla.Persistence.Migrations
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AddOnCost")
@@ -830,6 +901,13 @@ namespace RentVilla.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.AddOns", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", null)
+                        .WithMany("Addons")
+                        .HasForeignKey("ReservationCartItemId");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", b =>
                 {
                     b.HasOne("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", "AttributeType")
@@ -858,6 +936,34 @@ namespace RentVilla.Persistence.Migrations
                     b.Navigation("Attributes");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Identity.AppUser", "User")
+                        .WithMany("Carts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Product", "Product")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", "ReservationCart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ReservationCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ReservationCart");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Region.City", b =>
@@ -969,7 +1075,15 @@ namespace RentVilla.Persistence.Migrations
                         .WithMany("Reservations")
                         .HasForeignKey("AppUserId");
 
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", "ReservationCart")
+                        .WithOne("Reservation")
+                        .HasForeignKey("RentVilla.Domain.Entities.Concrete.Reservation", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("ReservationCart");
                 });
 
             modelBuilder.Entity("StateStateImageFile", b =>
@@ -992,8 +1106,22 @@ namespace RentVilla.Persistence.Migrations
                     b.Navigation("Attributes");
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", b =>
+                {
+                    b.Navigation("CartItems");
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", b =>
+                {
+                    b.Navigation("Addons");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Identity.AppUser", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("Reservations");
 
                     b.Navigation("UserAddress");
@@ -1002,6 +1130,8 @@ namespace RentVilla.Persistence.Migrations
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Product", b =>
                 {
                     b.Navigation("Attributes");
+
+                    b.Navigation("CartItems");
 
                     b.Navigation("ProductAddress");
                 });

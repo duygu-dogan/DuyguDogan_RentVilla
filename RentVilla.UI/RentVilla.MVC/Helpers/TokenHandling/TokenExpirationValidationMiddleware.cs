@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.MVC.Models.Account;
-using RentVilla.MVC.Services;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using RentVilla.MVC.DTOs;
+using RentVilla.MVC.Services.TokenCookieService;
 
 namespace RentVilla.MVC.Helpers.TokenHandling
 {

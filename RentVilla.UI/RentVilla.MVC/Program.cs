@@ -1,13 +1,12 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using AspNetCoreHero.ToastNotification.Helpers;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing.Patterns;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using RentVilla.MVC.Helpers.ErrorHandling;
 using RentVilla.MVC.Helpers.TokenHandling;
-using RentVilla.MVC.Services;
+using RentVilla.MVC.Services.HttpClientService;
+using RentVilla.MVC.Services.TokenCookieService;
+using System.Text;
 
 namespace RentVilla.MVC
 {
@@ -20,22 +19,37 @@ namespace RentVilla.MVC
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
-            
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    //options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
-                    options.AccessDeniedPath = "/Account/AccessDenied";
-                    options.Cookie = new Microsoft.AspNetCore.Http.CookieBuilder
-                    {
-                        HttpOnly = true,
-                        Name = "RentVilla.Cookie",
-                        SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
-                    };
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer("Admin", options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SigningKey"])),
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Token:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Token:Audience"],
+                        ValidateLifetime = true
+                    };
                 });
+
+            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie("Cookies", options =>
+            //    {
+            //        //options.LoginPath = "/Account/Login";
+            //        options.LogoutPath = "/Account/Logout";
+            //        options.AccessDeniedPath = "/Account/AccessDenied";
+            //        options.Cookie = new Microsoft.AspNetCore.Http.CookieBuilder
+            //        {
+            //            HttpOnly = true,
+            //            Name = "RentVilla.Cookie",
+            //            SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
+            //        };
+            //    });
             builder.Services.AddHttpContextAccessor();
+
 
             var app = builder.Build();
 

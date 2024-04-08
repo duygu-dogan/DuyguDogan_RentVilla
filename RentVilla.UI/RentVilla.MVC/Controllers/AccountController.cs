@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.JsonWebTokens;
-using RentVilla.MVC.DTOs;
 using RentVilla.MVC.Models.Account;
 using RentVilla.MVC.Models.Address;
-using RentVilla.MVC.Services;
-using System.Security.Claims;
+using RentVilla.MVC.Services.TokenCookieService;
 
 namespace RentVilla.MVC.Controllers
 {
@@ -31,7 +28,7 @@ namespace RentVilla.MVC.Controllers
 
             RegisterVM model = new();
             List<StateVM>? response = new();
-            string baseUrl = _configuration["API:Url"];
+            string? baseUrl = _configuration["API:Url"];
             using (HttpClient httpClient = new())
             {
                 httpClient.BaseAddress = new Uri(baseUrl);
@@ -55,7 +52,7 @@ namespace RentVilla.MVC.Controllers
             string baseUrl = _configuration["API:Url"];
             PostUserAddressVM postUserAddressVM = new()
             {
-                StateId = model.UserAddress.SelectedStateId,
+                StateId = model?.UserAddress.SelectedStateId,
                 CityId = model.UserAddress.SelectedCityId,
                 DistrictId = model.UserAddress.SelectedDistrictId
             };
@@ -92,7 +89,7 @@ namespace RentVilla.MVC.Controllers
             }
         }
                 
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string? returnUrl = null)
         {
             if(returnUrl != null)
             {

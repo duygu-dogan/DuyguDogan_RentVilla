@@ -1,6 +1,7 @@
 ﻿using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.ComplexTypes;
 using RentVilla.Domain.Entities.Concrete.Attribute;
+using RentVilla.Domain.Entities.Concrete.Cart;
 using RentVilla.Domain.Entities.Concrete.Region;
 using System;
 using System.Collections.Generic;
@@ -28,5 +29,6 @@ namespace RentVilla.Domain.Entities.Concrete
         public ICollection<ProductAttribute> Attributes { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsDeleted { get; set; }
+        public ICollection<ReservationCartItem> CartItems { get; set; }
     }
 }

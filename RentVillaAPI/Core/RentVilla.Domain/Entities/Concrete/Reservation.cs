@@ -1,6 +1,7 @@
 ﻿using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.ComplexTypes;
+using RentVilla.Domain.Entities.Concrete.Cart;
 
 namespace RentVilla.Domain.Entities.Concrete
 {
@@ -8,6 +9,7 @@ namespace RentVilla.Domain.Entities.Concrete
     {
         public AppUser AppUser { get; set; }
         public string AppUserId { get; set; }
+        public ReservationCart ReservationCart { get; set; }
         public ICollection<Product> Products { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
