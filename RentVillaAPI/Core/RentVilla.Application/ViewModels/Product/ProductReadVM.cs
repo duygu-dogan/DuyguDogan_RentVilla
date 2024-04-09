@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RentVilla.Application.ViewModels.Reservation;
 
 namespace RentVilla.Application.ViewModels.Product
 {
@@ -22,6 +23,7 @@ namespace RentVilla.Application.ViewModels.Product
         public ProductAddress ProductAddress { get; set; }
         public int ShortestRentPeriod { get; set; }
         public string Properties { get; set; }
+        public AddReservationVM? AddReservation { get; set; }
         public ICollection<string> AttributeIDs { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

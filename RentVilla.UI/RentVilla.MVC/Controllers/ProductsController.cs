@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.MVC.Models.Cart;
 using RentVilla.MVC.Models.Product;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
 {
-    [Authorize(AuthenticationSchemes ="Admin")]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -28,13 +29,15 @@ namespace RentVilla.MVC.Controllers
                 response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
 
             }
-            using (HttpClient client = new())
-            {
-                client.BaseAddress = new Uri(baseUrl);
-                HttpResponseMessage httpResponse = await client.GetAsync("CartItems");
-                string contentResponse = await httpResponse.Content.ReadAsStringAsync();
-                List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
-            }
+            //using (HttpClient client = new())
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //    var accessToken = HttpContext.Request.Cookies["RentVilla.Cookie_AT"];
+            //    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+            //    HttpResponseMessage httpResponse = await client.GetAsync("CartItems");
+            //    string contentResponse = await httpResponse.Content.ReadAsStringAsync();
+            //    List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
+            //}
             return View(response);
         }
         [HttpGet]

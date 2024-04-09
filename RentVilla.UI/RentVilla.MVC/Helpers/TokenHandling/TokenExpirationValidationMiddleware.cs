@@ -6,6 +6,7 @@ using RentVilla.MVC.Models.Account;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using RentVilla.MVC.DTOs;
 using RentVilla.MVC.Services.TokenCookieService;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace RentVilla.MVC.Helpers.TokenHandling
 {
@@ -22,17 +23,24 @@ namespace RentVilla.MVC.Helpers.TokenHandling
 
         public async Task Invoke(HttpContext context, ITokenCookieHandlerService tokenCookieHandlerService, INotyfService notyfService)
         {
-            if (!context.User.Identity.IsAuthenticated && context.Request.Cookies.ContainsKey("RentVilla.Cookie_RT"))
+            if (context.User.Identity.IsAuthenticated && AccessTokenExpired(context))
             {
                 await RefreshToken(context, tokenCookieHandlerService, notyfService);
-                //await _next(context);
             }
-            else
-            {
-                await _next(context);
-            }
+
+            await _next(context);
         }
-        [HttpPost]
+
+        private bool AccessTokenExpired(HttpContext context)
+        {
+            var accessTokenExpiration = context.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
+            if (accessTokenExpiration != null && DateTimeOffset.TryParse(accessTokenExpiration, out var expirationTime))
+            {
+                return expirationTime <= DateTimeOffset.UtcNow;
+            }
+            return true; 
+        }
+            [HttpPost]
         public async Task RefreshToken(HttpContext context, ITokenCookieHandlerService tokenService, INotyfService notyfService)
         {
             

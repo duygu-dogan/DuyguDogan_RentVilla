@@ -35,7 +35,7 @@ namespace RentVilla.Persistence.Services
             if (result.Succeeded)
             {
                 TokenDTO token = _tokenHandler.CreateAccessToken(user, accessTokenLifeTime);
-                await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, accessTokenLifeTime);
+                await _userService.UpdateRefreshToken(token, token.RefreshToken, user, token.Expiration, accessTokenLifeTime);
                 return token;
             }
             else
@@ -48,7 +48,7 @@ namespace RentVilla.Persistence.Services
             if (user != null && user?.RefreshTokenEndDate > DateTime.UtcNow)
             {
                TokenDTO token = _tokenHandler.CreateAccessToken(user, 30);
-               await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 30);
+               await _userService.UpdateRefreshToken(token, token.RefreshToken, user, token.Expiration, 30);
                 return token;
             }
             throw new NotFoundUserException();

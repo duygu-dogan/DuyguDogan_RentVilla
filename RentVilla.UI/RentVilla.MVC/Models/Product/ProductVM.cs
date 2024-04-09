@@ -1,4 +1,5 @@
 ﻿
+using RentVilla.MVC.Models.Reservation;
 using System.Text.Json.Serialization;
 
 namespace RentVilla.MVC.Models.Product
@@ -37,5 +38,7 @@ namespace RentVilla.MVC.Models.Product
         public bool IsActive { get; set; }
         [JsonPropertyName("isDeleted")]
         public bool IsDeleted { get; set; }
+        [JsonPropertyName("reservation")]
+        public AddReservationVM Reservation { get; set; }
     }
 }

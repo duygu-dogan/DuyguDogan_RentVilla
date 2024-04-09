@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RentVilla.MVC.Models.Account;
@@ -102,28 +104,37 @@ namespace RentVilla.MVC.Controllers
         public async Task<IActionResult> Login(LoginVM model)
         {
             string baseUrl = _configuration["API:Url"];
-              LoginResponseVM loginResponseModel = new();
+            LoginResponseVM loginResponseModel = new();
             if (ModelState.IsValid)
-            { 
-              using (HttpClient client = new HttpClient())
-              {
+            {
+                using (HttpClient client = new HttpClient())
+                {
                     client.BaseAddress = new Uri(baseUrl);
                     HttpResponseMessage responseApi = await client.PostAsJsonAsync("auth/login", model);
-               
+
                     string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
                     loginResponseModel = System.Text.Json.JsonSerializer.Deserialize<LoginResponseVM>(contentResponseApi);
-                    
-                    if (!string.IsNullOrEmpty(loginResponseModel?.Token.AccessToken) || loginResponseModel?.Token.Expiration > DateTime.UtcNow)
+
+                    if (!string.IsNullOrEmpty(loginResponseModel?.Token.AccessToken))
                     {
                         await _tokenService.TokenCookieHandler(loginResponseModel, HttpContext);
 
-                        var returnUrl = TempData["ReturnUrl"]?.ToString();
-                        _notifyService.Success("You are successfully logged in. Enjoy your stay!");
-                        if (!String.IsNullOrEmpty(returnUrl))
+                        if(HttpContext.User.Identity.IsAuthenticated)
                         {
-                            return Redirect(returnUrl);
+                            var returnUrl = TempData["ReturnUrl"]?.ToString();
+                            _notifyService.Success("You are successfully logged in. Enjoy your stay!");
+                            if (!String.IsNullOrEmpty(returnUrl))
+                            {
+                                return Redirect(returnUrl);
+                            }
+                            return RedirectToAction("Index", "Home");
                         }
-                        return RedirectToAction("Index", "Home");
+                        else
+                        {
+                            _notifyService.Error("An error occurred while logging in. Please try again.");
+                            return View();
+                        }
+                        
                     }
                     else
                     {
@@ -137,6 +148,7 @@ namespace RentVilla.MVC.Controllers
                 _notifyService.Error("An error occurred while logging in. Please try again.");
                 return View();
             }
+
         }
         public async Task<IActionResult> Logout()
         {
@@ -151,6 +163,7 @@ namespace RentVilla.MVC.Controllers
         {
             return View();
         }
+        
 
     }
 }

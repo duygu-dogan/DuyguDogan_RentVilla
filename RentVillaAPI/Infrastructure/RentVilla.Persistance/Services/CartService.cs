@@ -9,14 +9,16 @@ using RentVilla.Application.Exceptions;
 using RentVilla.Application.Repositories.ReservationCartItemRepo;
 using RentVilla.Application.Repositories.ReservationCartRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
+using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Cart;
 using RentVilla.Domain.Entities.Concrete.Identity;
+using RentVilla.Persistance.Contexts;
 
 namespace RentVilla.Persistence.Services
 {
     public class CartService : ICartService
     {
-        private readonly IHttpContextAccessor _context;
+        private readonly IHttpContextAccessor _httpContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly IReservationReadRepository _reservationReadRepository;
         private readonly IResCartWriteRepository _resCartWriteRepository;
@@ -26,11 +28,11 @@ namespace RentVilla.Persistence.Services
         private readonly IResCartItemReadRepository _resCartItemReadRepository;
         private readonly IMapper _mapper;
 
-        public CartService(IHttpContextAccessor context, UserManager<AppUser> userManager, IReservationReadRepository reservationReadRepository, IResCartItemWriteRepository resCartItemWriteRepository, ILogger<CartService> logger, IResCartWriteRepository resCartWriteRepository, IResCartItemReadRepository resCartItemReadRepository, IMapper mapper, IResCartReadRepository resCartReadRepository)
+        public CartService(IHttpContextAccessor httpContext, UserManager<AppUser> userManager, IReservationReadRepository reservationReadRepository, IResCartItemWriteRepository resCartItemWriteRepository, ILogger<CartService> logger, IResCartWriteRepository resCartWriteRepository, IResCartItemReadRepository resCartItemReadRepository, IMapper mapper, IResCartReadRepository resCartReadRepository)
         {
             _logger = logger;
             _mapper = mapper;
-            _context = context;
+            _httpContext = httpContext;
             _userManager = userManager;
             _reservationReadRepository = reservationReadRepository;
             _resCartItemWriteRepository = resCartItemWriteRepository;
@@ -40,14 +42,25 @@ namespace RentVilla.Persistence.Services
         }
         private async Task<ReservationCart> GetTargetCart()
         {
-            var username = _context.HttpContext.User.Identity.Name;
-            if (string.IsNullOrEmpty(username))
+            var username = _httpContext.HttpContext.User.Identity.Name;
+            if (!string.IsNullOrEmpty(username))
             {
-                AppUser user = await _userManager.Users.Include(u => u.Reservations).ThenInclude(u => u.ReservationCart).FirstOrDefaultAsync(u => u.UserName == username);
-                ReservationCart targetCart = null;
-                if (user.Reservations.Any(r => r.ReservationCart is null))
+                AppUser? user = await _userManager.Users.Include(u => u.Carts)
+                    .FirstOrDefaultAsync(u => u.UserName == username);
+
+                var userCart = from cart in user.Carts
+                               join reservation in _reservationReadRepository.AppDbContext
+                               on cart.Id equals reservation.Id into CartReservations
+                               from cr in CartReservations.DefaultIfEmpty()
+                               select new
+                               {
+                                   Cart = cart,
+                                  Reservation = cr
+                               };
+                ReservationCart? targetCart = null;
+                if (userCart.Any(r => r.Reservation is null))
                 {
-                    targetCart = user.Reservations.First(r => r.ReservationCart is null).ReservationCart;
+                    targetCart =userCart.First(r => r.Reservation is null)?.Cart;
                 }
                 else
                 {

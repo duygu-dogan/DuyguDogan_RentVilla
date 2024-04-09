@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using RentVilla.Application.Abstraction.Services;
+using RentVilla.Application.DTOs.TokenDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Exceptions;
 using RentVilla.Application.Feature.Commands.AppUser.CreateUser;
@@ -63,7 +64,7 @@ namespace RentVilla.Persistence.Services
                 throw;
             }
         }
-        public async Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd)
+        public async Task<TokenDTO> UpdateRefreshToken(TokenDTO token, string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd)
         {
             try
             {
@@ -72,6 +73,13 @@ namespace RentVilla.Persistence.Services
                     user.RefreshToken = refreshToken;
                     user.RefreshTokenEndDate = accessTokenDate.AddMinutes(addOnrefreshTokenEnd);
                     await _userManager.UpdateAsync(user);
+                    token.RefreshToken = refreshToken;
+                    token.RefreshTokenEndDate = user.RefreshTokenEndDate;
+                    return token;
+                }
+                else
+                {
+                    throw new NotFoundUserException();
                 }
             }
             catch (Exception)

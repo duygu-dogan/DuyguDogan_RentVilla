@@ -7,7 +7,5 @@ namespace RentVilla.MVC.Models.Account
     {
         [JsonPropertyName("token")]
         public TokenDTO? Token { get; set; }
-        [JsonPropertyName("userData")]
-        public UserDataLoginVM UserData { get; set; }
     }
 }

@@ -28,16 +28,16 @@ namespace RentVilla.Infrastructure.Services.Token
             TokenDTO token = new TokenDTO();
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["Token:SigningKey"]));
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
+            token.Expiration = DateTime.UtcNow.AddMinutes(minute);
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                //new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(minute).ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)               
+                new Claim(ClaimTypes.Expiration, token.Expiration.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, "Admin")
             };
 
-            token.Expiration = DateTime.UtcNow.AddMinutes(minute);
             JwtSecurityToken securityToken = new(
                 audience: _configuration["Token:Audience"],
                 issuer: _configuration["Token:Issuer"],

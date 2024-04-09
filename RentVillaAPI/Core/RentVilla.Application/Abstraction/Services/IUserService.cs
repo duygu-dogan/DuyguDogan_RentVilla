@@ -1,4 +1,5 @@
-﻿using RentVilla.Application.DTOs.UserDTOs;
+﻿using RentVilla.Application.DTOs.TokenDTOs;
+using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace RentVilla.Application.Abstraction.Services
     public interface IUserService
     {
         Task<CreateUserResponseDTO> CreateAsync(CreateUserDTO model);
-        Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd);
+        Task<TokenDTO> UpdateRefreshToken(TokenDTO token, string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd);
 
     }
 }

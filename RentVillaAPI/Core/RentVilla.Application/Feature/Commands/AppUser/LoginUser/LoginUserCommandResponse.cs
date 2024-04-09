@@ -7,7 +7,6 @@ namespace RentVilla.Application.Feature.Commands.AppUser.LoginUser
     public class LoginUserCommandResponse
     {
         public TokenDTO Token { get; set; }
-        public LoginUserResponseDTO UserData { get; set; }
     }
     public class LoginUserFailCommandResponse: LoginUserCommandResponse
     {

@@ -29,7 +29,6 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                     ShortestRentPeriod = product.ShortestRentPeriod,
                     Properties = product.Properties,
                     Rating = product.Rating,
-                    Status = product.Status,
                     //Reservations = product.Reservations,
                     IsActive = product.IsActive,
                     IsDeleted = product.IsDeleted,
@@ -107,7 +106,7 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                 ShortestRentPeriod = product.ShortestRentPeriod,
                 Properties = product.Properties,
                 Rating = product.Rating,
-                Status = product.Status,
+                Reservation = new Application.DTOs.Reservation.AddReservationDTO(),
                 IsActive = product.IsActive,
                 IsDeleted = product.IsDeleted,
                 ProductAddress = new ProductAddressDTO

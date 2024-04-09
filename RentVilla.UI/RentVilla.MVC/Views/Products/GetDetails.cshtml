@@ -36,7 +36,19 @@
             </div>
         </div>
         <div class="container py-5 about col-lg-6 col-md-12 d-flex flex-column justify-content-between ">
-            <div>
+            <form
+            asp-controller="Checkout"
+            asp-action="Index"
+            method="post"
+            >
+                <input type="hidden" name="Reservation.ProductId" value="@Model.Id" />
+                <input type="hidden" name="Reservation.ProductPrice" value="@Model.Price" />
+                <input type="hidden" name="Reservation.StartDate" id="start-date" />
+                <input type="hidden" name="Reservation.EndDate" id="end-date" />
+                <input type="hidden" name="Reservation.AdultNumber" id="Reservation_AdultNumber" />
+                <input type="hidden" name="Reservation.ChildrenNumber" id="Reservation_ChildrenNumber" />
+
+                <div>
                 <h5 class="section-about-title pe-3">@Model.ProductAddress.DistrictName, @Model.ProductAddress.CityName</h5>
                 <h1 class="mb-4"><span class="text-primary">@Model.Name</span></h1>
                 <div>
@@ -73,7 +85,7 @@
                         <label>
                             Pick a start date
                         </label>
-                        <input class="form-control" id="start-date" type="date" value="" for="start-date" />
+                        <input class="form-control" asp-for="Reservation.StartDate" id="start-date" type="date" value="" for="start-date" />
                     </div>
                 </div>
                 <div class="col-md-4 ps-3">
@@ -81,14 +93,31 @@
                         <label>
                             Pick an end date
                         </label>
-                        <input class="form-control" id="end-date" type="date" value="" for="end-date" />
+                        <input class="form-control" asp-for="Reservation.EndDate" id="end-date" type="date" value="" for="end-date" />
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <a class="btn btn-primary rounded-pill py-3 px-5 mt-2 float-end" href="">Reservation Request</a>
+                <div class="col-md-4 ps-3">
+                        <select asp-for="Reservation.AdultNumber" id="Reservation_AdultNumber" class="form-select" aria-label="Default select example">
+                        <option selected>Select number of adults</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                        <select asp-for="Reservation.ChildrenNumber" id="Reservation_ChildrenNumber" class="form-select" aria-label="Default select example">
+                        <option selected>Select number of adults</option>
+                        <option value="0">No children</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
                 </div>
             </div>
+            <div class="col-md-4">                
+                <button type="submit" class="btn btn-primary rounded-pill py-3 px-5 mt-2 float-end" >Reservation Request</button>
+            </div>
+            </form>
         </div>
     </div>
 </div>
+
 
