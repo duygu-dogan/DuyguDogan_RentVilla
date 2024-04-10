@@ -18,36 +18,45 @@ namespace RentVilla.MVC.Services.TokenCookieService
 
         public async Task TokenCookieHandler(LoginResponseVM model, HttpContext? context = null)
         {
-            var handler = new JsonWebTokenHandler();
-            var jsonToken = handler.ReadToken(model.Token.AccessToken) as JsonWebToken;
-
-            context.Response.Cookies.Append("RentVilla.Cookie_AT", model.Token.AccessToken, new CookieOptions
+            try
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = model.Token.RefreshTokenEndDate
-            });
-            var claims = jsonToken.Claims;
+                var handler = new JsonWebTokenHandler();
+                var jsonToken = handler.ReadToken(model.Token.AccessToken) as JsonWebToken;
 
-            var userIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(userIdentity);
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = model.Token.Expiration,
-                IsPersistent = true,
-                AllowRefresh = false
-            };
+                var claims = jsonToken.Claims;
 
-            await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
-            await context.AuthenticateAsync();
-            context.Response.Cookies.Append("RentVilla.Cookie_RT", model.Token.RefreshToken, new CookieOptions
+                var userIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(userIdentity);
+                var authProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = model.Token.Expiration,
+                    IsPersistent = true,
+                    AllowRefresh = false
+                };
+
+                await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                context.User = principal;
+                context.Response.Cookies.Append("RentVilla.Cookie_AT", model.Token.AccessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = model.Token.Expiration
+                });
+                context.Response.Cookies.Append("RentVilla.Cookie_RT", model.Token.RefreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = model.Token.RefreshTokenEndDate
+                });
+            }
+            catch (Exception ex)
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = model.Token.RefreshTokenEndDate
-            });
+
+                throw;
+            }
+            
         }
     }
 }

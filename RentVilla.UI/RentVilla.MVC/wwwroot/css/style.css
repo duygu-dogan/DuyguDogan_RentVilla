@@ -421,6 +421,14 @@
     background-attachment: fixed;
     padding: 150px 0 50px 0;
 }
+.bg-checkout {
+    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/2150799687.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 30px 0 0 0;
+}
 .bg-register {
     background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/2150799725.jpg);
     background-position: center center;

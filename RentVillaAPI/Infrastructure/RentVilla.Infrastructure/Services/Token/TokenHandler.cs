@@ -35,7 +35,8 @@ namespace RentVilla.Infrastructure.Services.Token
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Expiration, token.Expiration.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim("UserId", user.Id)
             };
 
             JwtSecurityToken securityToken = new(

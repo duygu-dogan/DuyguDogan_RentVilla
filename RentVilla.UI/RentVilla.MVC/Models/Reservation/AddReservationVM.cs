@@ -1,8 +1,12 @@
-﻿namespace RentVilla.MVC.Models.Reservation
+﻿using RentVilla.MVC.Models.Product;
+
+namespace RentVilla.MVC.Models.Reservation
 {
     public class AddReservationVM
     {
-        public string ProductId { get; set; }
+        public ProductVM Product { get; set; }
+        public string Username { get; set; }
+        public string UserId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int AdultNumber { get; set; }

@@ -119,7 +119,7 @@ namespace RentVilla.MVC.Controllers
                     {
                         await _tokenService.TokenCookieHandler(loginResponseModel, HttpContext);
 
-                        if(HttpContext.User.Identity.IsAuthenticated)
+                        if (HttpContext.User.Identity.IsAuthenticated)
                         {
                             var returnUrl = TempData["ReturnUrl"]?.ToString();
                             _notifyService.Success("You are successfully logged in. Enjoy your stay!");
