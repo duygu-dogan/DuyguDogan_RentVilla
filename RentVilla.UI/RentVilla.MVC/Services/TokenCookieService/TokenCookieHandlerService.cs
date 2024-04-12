@@ -29,7 +29,7 @@ namespace RentVilla.MVC.Services.TokenCookieService
                 var principal = new ClaimsPrincipal(userIdentity);
                 var authProperties = new AuthenticationProperties
                 {
-                    ExpiresUtc = model.Token.Expiration,
+                    ExpiresUtc = model.Token.RefreshTokenEndDate,
                     IsPersistent = true,
                     AllowRefresh = false
                 };
@@ -43,6 +43,8 @@ namespace RentVilla.MVC.Services.TokenCookieService
                     SameSite = SameSiteMode.Strict,
                     Expires = model.Token.Expiration
                 });
+                if(context.Request.Cookies["RentVilla.Cookie_RT"] != null)
+                context.Response.Cookies.Delete("RentVilla.Cookie_RT");
                 context.Response.Cookies.Append("RentVilla.Cookie_RT", model.Token.RefreshToken, new CookieOptions
                 {
                     HttpOnly = true,

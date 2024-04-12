@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentVilla.Application.Feature.Commands.Carts.AddItemToCart;
 using RentVilla.Application.Feature.Commands.Carts.RemoveItemFromCart;
 using RentVilla.Application.Feature.Commands.Carts.UpdateItemInCart;
+using RentVilla.Application.Feature.Queries.Carts.GetCartItemById;
 using RentVilla.Application.Feature.Queries.Carts.GetCartItems;
 
 namespace RentVilla.API.Controllers
@@ -24,6 +25,12 @@ namespace RentVilla.API.Controllers
         {
             GetCartItemQueryResponse response = await _mediator.Send(request);
             return Ok(response.cartItemDTOs);
+        }
+        [HttpGet("{CartItemId}")]
+        public async Task<IActionResult> GetCartItemById([FromRoute] GetCartItemByIdQueryRequest request)
+        {
+            GetCartItemByIdQueryResponse response = await _mediator.Send(request);
+            return Ok(response.CartItem);
         }
         [HttpPost]
         public async Task<IActionResult> AddItemToCart(AddItemToCartCommandRequest request)

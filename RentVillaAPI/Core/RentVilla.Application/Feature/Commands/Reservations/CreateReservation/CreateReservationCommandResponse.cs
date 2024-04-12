@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Domain.Entities.ComplexTypes
+namespace RentVilla.Application.Feature.Commands.Reservations.CreateReservation
 {
-    public enum ReservationStatusType
+    public class CreateReservationCommandResponse
     {
-        Reserved = 0,
-        Available = 1
     }
 }

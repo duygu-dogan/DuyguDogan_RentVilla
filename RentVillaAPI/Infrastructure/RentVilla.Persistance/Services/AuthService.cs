@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Abstraction.Token;
-using RentVilla.Application.DTOs.AuthDTOs;
 using RentVilla.Application.DTOs.TokenDTOs;
-using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Exceptions;
 using RentVilla.Domain.Entities.Concrete.Identity;
 

@@ -23,28 +23,20 @@ namespace RentVilla.MVC.Helpers.TokenHandling
 
         public async Task Invoke(HttpContext context, ITokenCookieHandlerService tokenCookieHandlerService, INotyfService notyfService)
         {
-            if (context.User.Identity.IsAuthenticated && AccessTokenExpired(context))
+            var refreshToken = context.Request.Cookies["RentVilla.Cookie_RT"];
+            var accessToken = context.Request.Cookies["RentVilla.Cookie_AT"];
+
+            if (accessToken == null && refreshToken != null)
             {
-                await RefreshToken(context, tokenCookieHandlerService, notyfService);
+                await RefreshToken(context, refreshToken, tokenCookieHandlerService, notyfService);
             }
 
             await _next(context);
         }
-
-        private bool AccessTokenExpired(HttpContext context)
-        {
-            var accessTokenExpiration = context.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
-            if (accessTokenExpiration != null && DateTimeOffset.TryParse(accessTokenExpiration, out var expirationTime))
-            {
-                return expirationTime <= DateTimeOffset.UtcNow;
-            }
-            return true; 
-        }
-            [HttpPost]
-        public async Task RefreshToken(HttpContext context, ITokenCookieHandlerService tokenService, INotyfService notyfService)
+        [HttpPost]
+        public async Task RefreshToken(HttpContext context, string refreshToken, ITokenCookieHandlerService tokenService, INotyfService notyfService)
         {
             
-            string refreshToken = context.Request.Cookies["RentVilla.Cookie_RT"];
             string baseUrl = _configuration["API:Url"];
             string returnUrl = context.Request.Path;
             LoginResponseVM newToken = new();

@@ -12,7 +12,6 @@ namespace RentVilla.Domain.Entities.Concrete.Cart
     {
         public string UserId { get; set; }
         public AppUser User { get; set; }
-        public Reservation Reservation { get; set; }
         public ICollection<ReservationCartItem> CartItems { get; set; }
 
     }

@@ -1,23 +1,26 @@
-﻿using System.Text.Json.Serialization;
+﻿using RentVilla.MVC.Models.Product;
+using System.Text.Json.Serialization;
 
 namespace RentVilla.MVC.Models.Cart
 {
     public class AddCartItemVM
     {
-        [JsonPropertyName("productId")]
+        [JsonPropertyName("ProductId")]
         public string ProductId { get; set; }
-        [JsonPropertyName("startDate")]
+        [JsonPropertyName("StartDate")]
         public DateTime StartDate { get; set; }
-        [JsonPropertyName("endDate")]
+        [JsonPropertyName("EndDate")]
         public DateTime EndDate { get; set; }
-        [JsonPropertyName("adultNumber")]
+        [JsonPropertyName("AdultNumber")]
         public int AdultNumber { get; set; }
-        [JsonPropertyName("childrenNumber")]
+        [JsonPropertyName("ChildrenNumber")]
         public int ChildrenNumber { get; set; }
-        [JsonPropertyName("note")]
-        public string Note { get; set; }
-        [JsonPropertyName("price")]
-        public decimal Price { get; set; }
+        [JsonPropertyName("Note")]
+        public string Note { get; set; } = null;
+        [JsonPropertyName("Price")]
+        public decimal ProductPrice { get; set; }
+        [JsonPropertyName("TotalCost")]
+        public decimal TotalCost { get; set; }
     }
 }
 

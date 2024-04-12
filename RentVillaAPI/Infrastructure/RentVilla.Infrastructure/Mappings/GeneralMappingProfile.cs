@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RentVilla.Application.DTOs.CartDTOs;
+using RentVilla.Application.DTOs.ProductDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Feature.Commands.AppUser.CreateUser;
 using RentVilla.Domain.Entities.Concrete;
@@ -28,8 +29,9 @@ namespace RentVilla.Persistence.Mappings
                 .ForMember(dto => dto.UserAddress, options =>
                 options.MapFrom(au => au.UserAddress)).ReverseMap();
             CreateMap<ReservationCartItem, AddCartItemDTO>().ReverseMap();
-            CreateMap<ReservationCartItem, UpdateCartItemDTO>().ReverseMap();
             CreateMap<ReservationCartItem, GetCartItemDTO>();
+            CreateMap<Domain.Entities.Concrete.File, ProductImageDTO>();
+            CreateMap<ProductAddress, ProductAddressDTO>();
         }
     }
 }

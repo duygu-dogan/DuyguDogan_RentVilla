@@ -1,4 +1,7 @@
 ﻿@model LoginVM
+@{
+    var returnUrl = TempData["ReturnUrl"];
+}
 <!-- Header Start -->
 <div class="container-fluid bg-login">
     <div class="container text-center py-5" style="max-width: 900px;">
@@ -20,6 +23,7 @@
                   asp-controller="Account"
                   asp-action="Login"
                   method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group mb-2">

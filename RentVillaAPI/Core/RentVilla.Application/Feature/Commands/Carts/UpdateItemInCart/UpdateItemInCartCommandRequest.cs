@@ -10,6 +10,6 @@ namespace RentVilla.Application.Feature.Commands.Carts.UpdateItemInCart
 {
     public class UpdateItemInCartCommandRequest: IRequest<UpdateItemInCartCommandResponse>
     {
-        public UpdateCartItemDTO cartItemDTO { get; set; }
+        public GetCartItemDTO cartItemDTO { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using RentVilla.MVC.Models.Cart;
 using RentVilla.MVC.Models.Reservation;
 using System.Text.Json.Serialization;
 
@@ -39,6 +40,6 @@ namespace RentVilla.MVC.Models.Product
         [JsonPropertyName("isDeleted")]
         public bool IsDeleted { get; set; }
         [JsonPropertyName("reservation")]
-        public AddReservationVM? Reservation { get; set; }
+        public AddCartItemVM? AddCartItem { get; set; }
     }
 }

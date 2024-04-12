@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace RentVilla.Application.DTOs.Reservation
 {
-    public class AddReservationDTO
+    public class CreateReservationDTO
     {
-        public string ProductId { get; set; }
+        public string AppUserId { get; set; }
+        public string ReservationCartId { get; set; }
+        public ICollection<string> ProductIds { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int AdultNumber { get; set; }
@@ -20,5 +22,9 @@ namespace RentVilla.Application.DTOs.Reservation
         public string Note { get; set; }
         public decimal ProductPrice { get; set; }
         public decimal TotalCost { get; set; }
+        public bool IsPaid { get; set; }
+        public string ConversationId { get; set; }
+        public string PaymentId { get; set; }
+        public PaymentType PaymentMethod { get; set; }
     }
 }

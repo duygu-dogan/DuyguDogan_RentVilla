@@ -18,7 +18,7 @@ namespace RentVilla.Application.DTOs.ProductDTOs
         public int ShortestRentPeriod { get; set; }
         public string Properties { get; set; }
         public string Rating { get; set; }
-        public AddReservationDTO Reservation { get; set; }
+        public CreateReservationDTO Reservation { get; set; }
         public ICollection<ProductAttributeDTO> Attributes { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

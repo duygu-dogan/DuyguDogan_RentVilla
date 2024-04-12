@@ -11,8 +11,9 @@ namespace RentVilla.Application.Abstraction.Services
     public interface ICartService
     {
         public Task<List<GetCartItemDTO>> GetCartItemsAsync();
+        public Task<GetCartItemDTO> GetCartItemByIdAsync(string cartItemId);
         public Task AddItemToCartAsync(AddCartItemDTO cartItemDTO);
         public Task RemoveItemFromCartAsync(string cartItemId);
-        public Task UpdateItemInCartAsync(UpdateCartItemDTO cartItemDTO);
+        public Task UpdateItemInCartAsync(GetCartItemDTO cartItemDTO);
     }
 }

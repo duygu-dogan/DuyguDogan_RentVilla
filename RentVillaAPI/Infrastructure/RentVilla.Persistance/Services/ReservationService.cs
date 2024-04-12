@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Domain.Entities.ComplexTypes
+namespace RentVilla.Persistence.Services
 {
-    public enum ReservationStatusType
+    public class ReservationService
     {
-        Reserved = 0,
-        Available = 1
     }
 }

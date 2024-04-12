@@ -16,6 +16,7 @@ namespace RentVilla.Persistence.Contexts
         public RentVillaDbContext CreateDbContext(string[] args)                    
         {   DbContextOptionsBuilder<RentVillaDbContext> dbContextOptionsBuilder = new();
             dbContextOptionsBuilder.UseNpgsql(Configuration.GetConnectionString);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             return new (dbContextOptionsBuilder.Options);
         }
     }

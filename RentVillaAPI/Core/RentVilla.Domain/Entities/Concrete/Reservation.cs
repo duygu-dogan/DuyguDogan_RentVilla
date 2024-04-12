@@ -9,21 +9,17 @@ namespace RentVilla.Domain.Entities.Concrete
     {
         public AppUser AppUser { get; set; }
         public string AppUserId { get; set; }
-        public ReservationCart ReservationCart { get; set; }
         public ICollection<Product> Products { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int AdultNumber { get; set; }
         public int ChildrenNumber { get; set; }
-        public string Note { get; set; }
+        public string Note { get; set; } = null;
         public decimal ProductPrice { get; set; }
-        public List<AddOns> Addons { get; set; }
-        public decimal AddOnCost { get; set; }
         public decimal TotalCost { get; set; }
-        public bool IsPaid { get; set; }
         public string ConversationId { get; set; }
         public string PaymentId { get; set; }
-        public PaymentType PaymentMethod { get; set; }
-
+        public PaymentType PaymentType { get; set; }
+        public string PaymentMethod { get; set; }
     }
 }

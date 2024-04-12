@@ -33,12 +33,12 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<ReservationCartItem> ReservationCartItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Reservation>()
-                .HasKey(r => r.Id);
-            builder.Entity<ReservationCart>()
-                .HasOne(rc => rc.Reservation)
-                .WithOne(r => r.ReservationCart)
-                .HasForeignKey<Reservation>(rc => rc.Id);
+            //builder.Entity<Reservation>()
+            //    .HasKey(r => r.Id);
+            //builder.Entity<ReservationCart>()
+            //    .HasOne(rc => rc.Reservation)
+            //    .WithOne(r => r.ReservationCart)
+            //    .HasForeignKey<Reservation>(rc => rc.Id);
             base.OnModelCreating(builder);
         }
 

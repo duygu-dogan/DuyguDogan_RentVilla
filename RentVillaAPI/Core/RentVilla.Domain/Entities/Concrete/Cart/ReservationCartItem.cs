@@ -19,6 +19,6 @@ namespace RentVilla.Domain.Entities.Concrete.Cart
         public int ChildrenNumber { get; set; }
         public string Note { get; set; }
         public decimal ProductPrice { get; set; }
-        public List<AddOns> Addons { get; set; }
+        public decimal TotalCost { get; set; }
     }
 }

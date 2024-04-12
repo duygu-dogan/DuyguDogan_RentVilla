@@ -13,6 +13,7 @@ namespace RentVilla.SignalR
         public static void MapHubs(this WebApplication app)
         {
             app.MapHub<ProductHub>("/product-hub");
+            app.MapHub<ReservationHub>("/reservation-hub");
         }
     }
 }

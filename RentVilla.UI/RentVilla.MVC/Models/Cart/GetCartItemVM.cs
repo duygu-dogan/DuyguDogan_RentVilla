@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using RentVilla.MVC.Models.Product;
+using System.Text.Json.Serialization;
 
 namespace RentVilla.MVC.Models.Cart
 {
@@ -6,8 +7,8 @@ namespace RentVilla.MVC.Models.Cart
     {
         [JsonPropertyName("cartItemId")]
         public string CartItemId { get; set; }
-        [JsonPropertyName("productId")]
-        public string ProductId { get; set; }
+        [JsonPropertyName("product")]
+        public ProductVM Product { get; set; }
         [JsonPropertyName("startDate")]
         public DateTime StartDate { get; set; }
         [JsonPropertyName("endDate")]
@@ -20,5 +21,7 @@ namespace RentVilla.MVC.Models.Cart
         public string Note { get; set; }
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
+        [JsonPropertyName("totalCost")]
+        public decimal TotalCost { get; set; }
     }
 }

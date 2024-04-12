@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentVilla.Persistance.Contexts;
@@ -11,9 +12,11 @@ using RentVilla.Persistance.Contexts;
 namespace RentVilla.Persistence.Migrations
 {
     [DbContext(typeof(RentVillaDbContext))]
-    partial class RentVillaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240410120820_CartItemUpdated")]
+    partial class CartItemUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace RentVilla.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AddOnsReservation", b =>
+                {
+                    b.Property<Guid>("AddonsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReservationId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AddonsId", "ReservationId");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("AddOnsReservation");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -158,6 +176,40 @@ namespace RentVilla.Persistence.Migrations
                     b.ToTable("ProductReservation");
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.AddOns", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AdditionalServices")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid?>("ReservationCartItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationCartItemId");
+
+                    b.ToTable("AddOns");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.AttributeType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -210,13 +262,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -236,10 +288,10 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -264,10 +316,10 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -282,13 +334,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -306,7 +358,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -368,7 +420,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -420,7 +472,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("RefreshTokenEndDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -454,7 +506,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Deposit")
                         .HasColumnType("numeric");
@@ -490,7 +542,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -504,7 +556,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -513,7 +565,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -529,13 +581,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -552,13 +604,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -580,7 +632,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DistrictId")
                         .HasColumnType("uuid");
@@ -592,7 +644,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -620,13 +672,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -648,7 +700,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("DistrictId")
                         .HasColumnType("uuid");
@@ -657,7 +709,7 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -676,8 +728,10 @@ namespace RentVilla.Persistence.Migrations
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("AddOnCost")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("AdultNumber")
                         .HasColumnType("integer");
@@ -692,10 +746,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -703,23 +760,20 @@ namespace RentVilla.Persistence.Migrations
                     b.Property<string>("PaymentId")
                         .HasColumnType("text");
 
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PaymentType")
+                    b.Property<int>("PaymentMethod")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -755,6 +809,21 @@ namespace RentVilla.Persistence.Migrations
                     b.HasBaseType("RentVilla.Domain.Entities.Concrete.File");
 
                     b.HasDiscriminator().HasValue("StateImageFile");
+                });
+
+            modelBuilder.Entity("AddOnsReservation", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.AddOns", null)
+                        .WithMany()
+                        .HasForeignKey("AddonsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -836,6 +905,13 @@ namespace RentVilla.Persistence.Migrations
                         .HasForeignKey("ReservationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.AddOns", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", null)
+                        .WithMany("Addons")
+                        .HasForeignKey("ReservationCartItemId");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Attribute.Attributes", b =>
@@ -1005,7 +1081,15 @@ namespace RentVilla.Persistence.Migrations
                         .WithMany("Reservations")
                         .HasForeignKey("AppUserId");
 
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", "ReservationCart")
+                        .WithOne("Reservation")
+                        .HasForeignKey("RentVilla.Domain.Entities.Concrete.Reservation", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("ReservationCart");
                 });
 
             modelBuilder.Entity("StateStateImageFile", b =>
@@ -1031,6 +1115,13 @@ namespace RentVilla.Persistence.Migrations
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCart", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Cart.ReservationCartItem", b =>
+                {
+                    b.Navigation("Addons");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Identity.AppUser", b =>

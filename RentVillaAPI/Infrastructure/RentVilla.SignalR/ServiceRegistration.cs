@@ -14,6 +14,7 @@ namespace RentVilla.SignalR
         public static void AddSignalRServices(this IServiceCollection collection)
         {
             collection.AddTransient<IProductHubService, ProductHubService>();
+            collection.AddTransient<IReservationHubService, ReservationHubService>();
             collection.AddSignalR();
         }
     }

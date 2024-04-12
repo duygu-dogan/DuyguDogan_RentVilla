@@ -1,8 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RentVilla.MVC.Models.Account;
@@ -13,13 +11,13 @@ namespace RentVilla.MVC.Controllers
 {
     public class AccountController : Controller
     {
-        public INotyfService _notifyService { get; }
+        public INotyfService _notyf { get; }
         private readonly IConfiguration _configuration;
         private readonly ITokenCookieHandlerService _tokenService;
 
-        public AccountController(INotyfService notifyService, IConfiguration configuration, ITokenCookieHandlerService tokenService)
+        public AccountController(INotyfService notyf, IConfiguration configuration, ITokenCookieHandlerService tokenService)
         {
-            _notifyService = notifyService;
+            _notyf = notyf;
             _configuration = configuration;
             _tokenService = tokenService;
         }
@@ -76,16 +74,16 @@ namespace RentVilla.MVC.Controllers
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(baseUrl);
-                HttpResponseMessage responseApi = httpClient.PostAsJsonAsync("users/createuser", postRegisterVM
-                    ).Result;
+                HttpResponseMessage responseApi = await httpClient.PostAsJsonAsync("users/createuser", postRegisterVM
+                    );
                 if (responseApi.IsSuccessStatusCode)
                 {
-                    _notifyService.Success("Registration successful. You can now login.");
+                    _notyf.Success("Registration successful. You can now login.");
                     return RedirectToAction("Login");
                 }
                 else
                 {
-                    _notifyService.Error("An error occurred while registering. Please try again.");
+                    _notyf.Error("An error occurred while registering. Please try again.");
                     return RedirectToAction("Register");
                 }
             }
@@ -122,7 +120,7 @@ namespace RentVilla.MVC.Controllers
                         if (HttpContext.User.Identity.IsAuthenticated)
                         {
                             var returnUrl = TempData["ReturnUrl"]?.ToString();
-                            _notifyService.Success("You are successfully logged in. Enjoy your stay!");
+                            _notyf.Success("You are successfully logged in. Enjoy your stay!");
                             if (!String.IsNullOrEmpty(returnUrl))
                             {
                                 return Redirect(returnUrl);
@@ -131,21 +129,21 @@ namespace RentVilla.MVC.Controllers
                         }
                         else
                         {
-                            _notifyService.Error("An error occurred while logging in. Please try again.");
+                            _notyf.Error("An error occurred while logging in. Please try again.");
                             return View();
                         }
                         
                     }
                     else
                     {
-                        _notifyService.Error("An error occurred while logging in. Please try again.");
+                        _notyf.Error("An error occurred while logging in. Please try again.");
                         return View();
                     }
                 }
             }
             else
             {
-                _notifyService.Error("An error occurred while logging in. Please try again.");
+                _notyf.Error("An error occurred while logging in. Please try again.");
                 return View();
             }
 
@@ -156,7 +154,7 @@ namespace RentVilla.MVC.Controllers
             HttpContext.Response.Cookies.Delete("RentVilla.Cookie_RT");
             TempData["ReturnUrl"] = null;
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            _notifyService.Success("You are successfully logged out. See you soon!");
+            _notyf.Success("You are successfully logged out. See you soon!");
             return Redirect("~/");
         }
         public IActionResult AccessDenied()
