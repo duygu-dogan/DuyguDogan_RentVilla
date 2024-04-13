@@ -1,0 +1,128 @@
+﻿@model CreateReservationVM
+<div class="container-fluid bg-checkout">
+    <div class="container text-center" style="max-width: 900px;">
+        <h2 class="text-white py-3 fw-bold mt-5">
+        </h2>
+    </div>
+</div>
+<div class="container-fluid packages py-5">
+    <div class="container py-3">
+        <div class="mx-auto text-center mb-3" style="max-width: 900px;">
+            <h5 class="section-title px-3">Checkout</h5>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form asp-area=""
+          asp-controller="Reservation"
+          asp-action="CreateReservation"
+          method="post"
+          class="form-control mt-5">
+        <div class="row">
+            <div class="col-lg-12 text-danger mb-4" asp-validation-summary="All"></div>
+            <div class="col-lg-7">
+                <h5>Invoice Details</h5>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="form-control">
+                            <p>Name: <span>*</span></p>
+                            <input asp-for="FirstName">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Soyad: <span>*</span></p>
+                            <input asp-for="LastName">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Adres: <span>*</span></p>
+                            <input asp-for="Address">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Şehir: <span>*</span></p>
+                            <input asp-for="City">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Email: <span>*</span></p>
+                            <input asp-for="Email">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Telefon: <span>*</span></p>
+                            <input asp-for="PhoneNumber">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="checkout__form__input">
+                            <p>Not: <span>*</span></p>
+                            <input asp-for="Note">
+                        </div>
+                    </div>
+                </div>
+                <h5>Ödeme Bilgileri</h5>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Kart Numarası: <span>*</span></p>
+                            <input asp-for="CardNumber">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Kart Üzerindeki Ad Soyad: <span>*</span></p>
+                            <input asp-for="CardName">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="checkout__form__input">
+                            <p>Geçerlilik Tarihi: <span>*</span></p>
+                            <div class="d-flex g-3">
+                                <input class="mr-2" asp-for="ExpirationMonth">
+                                <input asp-for="ExpirationYear" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="checkout__form__input">
+                            <p>CVC: <span>*</span></p>
+                            <input asp-for="Cvc">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="checkout__order">
+                    <h5>Sipariş Detayı</h5>
+                    <div class="checkout__order__product">
+                        <ul>
+                            <li>
+                                <span class="top__text">Ürünler</span>
+                                <span class="top__text__right">Toplam</span>
+                            </li>
+                            @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                            {
+
+                                <li>@item.ProductName (@item.Quantity) <span>@($"{(item.ProductPrice * item.Quantity):C0}")</span></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="checkout__order__total">
+                        <ul>
+                            <li>Toplam Tutar <span>@($"{Model.ShoppingCart.TotalPrice():C0}")</span></li>
+                        </ul>
+                    </div>
+                    <button type="submit" class="site-btn">Ödemeyi Tamamla</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

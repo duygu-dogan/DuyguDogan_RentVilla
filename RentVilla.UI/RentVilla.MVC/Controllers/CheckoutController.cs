@@ -51,6 +51,15 @@ namespace RentVilla.MVC.Controllers
                 return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
 
             }
+            if (HttpContext.Request.Cookies["RentVilla.Cookie_SC"] != null)
+            {
+                int cartCount = Convert.ToInt32(HttpContext.Request.Cookies["RentVilla.Cookie_SC"]);
+                if (cartCount >= 1)
+                {
+                    _notyf.Error("You can add only 1 item to your cart.");
+                    return RedirectToAction("GetDetails", "Products", new { id = model.ProductId });
+                }
+            }
             var rentPeriod = model.EndDate - model.StartDate;
             int totalDays = Convert.ToInt32(rentPeriod.TotalDays);
             if (totalDays < shortestRent)
@@ -58,7 +67,6 @@ namespace RentVilla.MVC.Controllers
                 _notyf.Error("Please select a valid date range!");
                 return RedirectToAction("GetDetails", "Products", new {id = model.ProductId});
             }
-            
 
             double adultCost = Convert.ToDouble(totalDays * model.AdultNumber * model.ProductPrice);
             double childCost = Convert.ToDouble(totalDays * model.ChildrenNumber * model.ProductPrice) * 0.5;

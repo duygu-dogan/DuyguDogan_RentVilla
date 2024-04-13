@@ -71,7 +71,7 @@ namespace RentVilla.Persistence.Services
                 if (user != null)
                 {
                     user.RefreshToken = refreshToken;
-                    user.RefreshTokenEndDate = accessTokenDate.AddMinutes(addOnrefreshTokenEnd);
+                    user.RefreshTokenEndDate = accessTokenDate.AddMinutes(addOnrefreshTokenEnd).ToUniversalTime();
                     await _userManager.UpdateAsync(user);
                     token.RefreshToken = refreshToken;
                     token.RefreshTokenEndDate = user.RefreshTokenEndDate;

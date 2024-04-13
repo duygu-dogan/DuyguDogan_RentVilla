@@ -44,19 +44,32 @@
                            @foreach(var item in items)
                         {
                             <tr class="text-center">
+                                <form asp-area=""
+                                      asp-controller="Reservation"
+                                      asp-action="Index" method="post">
                                 <td scope="row" class="cart__product__item">
                                     <div class="cart__product__item__title">
+                                        <input type="hidden" name="ProductId" value="@item.Product.Id" />
                                         <h6>@item.Product.Name</h6>
                                     </div>
                                 </td>
                                 <td class="cart__price">@($"{item.Price:C0}")</td>
+                                <input type="hidden" name="ProductPrice" value="@item.Price" />
                                 <td class="cart__price">@item.AdultNumber</td>
+                                <input type="hidden" name="AdultNumber" value="@item.AdultNumber" />
+
                                 <td>@item.ChildrenNumber</td>
+                                <input type="hidden" name="ChildrenNumber" value="@item.ChildrenNumber" />
                                 @{
                                     var rentPeriod = (item.EndDate - item.StartDate).TotalDays;
                                 }
+                                <input type="hidden" name="StartDate" value="@item.StartDate" />
+                                <input type="hidden" name="EndDate" value="@item.EndDate" />
+
                                 <td>@rentPeriod</td>
                                 <td id="product-price" class="cart__total">@($"{item.TotalCost:C0}")</td>
+                                <input type="hidden" name="TotalCost" value="@item.TotalCost" />
+
                                 <td >
                                     <div class="d-flex justify-content-around align-content-center g-2">
                                     <a class="edit-btn" data-item-id="@item.CartItemId"
@@ -70,9 +83,15 @@
                                        style="color: darkgray">
                                         <i class="fa fa-window-close"></i>
                                     </a>
-                                    
                                     </div>
                                 </td>
+                                <div>
+                                    <button type="submit"
+                                            class="btn btn-secondary btn-sm">
+                                        Proceed Payment
+                                    </button>
+                                </div>
+                                </form>
                             </tr>
                             <tr class="edit-row" style="display: none;">
                                 <td colspan="7">
@@ -134,15 +153,7 @@
                            asp-controller="Home"
                            asp-action="Index">Continue to search</a>
                     </div>
-                    <div>
-                        <a asp-area=""
-                           asp-controller="Order"
-                           asp-action="Payment"
-                           class="btn btn-secondary">Proceed Payment</a>
-                    </div>
-                   
-                    
-               </div>
+              </div>
             </div>
         </div>
     }

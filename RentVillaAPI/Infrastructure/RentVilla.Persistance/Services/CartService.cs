@@ -53,18 +53,17 @@ namespace RentVilla.Persistence.Services
                     .FirstOrDefaultAsync(u => u.UserName == username);
 
                 var userCart = from cart in user.Carts
-                               join reservation in _reservationReadRepository.AppDbContext
-                               on cart.Id equals reservation.Id into CartReservations
-                               from cr in CartReservations.DefaultIfEmpty()
+                               //join reservation in _reservationReadRepository.AppDbContext
+                               //on cart.Id equals reservation.Id into CartReservations
+                               //from cr in CartReservations.DefaultIfEmpty()
                                select new
                                {
-                                   Cart = cart,
-                                   Reservation = cr
+                                   Cart = cart
                                };
                 ReservationCart? targetCart = null;
-                if (userCart.Any(r => r.Reservation is null))
+                if (userCart.Any())
                 {
-                    targetCart = userCart.First(r => r.Reservation is null)?.Cart;
+                    targetCart = userCart.First()?.Cart;
                 }
                 else
                 {
@@ -99,8 +98,8 @@ namespace RentVilla.Persistence.Services
                             AdultNumber = cartItemDTO.AdultNumber,
                             ChildrenNumber = cartItemDTO.ChildrenNumber,
                             Note = cartItemDTO.Note,
-                            StartDate = cartItemDTO.StartDate,
-                            EndDate = cartItemDTO.EndDate,
+                            StartDate = cartItemDTO.StartDate.ToUniversalTime(),
+                            EndDate = cartItemDTO.EndDate.ToUniversalTime(),
                             ProductPrice = cartItemDTO.Price,
                             TotalCost = cartItemDTO.TotalCost,
                             ReservationCartId = targetCart.Id,

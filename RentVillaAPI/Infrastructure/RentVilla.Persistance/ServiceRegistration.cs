@@ -68,15 +68,15 @@ namespace RentVilla.Persistence
             services.AddScoped<IStateImageFileWriteRepository, StateImageFileWriteRepository>();
             services.AddScoped<IStateImageFileReadRepository, StateImageFileReadRepository>();
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthService, AuthService>();
-
-            services.AddScoped<IResCartReadRepository, ResCartReadRepository>();
+services.AddScoped<IResCartReadRepository, ResCartReadRepository>();
             services.AddScoped<IResCartWriteRepository, ResCartWriteRepository>();
             services.AddScoped<IResCartItemReadRepository, ResCartItemReadRepository>();
             services.AddScoped<IResCartItemWriteRepository, ResCartItemWriteRepository>();
-            services.AddScoped<ICartService, CartService>();
 
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IReservationService, ReservationService>();
         }
     }
 }

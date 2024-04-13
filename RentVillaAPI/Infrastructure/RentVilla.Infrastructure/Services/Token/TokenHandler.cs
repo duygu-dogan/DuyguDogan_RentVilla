@@ -28,7 +28,7 @@ namespace RentVilla.Infrastructure.Services.Token
             TokenDTO token = new TokenDTO();
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["Token:SigningKey"]));
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
-            token.Expiration = DateTime.UtcNow.AddMinutes(minute);
+            token.Expiration = DateTime.Now.AddMinutes(minute);
 
             var claims = new[]
             {

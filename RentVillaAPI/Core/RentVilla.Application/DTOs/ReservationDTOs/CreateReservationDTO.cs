@@ -8,13 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Application.DTOs.Reservation
+namespace RentVilla.Application.DTOs.ReservationDTOs
 {
     public class CreateReservationDTO
     {
         public string AppUserId { get; set; }
-        public string ReservationCartId { get; set; }
-        public ICollection<string> ProductIds { get; set; }
+        public string ProductId  { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int AdultNumber { get; set; }
@@ -25,6 +24,8 @@ namespace RentVilla.Application.DTOs.Reservation
         public bool IsPaid { get; set; }
         public string ConversationId { get; set; }
         public string PaymentId { get; set; }
-        public PaymentType PaymentMethod { get; set; }
+        public int PaymentType { get; set; }
+        public string PaymentMethod { get; set; }
+
     }
 }

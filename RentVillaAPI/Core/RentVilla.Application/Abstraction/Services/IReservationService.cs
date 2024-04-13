@@ -1,8 +1,10 @@
 ﻿
+using RentVilla.Application.DTOs.Reservation;
+
 namespace RentVilla.Application.Abstraction.Services
 {
     public interface IReservationService
     {
-        Task CreateReservation();
+        Task CreateReservationAsync(CreateReservationDTO createReservation);
     }
 }

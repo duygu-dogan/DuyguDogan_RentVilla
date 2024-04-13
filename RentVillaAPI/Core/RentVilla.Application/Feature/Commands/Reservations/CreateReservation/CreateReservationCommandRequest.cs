@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RentVilla.Application.DTOs.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace RentVilla.Application.Feature.Commands.Reservations.CreateReservation
 {
     public class CreateReservationCommandRequest: IRequest<CreateReservationCommandResponse>
     {
+        public CreateReservationDTO createReservation { get; set; }
     }
 }
