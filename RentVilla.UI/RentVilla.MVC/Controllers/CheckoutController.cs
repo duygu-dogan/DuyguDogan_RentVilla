@@ -28,15 +28,15 @@ namespace RentVilla.MVC.Controllers
                 HttpResponseMessage httpResponse = await client.GetAsync("CartItems");
                 string contentResponse = await httpResponse.Content.ReadAsStringAsync();
                 List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
-                var shoppingCart = new ReservationCartVM();
-                shoppingCart.CartItems = cartItems;
+                var reservationCart = new ReservationCartVM();
+                reservationCart.CartItems = cartItems;
                 HttpContext.Response.Cookies.Append("RentVilla.Cookie_SC", cartItems.Count().ToString(), new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
                 });
-                return View(shoppingCart);
+                return View(reservationCart);
             }
 
         }

@@ -22,7 +22,6 @@ namespace RentVilla.MVC.Helpers.TokenHandling
                 }
             }
         }
-
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
         }

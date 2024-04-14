@@ -96,40 +96,26 @@ const NewProduct = () => {
             <CForm className="row g-3 needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
                 <CCol md={3} className='position-relative'>
                     <CFormInput type="text" id="inputName" label="Name"
-                        feedbackInvalid="Please enter a valid name."
-                        feedbackValid="Looks good!"
                         required
-                        tooltipFeedback
                     />
                 </CCol>
                 <CCol md={3} className='position-relative'>
                     <CFormInput type="text" id="inputPrice" label="Price"
-                        feedbackInvalid="Price should be greater than 0."
-                        feedbackValid="Looks good!"
-                        required
-                        tooltipFeedback />
+                        required />
                 </CCol>
                 <CCol md={3} className='position-relative'>
                     <CFormInput type="text" id="inputDeposit" label="Deposit"
-                        feedbackInvalid="Deposit should be greater than 0."
-                        feedbackValid="Looks good!"
                         required
-                        tooltipFeedback
                     />
                 </CCol>
                 <CCol md={3} className='position-relative'>
                     <CFormInput type="text" id="inputRentPeriod" label="Shortest Rent Period"
-                        feedbackInvalid="Shortest rent period should be greater than 0." feedback="Looks good!"
                         required
-                        tooltipFeedback
                     />
                 </CCol>
                 <CCol xs={8} className='position-relative'>
                     <CFormInput id="inputAddress" label="Address" placeholder="1234 Main St"
-                        feedbackInvalid="Please enter a valid address."
-                        feedbackValid="Looks good!"
                         required
-                        tooltipFeedback
                     />
                 </CCol>
                 <CCol xs={4}>

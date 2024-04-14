@@ -44,12 +44,11 @@
                            @foreach(var item in items)
                         {
                             <tr class="text-center">
-                                <form asp-area=""
-                                      asp-controller="Reservation"
-                                      asp-action="Index" method="post">
+                                
                                 <td scope="row" class="cart__product__item">
                                     <div class="cart__product__item__title">
                                         <input type="hidden" name="ProductId" value="@item.Product.Id" />
+                                            <input type="hidden" name="ProductName" value="@item.Product.Name" />
                                         <h6>@item.Product.Name</h6>
                                     </div>
                                 </td>
@@ -85,13 +84,6 @@
                                     </a>
                                     </div>
                                 </td>
-                                <div>
-                                    <button type="submit"
-                                            class="btn btn-secondary btn-sm">
-                                        Proceed Payment
-                                    </button>
-                                </div>
-                                </form>
                             </tr>
                             <tr class="edit-row" style="display: none;">
                                 <td colspan="7">
@@ -128,6 +120,24 @@
                         }
                     </tbody>
                     </table>
+                    <div class="d-flex justify-content-end gap-5 mt-5 px-3 mb-4">
+                        <h4>Reservation Total: </h4>
+                        <h5>@($"{cartTotal:C0}")</h5>
+                    </div>
+                        <div class="d-flex justify-content-end gap-2 px-3">
+                            <div>
+                                <a class="btn btn-light" asp-area=""
+                                   asp-controller="Home"
+                                   asp-action="Index">Continue to search</a>
+                            </div>
+                            <div>
+                                <a asp-controller="Reservation"
+                                asp-action="Index"
+                                        class="btn btn-primary">
+                                    Proceed Payment
+                                </a>
+                            </div>
+                        </div>
             </div>
         </div>
         <div class="row mt-3 justify-content-between mb-5">
@@ -136,24 +146,10 @@
                     <label for="discount-coupon" class="me-3 mb-4 fw-bold">Discount Coupon</label>
                     <div class="d-flex gap-3">
                         <input class="form-control px-3" for="discount-coupon" />
-
                         <a class="btn btn-danger text-white px-3" asp-controller="" asp-action="" class="px-3">Apply</a>
                     </div>
                 </div>
                 
-            </div>
-            <div class="col-lg-6 mb-3 offset-lg-2 mt-3 gap-3">
-                <div class="d-flex justify-content-end gap-5 px-3 mb-4">
-                    <h4>Reservation Total: </h4>
-                    <h5>@($"{cartTotal:C0}")</h5>
-                </div>
-                <div class="d-flex justify-content-end gap-2 px-3">
-                    <div>
-                        <a class="btn btn-light" asp-area=""
-                           asp-controller="Home"
-                           asp-action="Index">Continue to search</a>
-                    </div>
-              </div>
             </div>
         </div>
     }

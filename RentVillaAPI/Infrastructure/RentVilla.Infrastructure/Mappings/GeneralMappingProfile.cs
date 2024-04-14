@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using RentVilla.Application.DTOs.CartDTOs;
 using RentVilla.Application.DTOs.ProductDTOs;
-using RentVilla.Application.DTOs.Reservation;
+using RentVilla.Application.DTOs.ReservationDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Feature.Commands.AppUser.CreateUser;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Cart;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.Concrete.Region;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Mappings
 {

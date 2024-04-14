@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RentVilla.Application.Abstraction.Services;
-using RentVilla.Application.DTOs.Reservation;
+using RentVilla.Application.DTOs.ReservationDTOs;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.ReservationCartRepo;
 using RentVilla.Application.Repositories.ReservationRepo;
+using RentVilla.Domain.Entities.ComplexTypes;
 using RentVilla.Domain.Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentVilla.Persistence.Services
 {
@@ -38,13 +33,26 @@ namespace RentVilla.Persistence.Services
         {
             try
             {
-                Reservation reservation = new();
-                reservation.Products = _productReadRepository.AppDbContext.Where(p => createReservation.ProductIds.Select(pId => Guid.Parse(pId)).Contains(p.Id)).ToList();
-                reservation = _mapper.Map<Reservation>(createReservation);
+                Reservation reservation = new()
+                {
+                    AppUserId = createReservation.AppUserId,
+                    AdultNumber = createReservation.AdultNumber,
+                    ChildrenNumber = createReservation.ChildrenNumber,
+                    EndDate = createReservation.EndDate.ToUniversalTime(),
+                    Note = createReservation.Note,
+                    ProductId = Guid.Parse(createReservation.ProductId),
+                    ConversationId = createReservation.AppUserId,
+                    PaymentId = createReservation.PaymentId,
+                    PaymentMethod = createReservation.PaymentMethod,
+                    PaymentType = (PaymentType)Enum.Parse(typeof(PaymentType), createReservation.PaymentType.ToString()),
+                    ProductPrice = createReservation.ProductPrice,
+                    StartDate = createReservation.StartDate.ToUniversalTime(),
+                    TotalCost = createReservation.TotalCost
+                };
 
                 await _reservationWriteRepository.AddAsync(reservation);
                 int savingStatus = await _reservationWriteRepository.SaveAsync();
-                if (savingStatus == 200)
+                if (savingStatus == 1)
                 {
                     var userCart = await _resCartReadRepository.GetSingleAsync(rc => rc.UserId == createReservation.AppUserId);
                     await _resCartWriteRepository.DeleteAsync(userCart.Id.ToString());

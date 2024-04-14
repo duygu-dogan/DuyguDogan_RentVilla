@@ -1,6 +1,4 @@
-﻿using RentVilla.Application.DTOs.Reservation;
-using RentVilla.Domain.Entities.ComplexTypes;
-using RentVilla.Domain.Entities.Concrete;
+﻿using RentVilla.Application.DTOs.ReservationDTOs;
 
 namespace RentVilla.Application.DTOs.ProductDTOs
 {

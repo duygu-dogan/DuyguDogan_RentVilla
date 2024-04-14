@@ -1,5 +1,4 @@
-﻿
-using RentVilla.Application.DTOs.Reservation;
+﻿using RentVilla.Application.DTOs.ReservationDTOs;
 
 namespace RentVilla.Application.Abstraction.Services
 {

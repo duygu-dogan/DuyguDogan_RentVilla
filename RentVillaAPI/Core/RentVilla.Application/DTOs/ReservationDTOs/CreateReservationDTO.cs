@@ -1,12 +1,5 @@
 ﻿using RentVilla.Domain.Entities.ComplexTypes;
 using RentVilla.Domain.Entities.Concrete.Cart;
-using RentVilla.Domain.Entities.Concrete.Identity;
-using RentVilla.Domain.Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentVilla.Application.DTOs.ReservationDTOs
 {
@@ -14,6 +7,7 @@ namespace RentVilla.Application.DTOs.ReservationDTOs
     {
         public string AppUserId { get; set; }
         public string ProductId  { get; set; }
+        public string ProductName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int AdultNumber { get; set; }
@@ -26,6 +20,6 @@ namespace RentVilla.Application.DTOs.ReservationDTOs
         public string PaymentId { get; set; }
         public int PaymentType { get; set; }
         public string PaymentMethod { get; set; }
-
+        public CreatePaymentDTO PaymentData { get; set; }
     }
 }

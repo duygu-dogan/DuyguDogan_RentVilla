@@ -21,7 +21,8 @@ const HeaderComponent = () => {
         <>
             <CHeader>
                 <CContainer fluid className='mr-3'>
-                    <SignalRService procedureName={"receiveProductAddedMessage"} setMessNumber={setMessNumber} />
+                    <SignalRService procedureName={"receiveProductAddedMessage"} setMessNumber={setMessNumber} hubUrl={"product-hub"} />
+                    <SignalRService procedureName={"receiveReservationCreatedMessage"} setMessNumber={setMessNumber} hubUrl={"reservation-hub"} />
                     <CHeaderBrand href="#">Dashboard</CHeaderBrand>
                     <CHeaderNav className='d-flex flex-row gap-4'>
                         <CNavItem className='d-flex gap-2 me-3'>
@@ -60,14 +61,16 @@ const HeaderComponent = () => {
                                             <CModalTitle id="ScrollingLongContentExampleLabel2">Messages</CModalTitle>
                                         </CModalHeader>
                                         <CModalBody>
-                                            {messages.map((message, index) => (
-                                                <div key={index} className="d-flex gap-2">
-                                                    <div>
-                                                        <p>{message}</p>
-                                                        <p>Time: {new Date().toLocaleTimeString()}</p>
+                                            {messages.length === 0 ? <div className='alert alert-warning'>No messages found</div> :
+
+                                                messages.map((message, index) => (
+                                                    <div key={index} className="d-flex gap-2">
+                                                        <div>
+                                                            <p>{message}</p>
+                                                            <p>Time: {new Date().toLocaleTimeString()}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                ))}
                                         </CModalBody>
                                         <CModalFooter>
                                             <CButton color="secondary" onClick={() => setVisible(false)}>

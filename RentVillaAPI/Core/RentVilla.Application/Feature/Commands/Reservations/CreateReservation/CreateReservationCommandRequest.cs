@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using RentVilla.Application.DTOs.Reservation;
+using RentVilla.Application.DTOs.ReservationDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
