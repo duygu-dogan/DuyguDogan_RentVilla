@@ -21,7 +21,7 @@ namespace RentVilla.Application.Feature.Commands.Reservations.CreateReservation
         public async Task<CreateReservationCommandResponse> Handle(CreateReservationCommandRequest request, CancellationToken cancellationToken)
         {
             await _paymentService.CompletePaymentAsync(request.createReservation);
-            await _reservationHubService.ReservationCreatedMessageAsync("There is a new reservation!");
+            await _reservationHubService.ReservationCreatedMessageAsync($"There is a new reservation on {request.createReservation.ProductName}!");
             return new();
         }
     }

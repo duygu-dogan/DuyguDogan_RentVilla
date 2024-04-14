@@ -10,6 +10,6 @@ namespace RentVilla.Application.Feature.Commands.Products.UpdateProduct
 {
     public class UpdateProductCommandRequest : IRequest<UpdateProductCommandResponse>
     {
-        public ProductDTO Product { get; set; }
+        public UpdateProductDTO Product { get; set; }
     }
 }

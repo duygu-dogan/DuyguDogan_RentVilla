@@ -1,4 +1,4 @@
-import { faRedo } from '@fortawesome/free-solid-svg-icons';
+import { faRedo, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'react-toastify/dist/ReactToastify.css';
 import { TablePagination } from '@mui/base';
@@ -45,11 +45,23 @@ const DeletedAttributeTable = () => {
     const handleSubmit = (e, rowId) => {
         e.preventDefault();
         console.log(rowId)
-        axios.delete(`http://localhost:5006/api/attributes/deletetype?id=${rowId}`)
+        axios.put(`http://localhost:5006/api/attributes/softdeletetype?id=${rowId}`)
             .then(response => {
                 console.log(response);
                 fetchItems();
                 toast('Attribute type recycled successfully', { type: 'success' })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+    const handleDelete = (e, rowId) => {
+        e.preventDefault();
+        axios.delete(`http://localhost:5006/api/attributes/deletetype?id=${rowId}`)
+            .then(response => {
+                console.log(response);
+                fetchItems();
+                toast('Attribute type deleted successfully', { type: 'success' })
             })
             .catch(error => {
                 console.error(error);
@@ -94,9 +106,9 @@ const DeletedAttributeTable = () => {
                                     <td className='col-4' align="right">
                                         <div className='d-flex justify-content-center'>
                                             <div>
-                                                <button type='button' style={{ borderRadius: "3px" }} className='btn btn-success btn-sm me-2' data-bs-toggle="modal" data-bs-target="#exampleModal" ><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faRedo} /> </button>
+                                                <button type='button' style={{ borderRadius: "3px" }} className='btn btn-success btn-sm me-2' data-bs-toggle="modal" data-bs-target={`#modalRedo${row.id}`} ><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faRedo} /> </button>
                                                 <form onSubmit={(e) => handleSubmit(e, row.id)}>
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id={`modalRedo${row.id}`} tabindex="-1" aria-labelledby={`#modalRedo${row.id}Label`} aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
@@ -105,6 +117,24 @@ const DeletedAttributeTable = () => {
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Recycle</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-danger btn-sm me-2" data-bs-toggle="modal" data-bs-target={`#modal${row.id}`}><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faTrashAlt} /></button>
+                                                <form onSubmit={(e) => handleDelete(e, row.id)}>
+                                                    <div class="modal fade" id={`modal${row.id}`} tabindex="-1" aria-labelledby={`modal${row.id}Label`} aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    Are you sure you want to delete this attribute type permanently?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -27,7 +27,8 @@ const DeletedProductTable = () => {
     const fetchItems = useCallback(() => {
         axios.get('http://localhost:5006/api/products/getdeletedproducts')
             .then((res) => {
-                const newItems = res.data.map(item => ({
+                console.log(res)
+                const newItems = res.data.deletedProducts.map(item => ({
                     id: item.id,
                     name: item.name,
                     price: item.price,
@@ -47,7 +48,7 @@ const DeletedProductTable = () => {
 
     const handleHardDelete = (e, rowId) => {
         e.preventDefault();
-        axios.delete(`http://localhost:5006/api/products/delete?id=${rowId}`)
+        axios.delete(`http://localhost:5006/api/products/delete?ProductId=${rowId}`)
             .then(response => {
                 console.log(response);
                 fetchItems();
@@ -60,7 +61,7 @@ const DeletedProductTable = () => {
     }
     const handleRecyle = (e, rowId) => {
         e.preventDefault();
-        axios.put(`http://localhost:5006/api/products/softdelete?id=${rowId}`)
+        axios.put(`http://localhost:5006/api/products/softdelete?ProductId=${rowId}`)
             .then(response => {
                 console.log(response);
                 fetchItems();

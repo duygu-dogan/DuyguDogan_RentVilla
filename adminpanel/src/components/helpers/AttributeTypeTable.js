@@ -7,6 +7,7 @@ import React, { useCallback, useState } from 'react';
 import NewAttributeModal from '../modals/Attributes/NewAttributeModal';
 import DeleteAttributeTypeModal from '../modals/Attributes/DeleteAttributeTypeModal';
 import { ToastContainer, toast } from 'react-toastify';
+import EditAttributeTypeModal from '../modals/Attributes/EditAttributeTypeModal';
 
 const AttributeTypeTable = ({ rows }) => {
     const [page, setPage] = useState(0);
@@ -68,7 +69,7 @@ const AttributeTypeTable = ({ rows }) => {
                                             <a href={`/admin/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-secondary btn-sm me-2'><FontAwesomeIcon icon={faList} /></a>
                                         </div>
                                         <div>
-                                            <a href={`/admin/attributes/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm me-2'><FontAwesomeIcon icon={faPenToSquare} /></a>
+                                            <EditAttributeTypeModal attType={row} onModalClose={handleModalClose} />
                                         </div>
                                         <div>
                                             <DeleteAttributeTypeModal id={row.id} onModalClose={handleModalClose} />

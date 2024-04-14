@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       { path: 'products', element: <ListProducts /> },
       { path: 'newproduct', element: <NewProduct /> },
       { path: 'attributetypes', element: <ListAttributeTypes /> },
-      { path: 'attributes', element: <ListAttributes /> },
+      { path: 'attributes/:id', element: <ListAttributes /> },
       { path: 'editproduct/:id', element: <EditProduct /> },
       { path: 'deletedattributetypes', element: <DeletedAttributeTable /> },
       { path: 'deletedproducts', element: <DeletedProductTable /> },

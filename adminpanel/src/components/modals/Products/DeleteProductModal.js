@@ -8,7 +8,7 @@ const DeleteProductModal = ({ id, onModalClose }) => {
     const modalId = `deleteModal${id}`;
     const handleHardDelete = (e) => {
         e.preventDefault();
-        axios.delete(`http://localhost:5006/api/products/delete?id=${id}`)
+        axios.delete(`http://localhost:5006/api/products/delete?ProductId=${id}`)
             .then(response => {
                 console.log(response);
                 onModalClose("Product deleted successfully.", "success");
@@ -21,7 +21,7 @@ const DeleteProductModal = ({ id, onModalClose }) => {
     const handleSoftDelete = (e) => {
         console.log(id)
         e.preventDefault();
-        axios.put(`http://localhost:5006/api/products/softdelete?id=${id}`)
+        axios.put(`http://localhost:5006/api/products/SoftDelete?ProductId=${id}`)
             .then(response => {
                 console.log(response);
                 onModalClose("Product moved to recycle bin successfully.", "success");

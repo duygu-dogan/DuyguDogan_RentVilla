@@ -112,9 +112,14 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                 ProductAddress = new ProductAddressDTO
                 {
                     CountryName = productAddress.Country.Name,
+                    CountryId = productAddress.CountryId.ToString(),
                     StateName = productAddress.State.Name,
+                    StateId = productAddress.StateId.ToString(),
                     CityName = productAddress.City.Name,
-                    DistrictName = productAddress.District.Name
+                    CityId = productAddress.CityId.ToString(),
+                    DistrictName = productAddress.District.Name,
+                    DistrictId = productAddress.DistrictId.ToString()
+                    
                 },
                 Attributes = productAttributesDTOs,
                 ProductImages = productImageDTOs

@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.Application.Feature.Commands.ProductImages.UploadProductImages;
 using RentVilla.Application.Feature.Commands.Products.CreateProduct;
 using RentVilla.Application.Feature.Commands.Products.DeleteProduct;
+using RentVilla.Application.Feature.Commands.Products.SoftDeleteProduct;
 using RentVilla.Application.Feature.Commands.Products.UpdateProduct;
 using RentVilla.Application.Feature.Queries.ProductImages.GetProductImages;
 using RentVilla.Application.Feature.Queries.Products.GetAllProducts;
@@ -19,7 +19,7 @@ namespace RentVilla.API.Controllers
     {
 
         readonly IMediator _mediator;
-        public ProductsController( IMediator mediator)
+        public ProductsController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -27,12 +27,12 @@ namespace RentVilla.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetAllProductsQueryRequest getAllProductsQueryRequest)
         {
-           GetAllProductsQueryResponse response = await _mediator.Send(getAllProductsQueryRequest);
-           return Ok(response.NonDeletedProducts);
+            GetAllProductsQueryResponse response = await _mediator.Send(getAllProductsQueryRequest);
+            return Ok(response.NonDeletedProducts);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDeletedProducts(GetDeletedProductsRequest request)
+        public async Task<IActionResult> GetDeletedProducts([FromQuery] GetDeletedProductsRequest request)
         {
             GetDeletedProductsResponse response = await _mediator.Send(request);
             return Ok(response);
@@ -43,22 +43,21 @@ namespace RentVilla.API.Controllers
             var response = await _mediator.Send(request);
             return Ok(response);
         }
-        
-        //ProductImages null dönüyor, debug yapılacak!
+
         [HttpGet]
         public async Task<IActionResult> GetById([FromQuery] GetByIdProductQueryRequest request)
         {
-           GetByIdProductQueryResponse response = await _mediator.Send(request);
+            GetByIdProductQueryResponse response = await _mediator.Send(request);
             return Ok(response.Product);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(CreateProductCommandRequest createProductCommandRequest)
         {
-           CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);
+            CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);
             return StatusCode((int)HttpStatusCode.Created);
         }
-        //Test edilecek
+
         [HttpPost]
         public async Task<IActionResult> UploadProductImage([FromQuery] UploadProductImagesRequest uploadProductImagesRequest)
         {
@@ -67,28 +66,25 @@ namespace RentVilla.API.Controllers
             return Ok();
         }
 
-        //Test edilecek
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
             await _mediator.Send(updateProductCommandRequest);
             return Ok();
         }
-        //Test edilecek
+
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] DeleteProductCommandRequest deleteProductCommandRequest)
         {
             await _mediator.Send(deleteProductCommandRequest);
             return Ok();
         }
-        //Test edilecek
+
         [HttpPut]
-        public async Task<IActionResult> SoftDelete([FromQuery] UpdateProductCommandRequest updateProductCommandRequest)
+        public async Task<IActionResult> SoftDelete([FromQuery] SoftDeleteProductCommandRequest commandRequest)
         {
-            updateProductCommandRequest.Product.IsDeleted = true;
-            updateProductCommandRequest.Product.IsActive = false;
-            await _mediator.Send(updateProductCommandRequest);
-            return Ok();
+            var response = await _mediator.Send(commandRequest);
+            return Ok(response);
         }
         
     }

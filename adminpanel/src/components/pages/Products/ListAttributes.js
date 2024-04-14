@@ -12,9 +12,10 @@ const ListAttributes = () => {
     const [items, setItems] = useState([]);
     const { id } = useParams();
     const fetchItems = useCallback(() => {
-        axios.get('http://localhost:5006/api/attributes/getbytypeid/typeid?typeid=' + id)
+        axios.get(`http://localhost:5006/api/Attributes/GetTypeById?id=${id}`)
             .then((res) => {
-                const newItems = res.data.map(item => ({
+                console.log(res.data);
+                const newItems = res.data.attributes.map(item => ({
                     id: item.id,
                     name: item.name,
                     description: item.description,

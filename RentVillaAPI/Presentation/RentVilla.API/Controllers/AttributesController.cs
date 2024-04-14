@@ -39,12 +39,30 @@ namespace RentVilla.API.Controllers
         [ActionName("GetTypeById")]
         public async Task<IActionResult> GetAttributeTypeById(string id)
         {
-            var attributeType = await _attributeTypeReadRepository.GetByIdAsync(id, false);
+            var attributeType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == Guid.Parse(id)).FirstOrDefault();
+            List<AttributeReadVM> attributes = new();
+            foreach (var a in attributeType.Attributes)
+            {
+                attributes.Add(new AttributeReadVM
+                {
+                    Id = a.Id.ToString(),
+                    Name = a.AttributeType.Name,
+                    TypeId= a.AttributeType.Id.ToString(),
+                    Description = a.Description,
+                    IsActive = a.IsActive
+                });
+            }
+            AttributeTypeReadVM model = new()
+            {
+                Id = attributeType.Id.ToString(),
+                Name = attributeType.Name,
+                Attributes = attributes
+            };
             if (attributeType == null)
             {
                 return NotFound();
             }
-            return Ok(attributeType);
+            return Ok(model);
         }
         [HttpGet]
         [ActionName("GetDeletedTypes")]
@@ -70,14 +88,30 @@ namespace RentVilla.API.Controllers
             await _attributeTypeWriteRepository.SaveAsync();
             return Ok();
         }
-        [HttpDelete]
-        [ActionName("DeleteType")]
-        public async Task<IActionResult> DeleteAttributeTypeAsync(string id)
+        [HttpPut]
+        [ActionName("SoftDeleteType")]
+        public async Task<IActionResult> SoftDeleteAttributeTypeAsync(string id)
         {
             var attributType = await _attributeTypeReadRepository.GetByIdAsync(id);
             attributType.IsDeleted = !attributType.IsDeleted;
             await _attributeTypeWriteRepository.SaveAsync();
             return Ok();
+        }
+        [HttpDelete]
+        [ActionName("DeleteType")]
+        public async Task<IActionResult> DeleteAttributeTypeAsync(string id)
+        {
+            var attributType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == Guid.Parse(id)).FirstOrDefault();
+            if(attributType != null)
+            {
+                _attributeWriteRepository.DeleteRange(attributType.Attributes.ToList());
+                await _attributeWriteRepository.SaveAsync();
+                await _attributeTypeWriteRepository.DeleteAsync(id);
+                await _attributeTypeWriteRepository.SaveAsync();
+                return Ok();
+            }else
+                return NotFound();
+
         }
 
         [HttpGet]

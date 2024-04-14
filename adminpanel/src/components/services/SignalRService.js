@@ -3,44 +3,42 @@ import { useEffect } from 'react'
 import * as signalR from "@microsoft/signalr";
 import { ToastContainer, toast } from 'react-toastify';
 
-const SignalRService = ({ procedureName, hubUrl, setMessNumber }) => {
+const SignalRService = ({ procedureNames, hubUrls }) => {
     const [receivedMessage, setReceivedMessage] = useState('');
 
     useEffect(() => {
-        const connection = (url) => new signalR.HubConnectionBuilder()
-            .withUrl(`http://localhost:5006/${url}`)
-            .withAutomaticReconnect()
-            .build();
-        connection(hubUrl).start().then(() => {
-            console.log(`Connected to ${hubUrl}!`);
-            // setTimeout(() => { connection.start("http://localhost:5006/product-hub"), 2000 });
-        }).catch((error) => {
-            console.log('Error: ' + error);
-        });
-        connection(hubUrl).on(procedureName, (message) => {
-            setReceivedMessage(message);
-            console.log('Received message: ' + message)
+        const connections = hubUrls.map((hubUrl, index) => {
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(`http://localhost:5006/${hubUrl}`)
+                .withAutomaticReconnect()
+                .build();
 
-            const unreadMessages = JSON.parse(localStorage.getItem('unreadMessages')) || 0;
-            localStorage.setItem('unreadMessages', JSON.stringify(unreadMessages + 1));
+            connection.start().then(() => {
+                console.log(`Connected to ${hubUrl}!`);
+            }).catch((error) => {
+                console.log('Error: ' + error);
+            });
 
-            const messages = JSON.parse(localStorage.getItem('messages')) || [];
-            messages.push(message);
-            localStorage.setItem('messages', JSON.stringify(messages));
+            connection.on(procedureNames[index], (message) => {
+                setReceivedMessage(message);
+                console.log('Received message: ' + message)
 
-            toast(message, { type: 'info' })
+                const unreadMessages = JSON.parse(localStorage.getItem('unreadMessages')) || 0;
+                localStorage.setItem('unreadMessages', JSON.stringify(unreadMessages + 1));
+
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                messages.push(message);
+                localStorage.setItem('messages', JSON.stringify(messages));
+
+                toast(message, { type: 'info' })
+            });
+            return connection;
         });
-        connection(hubUrl).onreconnected((connectionId) => {
-            console.log('Reconnected with connectionId: ' + connectionId);
-        });
-        connection(hubUrl).onreconnecting((error) => {
-            console.log('Reconnecting');
-        });
-        // connection.invoke(procedureName, { user, message })
-        //     .catch((error) => { console.log('Error: ' + error) });
-        connection(hubUrl).onclose(() => {
-            console.log('Connection closed');
-        });
+        return () => {
+            connections.forEach(connection => {
+                connection.stop().then(() => console.log(`Disconnected from ${connection.connectionId}`));
+            });
+        }
     }, []);
     return (
         <>

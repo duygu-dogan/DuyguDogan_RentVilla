@@ -86,10 +86,6 @@ const ProductTable = ({ rows, onPagination }) => {
                                         <a href={`/admin/editproduct/${row.id}`} style={{ borderRadius: "3px" }} className='btn btn-warning btn-sm'><FontAwesomeIcon style={{ fontSize: "15px" }} icon={faPenToSquare} /></a>
                                     </div>
                                     <DeleteProductModal id={row.id} onModalClose={handleModalClose} />
-                                    <div>
-                                        <button style={{ borderRadius: "3px" }} className='btn btn-primary btn-sm'> <FontAwesomeIcon style={{ fontSize: "15px" }} icon={faList} /></button>
-                                    </div>
-
                                 </td>
                             </tr>
                         ))}

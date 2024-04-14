@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using RentVilla.Application.DTOs.ProductDTOs;
+using RentVilla.Application.Feature.Queries.Products.GetAllProducts;
 using RentVilla.Application.Repositories.ProductRepo;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace RentVilla.Application.Feature.Queries.Products.GetDeletedProducts
         public async Task<GetDeletedProductsResponse> Handle(GetDeletedProductsRequest request, CancellationToken cancellationToken)
         {
             List<ProductDTO> products = _productReadRepository.GetAllProducts().ToList();
-            List<ProductDTO> deletedProducts = products.Where(x => x.IsDeleted == true).ToList();
+            List<ProductDTO> deletedProducts = products.Where(x => x.IsDeleted == true).Skip(request.Page * request.Size).Take(request.Size).ToList();
             GetDeletedProductsResponse response = new GetDeletedProductsResponse() { DeletedProducts = deletedProducts};
             return response;
         }

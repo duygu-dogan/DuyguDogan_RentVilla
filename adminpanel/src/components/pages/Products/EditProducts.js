@@ -1,9 +1,8 @@
-import { CButton, CCol, CContainer, CForm, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CInputGroup } from '@coreui/react'
+import { CButton, CCol, CContainer, CForm, CFormInput, CFormSelect, CFormTextarea } from '@coreui/react'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
 import { ToastContainer, toast } from 'react-toastify';
-import FileUploadComponent from '../../helpers/FileUploadComponent';
 import { useParams } from 'react-router-dom';
 
 const EditProduct = () => {
@@ -32,7 +31,7 @@ const EditProduct = () => {
         attributeIDs: []
     });
     useEffect(() => {
-        axios(`http://localhost:5006/api/products/getbyid/${id}`)
+        axios(`http://localhost:5006/api/products/getbyid?ProductId=${id}`)
             .then((res) => {
                 console.log(res.data)
                 setFormState({
@@ -45,12 +44,16 @@ const EditProduct = () => {
                     shortestRentPeriod: res.data.shortestRentPeriod,
                     productaddress: {
                         stateName: res.data.productAddress.stateName,
+                        stateId: res.data.productAddress.stateId,
                         cityName: res.data.productAddress.cityName,
-                        districtName: res.data.productAddress.districtName
+                        cityId: res.data.productAddress.cityId,
+                        districtName: res.data.productAddress.districtName,
+                        districtId: res.data.productAddress.districtId
                     },
                     properties: res.data.properties,
                     attributeIDs: res.data.attributes.map(attribute => attribute.id)
                 });
+                console.log(formState)
                 setSelectedAttributes(res.data.attributes.map(attribute => ({ value: attribute.id, label: attribute.attribute })));
             })
             .catch((err) => {
@@ -96,10 +99,6 @@ const EditProduct = () => {
         setSelectedAttributes(attributes);
         console.log(selectedAttributes)
     };
-
-    const removeAttribute = (attributeToRemove) => {
-        setSelectedAttributes(selectedAttributes.filter(attribute => attribute !== attributeToRemove));
-    };
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.currentTarget;
@@ -108,25 +107,30 @@ const EditProduct = () => {
             e.stopPropagation();
         }
         axios.put('http://localhost:5006/api/products/update', {
-            id: id,
-            name: e.target.inputName.value,
-            description: e.target.inputDescription.value,
-            price: e.target.inputPrice.value,
-            deposit: e.target.inputDeposit.value,
-            mapId: e.target.inputMapId.value,
-            address: e.target.inputAddress.value,
-            shortestRentPeriod: e.target.inputRentPeriod.value,
-            productaddress: {
-                stateId: e.target.inputRegion.value,
-                cityId: e.target.inputCity.value,
-                districtId: e.target.inputDistrict.value
-            },
-            properties: e.target.inputAdditionalInfo.value,
-            attributeIDs: selectedAttributes.map(attribute => attribute.value)
+            product: {
+                id: id,
+                name: e.target.inputName.value,
+                description: e.target.inputDescription.value,
+                price: e.target.inputPrice.value,
+                deposit: e.target.inputDeposit.value,
+                mapId: e.target.inputMapId.value,
+                address: e.target.inputAddress.value,
+                shortestRentPeriod: e.target.inputRentPeriod.value,
+                productaddress: {
+                    stateId: e.target.inputRegion.value === null ? formState.productaddress.stateId : formState.productaddress.stateId,
+                    cityId: e.target.inputCity.value === null ? formState.productaddress.cityId : formState.productaddress.cityId,
+                    districtId: e.target.inputDistrict.value === null ? formState.productaddress.districtId : formState.productaddress.districtId
+                },
+                properties: e.target.inputAdditionalInfo.value,
+                attributes: selectedAttributes.map(attribute => ({
+                    id: attribute.value
+                }))
+            }
         })
             .then((res) => {
                 console.log(res);
                 toast('Product updated successfully', { type: 'success' })
+                window.location.href = '/admin/products';
             })
             .catch((err) => {
                 console.log(err);
@@ -174,7 +178,7 @@ const EditProduct = () => {
                 </CCol>
                 <CCol md={4}>
                     <CFormSelect id="inputRegion" label="Region" onChange={handleStateChange}>
-                        <option>{formState.productaddress.stateName}</option>
+                        <option value={formState.productaddress.stateId}>{formState.productaddress.stateName}</option>
                         {States.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
@@ -182,7 +186,7 @@ const EditProduct = () => {
                 </CCol>
                 <CCol md={4}>
                     <CFormSelect id="inputCity" label="City" onChange={handleCityChange}>
-                        <option>{formState.productaddress.cityName}</option>
+                        <option value={formState.productaddress.cityId}>{formState.productaddress.cityName}</option>
                         {Cities.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
@@ -190,14 +194,11 @@ const EditProduct = () => {
                 </CCol>
                 <CCol md={4}>
                     <CFormSelect id="inputDistrict" label="District" onChange={handleDistrictChange}>
-                        <option>{formState.productaddress.districtName}</option>
+                        <option value={formState.productaddress.districtId}>{formState.productaddress.districtName}</option>
                         {Districts.map((item) => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </CFormSelect>
-                </CCol>
-                <CCol xs={6}>
-                    <FileUploadComponent modalButtonColor={"primary"} fileLabel="Image Upload" uploadUrl="http://localhost:5006/api/Products/Upload" />
                 </CCol>
                 <CCol xs={12}>
                     <CFormTextarea
@@ -214,7 +215,6 @@ const EditProduct = () => {
                         {selectedAttributes.map(attribute => (
                             <div key={attribute.value} style={{ backgroundColor: 'rgba(247, 245, 245, 0.99)' }} className="attribute-box btn btn-light btn-sm d-flex gap-2 align-items-center py-1 px-2">
                                 <span>{attribute.label}</span>
-                                <button className='p-0' style={{ border: 'none', backgroundColor: 'transparent', fontSize: '23px' }} onClick={() => removeAttribute(attribute)}>&times;</button>
                             </div>
                         ))}
                     </div>
@@ -232,7 +232,7 @@ const EditProduct = () => {
                     <hr />
                 </CCol>
                 <CCol xs={12} className='d-flex gap-2 justify-content-end'>
-                    <CButton color="secondary" type="button" href='/products'>Cancel</CButton>
+                    <CButton color="secondary" type="button" href='/admin/products'>Cancel</CButton>
                     <CButton color="success" type="submit">Save Changes</CButton>
                 </CCol>
             </CForm>

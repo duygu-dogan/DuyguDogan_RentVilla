@@ -29,14 +29,14 @@ const NewAttributeModal = ({ attributeTypeId, onModalClose }) => {
     }
     return (
         <div>
-            <button style={{ borderRadius: "3px" }} type="button" className="btn btn-success btn-sm float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+            <button style={{ borderRadius: "3px" }} type="button" className="btn btn-success btn-sm float-end" data-bs-toggle="modal" data-bs-target={`#${attributeTypeId}`}>
                 <FontAwesomeIcon icon={faPlus} /> Add
             </button>
-            <div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" id={`${attributeTypeId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby={`${attributeTypeId}Label`} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content h-100 px-3" style={{ width: "700px" }}>
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Add Attribute</h1>
+                            <h1 className="modal-title fs-5" id={`${attributeTypeId}Label`}>Add Attribute</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body mt-5">

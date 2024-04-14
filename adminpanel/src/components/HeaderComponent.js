@@ -21,8 +21,7 @@ const HeaderComponent = () => {
         <>
             <CHeader>
                 <CContainer fluid className='mr-3'>
-                    <SignalRService procedureName={"receiveProductAddedMessage"} setMessNumber={setMessNumber} hubUrl={"product-hub"} />
-                    <SignalRService procedureName={"receiveReservationCreatedMessage"} setMessNumber={setMessNumber} hubUrl={"reservation-hub"} />
+                    <SignalRService procedureNames={["receiveProductAddedMessage", "receiveReservationCreatedMessage"]} setMessNumber={setMessNumber} hubUrls={["product-hub", "reservation-hub"]} />
                     <CHeaderBrand href="#">Dashboard</CHeaderBrand>
                     <CHeaderNav className='d-flex flex-row gap-4'>
                         <CNavItem className='d-flex gap-2 me-3'>
@@ -62,15 +61,26 @@ const HeaderComponent = () => {
                                         </CModalHeader>
                                         <CModalBody>
                                             {messages.length === 0 ? <div className='alert alert-warning'>No messages found</div> :
+                                                <div className="">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr >
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Messages</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {messages.map((message, index) => (
+                                                                <tr className=''>
+                                                                    <th scope="row">{index + 1}</th>
+                                                                    <td className='d-flex'>{message}</td>
+                                                                </tr>
+                                                            ))}
 
-                                                messages.map((message, index) => (
-                                                    <div key={index} className="d-flex gap-2">
-                                                        <div>
-                                                            <p>{message}</p>
-                                                            <p>Time: {new Date().toLocaleTimeString()}</p>
-                                                        </div>
-                                                    </div>
-                                                ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
                                         </CModalBody>
                                         <CModalFooter>
                                             <CButton color="secondary" onClick={() => setVisible(false)}>
