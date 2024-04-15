@@ -15,13 +15,14 @@ namespace RentVilla.Persistence.Services
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly IStateReadRepository _stateReadRepository;
         private readonly ICityReadRepository _cityReadRepository;
         private readonly IDistrictReadRepository _districtReadRepository;
         private readonly ICountryReadRepository _countryReadRepository;
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IMapper mapper)
+        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IMapper mapper, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _stateReadRepository = stateReadRepository;
@@ -29,7 +30,35 @@ namespace RentVilla.Persistence.Services
             _districtReadRepository = districtReadRepository;
             _countryReadRepository = countryReadRepository;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
+
+        public async Task AssignRoleToUserAsync(string userId, List<string> roleIds)
+        {
+            try
+            {
+                AppUser user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
+                    await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+                    foreach (var roleId in roleIds)
+                    {
+                        var role = await _roleManager.FindByIdAsync(roleId);
+                        var roleName = await _roleManager.GetRoleNameAsync(role);
+
+                        await _userManager.AddToRoleAsync(user, roleName);
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public async Task<CreateUserResponseDTO> CreateAsync(CreateUserDTO model)
         {
 
@@ -81,6 +110,26 @@ namespace RentVilla.Persistence.Services
                 Gender = user.Gender,
                 Address = user.Address
             }).ToList();
+        }
+
+        public async Task<List<AppRole>> GetUserRoles(string userId)
+        {
+            AppUser user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var roleIds = await _userManager.GetRolesAsync(user);
+                List<AppRole> roles = new();
+                foreach (var roleId in roleIds)
+                {
+                    var role = await _roleManager.FindByNameAsync(roleId);
+                    roles.Add(role);
+                }
+                return roles;
+            }
+            else
+            {
+                throw new NotFoundUserException();
+            }
         }
 
         public async Task<TokenDTO> UpdateRefreshToken(TokenDTO token, string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd)

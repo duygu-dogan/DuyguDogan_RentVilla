@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import DeleteUserModal from '../modals/Users/DeleteUserModal';
 import { ToastContainer, toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faKey, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';
 import AssignRoleUserModal from '../modals/Users/AssignRoleUserModal';
@@ -43,7 +41,7 @@ const UserTable = ({ rows, onPagination }) => {
                             <th className='col-3'>Name</th>
                             <th className='col-1'>Username</th>
                             <th className='col-2'>Gender</th>
-                            <th className='col-2'>#</th>
+                            <th className='col-1'>#</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,8 +56,8 @@ const UserTable = ({ rows, onPagination }) => {
                                 <td className='col-1'>{row.userName}</td>
                                 <td className='col-2'>{row.gender}</td>
                                 <td className='col-1 d-flex gap-2 justify-content-center'>
-                                    <AssignRoleUserModal id={row.id} onModalClose={handleModalClose} />
-                                    <DeleteUserModal id={row.id} onModalClose={handleModalClose} />
+                                    <AssignRoleUserModal userId={row.id} onModalClose={handleModalClose} />
+                                    {/* <DeleteUserModal userId={row.id} onModalClose={handleModalClose} /> */}
                                 </td>
                             </tr>
                         ))}

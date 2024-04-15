@@ -4,11 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import React from 'react'
 
-const DeleteUserModal = ({ id, onModalClose }) => {
-    const modalId = `deleteModal${id}`;
+const DeleteUserModal = ({ userId, onModalClose }) => {
+    const modalId = `deleteModal${userId}`;
     const handleHardDelete = (e) => {
         e.preventDefault();
-        axios.delete(`http://localhost:5006/api/users/deleteUser?UserId=${id}`)
+        axios.delete(`http://localhost:5006/api/users/deleteUser?UserId=${userId}`)
             .then(response => {
                 console.log(response);
                 onModalClose("User deleted successfully.", "success");
@@ -19,9 +19,8 @@ const DeleteUserModal = ({ id, onModalClose }) => {
             });
     }
     const handleSoftDelete = (e) => {
-        console.log(id)
         e.preventDefault();
-        axios.put(`http://localhost:5006/api/users/SoftDeleteUser?UserId=${id}`)
+        axios.put(`http://localhost:5006/api/users/SoftDeleteUser?UserId=${userId}`)
             .then(response => {
                 console.log(response);
                 onModalClose("User moved to recycle bin successfully.", "success");

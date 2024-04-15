@@ -89,7 +89,7 @@ namespace RentVilla.Persistence.Services
         {
             try
             {
-                IdentityResult result = await _roleManager.CreateAsync(new() { Id = Guid.NewGuid().ToString(), Name = name });
+                IdentityResult result = await _roleManager.CreateAsync(new() { Id = Guid.NewGuid().ToString(), Name = name, ConcurrencyStamp = Guid.NewGuid().ToString() });
                 return result.Succeeded;
             }
             catch (Exception ex)
