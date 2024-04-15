@@ -19,7 +19,7 @@ namespace RentVilla.Application.Feature.Queries.ProductImages.GetProductImages
         {
             try
             {
-                Product? product = _productReadRepository.AppDbContext.Include(x => x.ProductImageFiles).FirstOrDefault(x => x.Id == Guid.Parse(request.ProductId));
+                Product? product = _productReadRepository.AppDbContext.Include(x => x.ProductImageFiles).FirstOrDefault(x => x.Id == request.ProductId);
                 GetProductImagesQueryResponse response = new();
                 if (product != null)
                 {

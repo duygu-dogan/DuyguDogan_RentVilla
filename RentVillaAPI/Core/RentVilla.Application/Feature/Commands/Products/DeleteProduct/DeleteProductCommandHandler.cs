@@ -31,7 +31,7 @@ namespace RentVilla.Application.Feature.Commands.Products.DeleteProduct
             {
                 var product = await _productReadRepository.GetByIdAsync(request.ProductId);
                 var productAttributes = new List<ProductAttribute>();
-                productAttributes = _productAttributeReadRepository.AppDbContext.Where(pa => pa.Product.Id == Guid.Parse(request.ProductId)).ToList();
+                productAttributes = _productAttributeReadRepository.AppDbContext.Where(pa => pa.Product.Id == request.ProductId).ToList();
                 
                 _productAttributeWriteRepository.DeleteRange(productAttributes);
                 await _productWriteRepository.DeleteAsync(request.ProductId);

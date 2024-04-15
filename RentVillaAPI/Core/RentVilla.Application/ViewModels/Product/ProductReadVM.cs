@@ -15,8 +15,8 @@ namespace RentVilla.Application.ViewModels.Product
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
-        public decimal Deposit { get; set; }
+        public double Price { get; set; }
+        public double Deposit { get; set; }
         public List<string> ImageUrl { get; set; }
         public string MapId { get; set; }
         public string Address { get; set; }

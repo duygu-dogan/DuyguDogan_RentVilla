@@ -10,12 +10,12 @@ namespace RentVilla.Domain.Entities.Abstract
     public interface IAdressEntity
     {
         public Country Country { get; set; }
-        public Guid CountryId { get; set; }
+        public string CountryId { get; set; }
         public State State { get; set; }
-        public Guid StateId { get; set; }
+        public string StateId { get; set; }
         public City City { get; set; }
-        public Guid CityId { get; set; }
+        public string CityId { get; set; }
         public District District { get; set; }
-        public Guid DistrictId { get; set; }
+        public string DistrictId { get; set; }
     }
 }

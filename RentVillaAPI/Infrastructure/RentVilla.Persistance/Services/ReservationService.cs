@@ -46,7 +46,7 @@ namespace RentVilla.Persistence.Services
                     ChildrenNumber = createReservation.ChildrenNumber,
                     EndDate = createReservation.EndDate.ToUniversalTime(),
                     Note = createReservation.Note,
-                    ProductId = Guid.Parse(createReservation.ProductId),
+                    ProductId = createReservation.ProductId,
                     ConversationId = createReservation.AppUserId,
                     PaymentId = createReservation.PaymentId,
                     PaymentMethod = createReservation.PaymentMethod,

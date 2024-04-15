@@ -39,7 +39,7 @@ namespace RentVilla.API.Controllers
             return Ok(response.CartItem);
         }
         [HttpPost]
-        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.CartItems, Definition = "Adds item to cart", ActionType = ActionTypes.Writing)]
+        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.CartItems, Definition = "Adds item to cart", ActionType = ActionTypes.Writing)]
         public async Task<IActionResult> AddItemToCart(AddItemToCartCommandRequest request)
         {
             AddItemToCartCommandResponse response = await _mediator.Send(request);

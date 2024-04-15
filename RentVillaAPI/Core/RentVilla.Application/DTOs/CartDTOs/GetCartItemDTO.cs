@@ -17,8 +17,8 @@ namespace RentVilla.Application.DTOs.CartDTOs
         public int AdultNumber { get; set; }
         public int ChildrenNumber { get; set; }
         public string Note { get; set; }
-        public decimal Price { get; set; }
-        public decimal TotalCost { get; set; }
+        public double Price { get; set; }
+        public double TotalCost { get; set; }
 
     }
 }

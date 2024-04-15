@@ -17,47 +17,49 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
         {
             try
             {
-                var productDTOs = _context.Products.Select(product => new ProductDTO
+                var products = _context.Products.Include(x => x.Attributes).ThenInclude(pa => pa.Attributes).ThenInclude(a => a.AttributeType).Include(x => x.ProductImageFiles).Include(x => x.ProductAddress).ThenInclude(pa => pa.District).ThenInclude(d => d.City).ThenInclude(c => c.State).ThenInclude(s => s.Country).ToList();
+                List<ProductDTO> productDTOs = new();
+                foreach (var product in products)
                 {
-                    Id = product.Id.ToString(),
-                    Name = product.Name,
-                    Description = product.Description,
-                    Price = product.Price,
-                    Deposit = product.Deposit,
-                    MapId = product.MapId,
-                    Address = product.Address,
-                    ShortestRentPeriod = product.ShortestRentPeriod,
-                    Properties = product.Properties,
-                    Rating = product.Rating,
-                    //Reservations = product.Reservations,
-                    IsActive = product.IsActive,
-                    IsDeleted = product.IsDeleted,
-                    Attributes = _context.ProductAttributes
-                    .Where(pa => pa.Product.Id == product.Id)
-                    .Select(pa => new ProductAttributeDTO
+                    ProductDTO productDTO = new()
                     {
-                        Id = pa.Id.ToString(),
-                        Attribute = pa.Attributes.Description,
-                        AttributeType = pa.AttributeType.Name
-                    }).ToList(),
-                    ProductImages = _context.ProductImageFiles
-                    .Where(pif => pif.Product.Any(p => p.Id == product.Id))
-                    .Select(image => new ProductImageDTO
-                    {
-                        FileName = image.FileName,
-                        Path = image.Path,
-                        ProductId = image.Product.Select(p => p.Id.ToString()).ToList()
-                    }).ToList(),
-                    ProductAddress = _context.ProductAddresses
-                    .Where(pa => pa.ProductId == product.Id)
-                    .Select(pa => new ProductAddressDTO
-                    {
-                        CountryName = pa.Country.Name,
-                        StateName = pa.State.Name,
-                        CityName = pa.City.Name,
-                        DistrictName = pa.District.Name
-                    }).FirstOrDefault()
-                }).ToList();
+                        Id = product.Id.ToString(),
+                        Name = product.Name,
+                        Description = product.Description,
+                        Price = product.Price,
+                        Deposit = product.Deposit,
+                        MapId = product.MapId,
+                        Address = product.Address,
+                        ShortestRentPeriod = product.ShortestRentPeriod,
+                        Properties = product.Properties,
+                        Rating = product.Rating,
+                        IsActive = product.IsActive,
+                        IsDeleted = product.IsDeleted,
+                        ProductAddress = new ProductAddressDTO
+                        {
+                            CountryName = product.ProductAddress.Country.Name,
+                            CountryId = product.ProductAddress.CountryId.ToString(),
+                            StateName = product.ProductAddress.State.Name,
+                            StateId = product.ProductAddress.StateId.ToString(),
+                            CityName = product.ProductAddress.City.Name,
+                            CityId = product.ProductAddress.CityId.ToString(),
+                            DistrictName = product.ProductAddress.District.Name,
+                            DistrictId = product.ProductAddress.DistrictId.ToString()
+                        },
+                        Attributes = product.Attributes.Select(x => new ProductAttributeDTO
+                        {
+                            Id = x.Id.ToString(),
+                            Attribute = x.Attributes.Description,
+                            AttributeType = x.AttributeType.Name
+                        }).ToList(),
+                        ProductImages = product.ProductImageFiles.Select(x => new ProductImageDTO
+                        {
+                            FileName = x.FileName,
+                            Path = x.Path
+                        }).ToList()
+                    };
+                    productDTOs.Add(productDTO);
+                };
                 return productDTOs;
             }
             catch (Exception ex)
@@ -69,7 +71,7 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
 
         public async Task<ProductDTO> GetJoinedProductByIdAsync(string id)
         {
-            var product = await _context.Products.FindAsync(Guid.Parse(id));
+            var product = await _context.Products.FindAsync(id);
             var productAddress = _context.ProductAddresses.Where(x => x.ProductId == product.Id).Include(x => x.City).Include(x => x.State).Include(x=> x.District).Include(x => x.Country).FirstOrDefault();
             var productAttributes = _context.ProductAttributes.Where(x => x.Product.Id == product.Id).Include(x => x.Attributes).Include(x => x.AttributeType).ToList();
             var productImages = _context.ProductImageFiles.Where(x => x.Product.Any(p => p.Id == product.Id)).Include(x => x.Product).ToList();
@@ -127,7 +129,7 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
             return productDTO;
         }
 
-        public Task<IEnumerable<Product>> GetProductsByPriceRange(decimal minPrice, decimal maxPrice)
+        public Task<IEnumerable<Product>> GetProductsByPriceRange(double minPrice, double maxPrice)
         {
             throw new NotImplementedException();
         }

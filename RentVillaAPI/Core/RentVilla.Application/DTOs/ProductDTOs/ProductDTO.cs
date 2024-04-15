@@ -7,8 +7,8 @@ namespace RentVilla.Application.DTOs.ProductDTOs
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
-        public decimal Deposit { get; set; }
+        public double Price { get; set; }
+        public double Deposit { get; set; }
         public List<ProductImageDTO> ProductImages { get; set; }
         public string MapId { get; set; }
         public string Address { get; set; }

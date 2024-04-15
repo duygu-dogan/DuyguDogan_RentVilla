@@ -16,7 +16,7 @@ namespace RentVilla.Persistence.Configs
                 ConfigurationManager configurationManager = new();
                 configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../Presentation/RentVilla.API"));
                 configurationManager.AddJsonFile("appsettings.json");
-                return configurationManager.GetConnectionString("PostgresConnection");
+                return configurationManager.GetConnectionString("SqliteConnection");
             }
         }
     }

@@ -59,7 +59,7 @@ namespace RentVilla.Persistence.Repositories
 
         public async Task<TEntity> GetByIdAsync(string id, bool tracking = true)
         {
-            TEntity entity = await AppDbContext.FindAsync(Guid.Parse(id));
+            TEntity entity = await AppDbContext.FindAsync(id);
             return entity;
         }
     }

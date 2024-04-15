@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentVilla.Domain.Entities.Abstract;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Domain.Entities.Concrete.Cart;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.Concrete.Region;
+using System.Reflection.Emit;
+using System.Reflection;
 
 namespace RentVilla.Persistance.Contexts
 {
@@ -33,7 +36,7 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<ReservationCartItem> ReservationCartItems { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Endpoint> Endpoints { get; set; }
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //builder.Entity<Reservation>()
             //    .HasKey(r => r.Id);
@@ -41,7 +44,29 @@ namespace RentVilla.Persistance.Contexts
             //    .HasOne(rc => rc.Reservation)
             //    .WithOne(r => r.ReservationCart)
             //    .HasForeignKey<Reservation>(rc => rc.Id);
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                {
+                    var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
+                    var dateTimeProperties = entityType.ClrType.GetProperties()
+                        .Where(p => p.PropertyType == typeof(DateTimeOffset));
+
+                    foreach (var property in properties)
+                    {
+                        modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
+                    }
+
+                    foreach (var property in dateTimeProperties)
+                    {
+                        modelBuilder.Entity(entityType.Name).Property(property.Name)
+                            .HasConversion(new DateTimeOffsetToBinaryConverter());
+                    }
+                }
+            }
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

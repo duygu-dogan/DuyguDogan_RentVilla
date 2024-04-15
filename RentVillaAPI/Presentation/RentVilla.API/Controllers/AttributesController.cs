@@ -39,7 +39,7 @@ namespace RentVilla.API.Controllers
         [ActionName("GetTypeById")]
         public async Task<IActionResult> GetAttributeTypeById(string id)
         {
-            var attributeType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == Guid.Parse(id)).FirstOrDefault();
+            var attributeType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == id).FirstOrDefault();
             List<AttributeReadVM> attributes = new();
             foreach (var a in attributeType.Attributes)
             {
@@ -54,7 +54,7 @@ namespace RentVilla.API.Controllers
             }
             AttributeTypeReadVM model = new()
             {
-                Id = attributeType.Id.ToString(),
+                Id = attributeType.Id,
                 Name = attributeType.Name,
                 Attributes = attributes
             };
@@ -111,7 +111,7 @@ namespace RentVilla.API.Controllers
         [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Attributes, Definition = "Deletes attribute type", ActionType = ActionTypes.Deleting)]
         public async Task<IActionResult> DeleteAttributeTypeAsync(string id)
         {
-            var attributType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == Guid.Parse(id)).FirstOrDefault();
+            var attributType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == id).FirstOrDefault();
             if(attributType != null)
             {
                 _attributeWriteRepository.DeleteRange(attributType.Attributes.ToList());

@@ -42,7 +42,7 @@ namespace RentVilla.Persistence.Services
                 {
                     _menu = new()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = Guid.NewGuid().ToString(),
                         Name = menu
                     };
                     await _menuWriteRepository.AddAsync(_menu);
@@ -57,7 +57,7 @@ namespace RentVilla.Persistence.Services
                         Code = code,
                         ActionType = action.ActionType,
                         HttpType = action.HttpType,
-                        Id = Guid.NewGuid(),
+                        Id = Guid.NewGuid().ToString(),
                         Definition = action.Definition,
                         Menu = _menu
                     };

@@ -15,8 +15,8 @@ namespace RentVilla.Domain.Entities.Concrete
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
-        public decimal Deposit { get; set; }
+        public double Price { get; set; }
+        public double Deposit { get; set; }
         public ICollection<ProductImageFile> ProductImageFiles { get; set; }
         public string MapId { get; set; }
         public string Address { get; set; }

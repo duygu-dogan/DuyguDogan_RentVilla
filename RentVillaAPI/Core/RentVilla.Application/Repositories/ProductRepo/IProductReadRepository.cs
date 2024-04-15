@@ -12,7 +12,7 @@ namespace RentVilla.Application.Repositories.ProductRepo
     public interface IProductReadRepository : IReadRepository<Product>
     {
         //Fiyat aralığına göre ürünleri getirir.
-        Task<IEnumerable<Product>> GetProductsByPriceRange(decimal minPrice, decimal maxPrice);
+        Task<IEnumerable<Product>> GetProductsByPriceRange(double minPrice, double maxPrice);
         //Ürün bölgesine göre ürünleri getirir.
         Task<IEnumerable<Product>> GetProductsByRegion(string region);
         //En kısa süreliğine kiralanabilir ürünleri getirir.

@@ -27,41 +27,49 @@ namespace RentVilla.Application.Feature.Commands.Products.CreateProduct
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
         {
-            var attributes  = _attributeReadRepository.AppDbContext.Where(a => request.AttributeIds.Contains(a.Id.ToString())).Include(a => a.AttributeType).ToList();
-            List<ProductAttribute> productAttributes = new();
-            foreach (var attribute in attributes)
+            try
             {
-                productAttributes.Add(new()
+                var attributes = _attributeReadRepository.AppDbContext.Where(a => request.AttributeIds.Contains(a.Id.ToString())).Include(a => a.AttributeType).ToList();
+                List<ProductAttribute> productAttributes = new();
+                foreach (var attribute in attributes)
                 {
-                    Attributes = attribute,
-                    AttributeType = attribute.AttributeType
+                    productAttributes.Add(new()
+                    {
+                        Attributes = attribute,
+                        AttributeType = attribute.AttributeType
+                    });
+                }
+                ProductAddress productAddress = new()
+                {
+                    CountryId = "3240f95b-7adc-4257-8dd3-c91de2b14217",
+                    StateId = request.ProductAddress.StateId,
+                    CityId = request.ProductAddress.CityId,
+                    DistrictId = request.ProductAddress.DistrictId
+                };
+
+                await _productWriteRepository.AddAsync(new()
+                {
+                    Name = request.Name,
+                    Price = request.Price,
+                    Deposit = request.Deposit,
+                    Description = request.Description,
+                    Address = request.Address,
+                    MapId = request.MapId,
+                    Properties = request.Properties,
+                    ShortestRentPeriod = request.ShortestRentPeriod,
+                    Attributes = productAttributes,
+                    ProductAddress = productAddress
                 });
+                await _productWriteRepository.SaveAsync();
+                _logger.LogInformation("Product created successfully");
+                await _hubService.ProductAddedMessageAsync($"{request.Name} named product created successfully");
+                return new();
             }
-            ProductAddress productAddress = new()
+            catch (Exception ex)
             {
-                CountryId = Guid.Parse("3240f95b-7adc-4257-8dd3-c91de2b14217"),
-                StateId = Guid.Parse(request.ProductAddress.StateId),
-                CityId = Guid.Parse(request.ProductAddress.CityId),
-                DistrictId = Guid.Parse(request.ProductAddress.DistrictId)
-            };
-            
-            await _productWriteRepository.AddAsync(new()
-            {
-                Name = request.Name,
-                Price = request.Price,
-                Deposit = request.Deposit,
-                Description = request.Description,
-                Address = request.Address,
-                MapId = request.MapId,
-                Properties = request.Properties,
-                ShortestRentPeriod = request.ShortestRentPeriod,
-                Attributes = productAttributes,
-                ProductAddress = productAddress
-            });
-            await _productWriteRepository.SaveAsync();
-            _logger.LogInformation("Product created successfully");
-            await _hubService.ProductAddedMessageAsync($"{request.Name} named product created successfully");
-            return new();
+
+                throw ex;
+            }
         }
     }
 }

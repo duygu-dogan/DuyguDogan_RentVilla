@@ -11,7 +11,7 @@ namespace RentVilla.Domain.Entities.Concrete.Region
     {
         public string Name { get; set; }
         public Country Country { get; set; }
-        public Guid CountryId { get; set; }
+        public string CountryId { get; set; }
         public ICollection<StateImageFile> StateImageFiles { get; set; }
     }
 }

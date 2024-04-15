@@ -43,7 +43,8 @@ namespace RentVilla.Persistence
             }).AddEntityFrameworkStores<RentVillaDbContext>();
 
             
-            services.AddDbContext<RentVillaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString));
+            //services.AddDbContext<RentVillaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString));
+            services.AddDbContext<RentVillaDbContext>(options => options.UseSqlite(Configuration.GetConnectionString));
 
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();

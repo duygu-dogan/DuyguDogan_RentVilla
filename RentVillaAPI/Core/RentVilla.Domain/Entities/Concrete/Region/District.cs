@@ -11,7 +11,7 @@ namespace RentVilla.Domain.Entities.Concrete.Region
     {
         public string Name { get; set; }
         public City City { get; set; }
-        public Guid CityId { get; set; }
+        public string CityId { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ namespace RentVilla.Domain.Entities.Concrete.Region
     public class City: BaseEntity
     {
         public State State { get; set; }
-        public Guid StateId { get; set; }
+        public string StateId { get; set; }
         public string Name { get; set; }
     }
 }

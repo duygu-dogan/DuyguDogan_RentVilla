@@ -35,21 +35,29 @@ builder.Services.AddStorage<AzureStorage>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5161", "https://localhost:5161", "http://localhost:7246", "https://localhost:7246", "http://localhost:5006", "https://localhost:5006", "https://localhost:7084", "http://localhost:7084").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
+
+//Logger log = new LoggerConfiguration()
+//    .WriteTo.Console()
+//    .WriteTo.File("logs/log.txt")
+//    .WriteTo.PostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection"), "logs", 
+//    needAutoCreateTable: true,
+//    columnOptions: new Dictionary<string, ColumnWriterBase>
+//    {
+//        {"message", new RenderedMessageColumnWriter() },
+//        {"message_template", new MessageTemplateColumnWriter() },
+//        {"level", new LevelColumnWriter() },
+//        {"exception", new ExceptionColumnWriter()},
+//        {"temp_stamp", new TimestampColumnWriter()},
+//        {"log_event", new LogEventSerializedColumnWriter() },
+//        {"user_name", new UserNameColumnWriter()  }
+//    })
+//    .Enrich.FromLogContext()
+//    .MinimumLevel.Information()
+//    .CreateLogger();
 Logger log = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt")
-    .WriteTo.PostgreSQL(builder.Configuration.GetConnectionString("PostgresConnection"), "logs", 
-    needAutoCreateTable: true,
-    columnOptions: new Dictionary<string, ColumnWriterBase>
-    {
-        {"message", new RenderedMessageColumnWriter() },
-        {"message_template", new MessageTemplateColumnWriter() },
-        {"level", new LevelColumnWriter() },
-        {"exception", new ExceptionColumnWriter()},
-        {"temp_stamp", new TimestampColumnWriter()},
-        {"log_event", new LogEventSerializedColumnWriter() },
-        {"user_name", new UserNameColumnWriter()  }
-    })
+    .WriteTo.SQLite(builder.Configuration.GetConnectionString("SqliteConnection"), "Logs")
     .Enrich.FromLogContext()
     .MinimumLevel.Information()
     .CreateLogger();

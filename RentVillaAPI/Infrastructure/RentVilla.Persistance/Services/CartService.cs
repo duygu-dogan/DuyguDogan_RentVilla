@@ -52,18 +52,11 @@ namespace RentVilla.Persistence.Services
                 AppUser? user = await _userManager.Users.Include(u => u.Carts)
                     .FirstOrDefaultAsync(u => u.UserName == username);
 
-                var userCart = from cart in user.Carts
-                               //join reservation in _reservationReadRepository.AppDbContext
-                               //on cart.Id equals reservation.Id into CartReservations
-                               //from cr in CartReservations.DefaultIfEmpty()
-                               select new
-                               {
-                                   Cart = cart
-                               };
+                var userCart = _resCartReadRepository.AppDbContext.Where(rc => rc.UserId == user.Id).Include(rc => rc.CartItems).FirstOrDefault();
                 ReservationCart? targetCart = null;
-                if (userCart.Any())
+                if (userCart != null)
                 {
-                    targetCart = userCart.First()?.Cart;
+                    targetCart = userCart;
                 }
                 else
                 {
@@ -88,18 +81,18 @@ namespace RentVilla.Persistence.Services
                 ReservationCart targetCart = await GetTargetCart();
                 if (targetCart != null)
                 {
-                    var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.ReservationCartId == targetCart.Id && rci.ProductId == Guid.Parse(cartItemDTO.ProductId));
+                    var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.ReservationCartId == targetCart.Id && rci.ProductId == cartItemDTO.ProductId);
                     if (cartItem != null)
                     {
                         ReservationCartItem updatedItem = new ReservationCartItem
                         {
                             Id = cartItem.Id,
-                            ProductId = Guid.Parse(cartItemDTO.ProductId),
+                            ProductId = cartItemDTO.ProductId,
                             AdultNumber = cartItemDTO.AdultNumber,
                             ChildrenNumber = cartItemDTO.ChildrenNumber,
                             Note = cartItemDTO.Note,
-                            StartDate = cartItemDTO.StartDate.ToUniversalTime(),
-                            EndDate = cartItemDTO.EndDate.ToUniversalTime(),
+                            StartDate = cartItemDTO.StartDate,
+                            EndDate = cartItemDTO.EndDate,
                             ProductPrice = cartItemDTO.Price,
                             TotalCost = cartItemDTO.TotalCost,
                             ReservationCartId = targetCart.Id,
@@ -113,13 +106,13 @@ namespace RentVilla.Persistence.Services
                         var product = await _productReadRepository.GetByIdAsync(cartItemDTO.ProductId);
                         ReservationCartItem newCartItem = new ReservationCartItem
                         {
-                            Id = Guid.NewGuid(),
-                            ProductId = Guid.Parse(cartItemDTO.ProductId),
+                            Id = Guid.NewGuid().ToString(),
+                            ProductId = cartItemDTO.ProductId,
                             AdultNumber = cartItemDTO.AdultNumber,
                             ChildrenNumber = cartItemDTO.ChildrenNumber,
                             Note = cartItemDTO.Note,
-                            StartDate = cartItemDTO.StartDate.ToUniversalTime(),
-                            EndDate = cartItemDTO.EndDate.ToUniversalTime(),
+                            StartDate = cartItemDTO.StartDate,
+                            EndDate = cartItemDTO.EndDate,
                             ProductPrice = cartItemDTO.Price,
                             TotalCost = cartItemDTO.TotalCost,
                             ReservationCartId = targetCart.Id,
@@ -179,7 +172,7 @@ namespace RentVilla.Persistence.Services
 
         public async Task RemoveItemFromCartAsync(string cartItemId)
         {
-            var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == Guid.Parse(cartItemId));
+            var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == cartItemId);
             if (cartItem != null)
             {
                 _resCartItemWriteRepository.Delete(cartItem);
@@ -194,7 +187,7 @@ namespace RentVilla.Persistence.Services
 
         public async Task UpdateItemInCartAsync(GetCartItemDTO cartItemDTO)
         {
-            var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == Guid.Parse(cartItemDTO.CartItemId));
+            var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == cartItemDTO.CartItemId);
             if (cartItem != null)
             {
                 cartItem.Note = cartItemDTO.Note;
@@ -219,7 +212,7 @@ namespace RentVilla.Persistence.Services
             try
             {
                 ReservationCart targetCart = await GetTargetCart();
-                var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == Guid.Parse(cartItemId));
+                var cartItem = await _resCartItemReadRepository.GetSingleAsync(rci => rci.Id == cartItemId);
                 if (cartItem != null)
                 {
                     return new GetCartItemDTO

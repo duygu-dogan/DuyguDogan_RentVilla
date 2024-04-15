@@ -17,8 +17,8 @@ namespace RentVilla.Persistence.Configs
             builder.Property(r => r.Id).ValueGeneratedOnAdd();
             builder.Property(r => r.StartDate).IsRequired();
             builder.Property(r => r.EndDate).IsRequired();
-            builder.Property(r => r.TotalCost).HasColumnType("decimal(18,2)").IsRequired();
-            builder.Property(r => r.ProductPrice).HasColumnType("decimal(18,2)").IsRequired();
+            builder.Property(r => r.TotalCost).HasColumnType("double").IsRequired();
+            builder.Property(r => r.ProductPrice).HasColumnType("double").IsRequired();
         }
     }
 }
