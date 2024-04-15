@@ -40,7 +40,7 @@ namespace RentVilla.Persistence.Repositories
 
         public async Task<bool> DeleteAsync(string id)
         {
-            TEntity entity = await AppDbContext.FindAsync(Guid.Parse(id));
+            TEntity entity = await AppDbContext.FindAsync(id);
             return Delete(entity);
         }
 

@@ -80,7 +80,7 @@ namespace RentVilla.MVC.Controllers
                             PaymentData = model.PaymentData
                         }
                     };
-                    HttpResponseMessage httpResponse = await client.PostAsJsonAsync("Reservations", requestData);
+                    HttpResponseMessage httpResponse = await client.PostAsJsonAsync("Reservations/CreateReservation", requestData);
                     if (httpResponse.IsSuccessStatusCode)
                     {
                         HttpContext.Response.Cookies.Delete("RentVilla.Cookie_SC");

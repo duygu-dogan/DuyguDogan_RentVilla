@@ -1,6 +1,7 @@
 ﻿using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RentVilla.Application.Abstraction.Iyzico;
@@ -31,7 +32,7 @@ namespace RentVilla.Iyzico.IyzicoServices
         {
             try
             {
-                var reservationCart = await _resCartReadRepository.GetSingleAsync(rc => rc.UserId == reservationDTO.AppUserId);
+                var reservationCart = await _resCartReadRepository.AppDbContext.Include(x => x.CartItems).FirstOrDefaultAsync(x => x.UserId == reservationDTO.AppUserId);
 
                 var apiKey = _configuration["Iyzico:ApiKey"];
                 var secretKey = _configuration["Iyzico:SecretKey"];
