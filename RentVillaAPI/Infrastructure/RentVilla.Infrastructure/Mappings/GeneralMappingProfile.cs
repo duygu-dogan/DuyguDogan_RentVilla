@@ -27,6 +27,7 @@ namespace RentVilla.Persistence.Mappings
             CreateMap<ReservationCartItem, AddCartItemDTO>().ReverseMap();
             CreateMap<ReservationCartItem, GetCartItemDTO>();
             CreateMap<Reservation, CreateReservationDTO>();
+            CreateMap<Reservation, GetReservationDTO>();
             CreateMap<Domain.Entities.Concrete.File, ProductImageDTO>();
             CreateMap<ProductAddress, ProductAddressDTO>();
         }

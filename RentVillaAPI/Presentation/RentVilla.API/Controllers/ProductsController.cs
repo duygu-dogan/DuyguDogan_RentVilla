@@ -1,5 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentVilla.Application.Consts;
+using RentVilla.Application.CustomAttributes;
+using RentVilla.Application.Enums;
 using RentVilla.Application.Feature.Commands.ProductImages.UploadProductImages;
 using RentVilla.Application.Feature.Commands.Products.CreateProduct;
 using RentVilla.Application.Feature.Commands.Products.DeleteProduct;
@@ -32,6 +36,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpGet]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Gets deleted products", ActionType = ActionTypes.Reading)]
+
         public async Task<IActionResult> GetDeletedProducts([FromQuery] GetDeletedProductsRequest request)
         {
             GetDeletedProductsResponse response = await _mediator.Send(request);
@@ -52,6 +58,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Adds product", ActionType = ActionTypes.Writing)]
         public async Task<IActionResult> Add(CreateProductCommandRequest createProductCommandRequest)
         {
             CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);
@@ -59,6 +67,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Uploads product image", ActionType = ActionTypes.Writing)]
         public async Task<IActionResult> UploadProductImage([FromQuery] UploadProductImagesRequest uploadProductImagesRequest)
         {
             uploadProductImagesRequest.Files = Request.Form.Files;
@@ -67,6 +77,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Updates product by id", ActionType = ActionTypes.Updating)]
         public async Task<IActionResult> Update([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
             await _mediator.Send(updateProductCommandRequest);
@@ -74,6 +86,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Deletes product by id", ActionType = ActionTypes.Deleting)]
         public async Task<IActionResult> Delete([FromQuery] DeleteProductCommandRequest deleteProductCommandRequest)
         {
             await _mediator.Send(deleteProductCommandRequest);
@@ -81,6 +95,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Changes product isDeleted status", ActionType = ActionTypes.Updating)]
         public async Task<IActionResult> SoftDelete([FromQuery] SoftDeleteProductCommandRequest commandRequest)
         {
             var response = await _mediator.Send(commandRequest);

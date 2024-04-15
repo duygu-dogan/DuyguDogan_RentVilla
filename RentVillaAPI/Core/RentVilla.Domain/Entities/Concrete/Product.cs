@@ -24,7 +24,6 @@ namespace RentVilla.Domain.Entities.Concrete
         public int ShortestRentPeriod { get; set; }
         public string Properties { get; set; }
         public string Rating { get; set; }
-        public ReservationStatusType Status { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
         public ICollection<ProductAttribute> Attributes { get; set; }
         public bool IsActive { get; set; } = true;

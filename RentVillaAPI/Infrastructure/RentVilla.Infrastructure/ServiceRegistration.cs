@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RentVilla.Application.Abstraction.Services.AuthConfigurations;
 using RentVilla.Application.Abstraction.Storage;
 using RentVilla.Application.Abstraction.Token;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Infrastructure.Enums;
 using RentVilla.Infrastructure.Services;
+using RentVilla.Infrastructure.Services.AuthConfiguration;
 using RentVilla.Infrastructure.Services.Storage;
 using RentVilla.Infrastructure.Services.Storage.Azure;
 using RentVilla.Infrastructure.Services.Storage.Local;
@@ -22,6 +24,7 @@ namespace RentVilla.Infrastructure
         {
             serviceCollection.AddScoped<IStorageService, StorageService>();
             serviceCollection.AddScoped<ITokenHandler, TokenHandler>();
+            serviceCollection.AddScoped<IAuthConfigService, AuthConfigService>();
 
         }
         public static void AddStorage<T>(this IServiceCollection serviceCollection) where T : Storage, IStorage

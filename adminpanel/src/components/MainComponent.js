@@ -1,11 +1,44 @@
 import { CCol, CRow } from '@coreui/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import WidgetComponent from './WidgetComponent'
+import ReservationTable from './helpers/ReservationTable'
+import axios from 'axios'
 
 const MainComponent = () => {
+    const [items, setItems] = useState([]);
+    const [pagination, setPagination] = useState(
+        { Page: 0, Size: 10 }
+    );
+    const handlePagination = (rowSize, pageSize) => {
+        console.log(rowSize, pageSize)
+        setPagination(
+            { Page: pageSize, Size: rowSize }
+        );
+    }
+    useEffect(() => {
+        axios.get(`http://localhost:5006/api/reservations/getactivereservations`, { params: pagination })
+            .then((res) => {
+                console.log(res);
+                const newItems = res.data.activeReservations.map(item => ({
+                    id: item.id,
+                    user: item.userName,
+                    name: item.productName,
+                    totalCost: item.totalCost,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    isPaid: item.isPaid,
+                    status: item.reservationStatus,
+                }));
+                setItems(newItems);
+                console.log(newItems)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, []);
     return (
         <>
-            <CRow className='main-widget-container'>
+            <CRow className='main-widget-container col-md-11 mx-auto'>
                 <CCol sm={3}>
                     <WidgetComponent className='main-widget'
                         color={"primary"}
@@ -27,6 +60,12 @@ const MainComponent = () => {
                         title={'Products'} />
                 </CCol>
             </CRow>
+            <div className='container d-flex flex-column mt-2'>
+                <div className='container-fluid col-md-11'>
+                    <h4 className='container-fluid mb-2'>Active Reservations</h4>
+                </div>
+                <ReservationTable rows={items} onPagination={handlePagination} />
+            </div>
         </>
     )
 }

@@ -22,6 +22,21 @@ namespace RentVilla.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AppRoleEndpoint", b =>
+                {
+                    b.Property<Guid>("EndpointsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RolesId")
+                        .HasColumnType("text");
+
+                    b.HasKey("EndpointsId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("AppRoleEndpoint");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -284,6 +299,40 @@ namespace RentVilla.Persistence.Migrations
                     b.ToTable("ReservationCartItems");
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Endpoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActionType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Definition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HttpType")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("MenuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("Endpoints");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.File", b =>
                 {
                     b.Property<Guid>("Id")
@@ -429,6 +478,26 @@ namespace RentVilla.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Menu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
+                });
+
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -469,9 +538,6 @@ namespace RentVilla.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("ShortestRentPeriod")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -703,6 +769,9 @@ namespace RentVilla.Persistence.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("numeric");
 
@@ -745,6 +814,21 @@ namespace RentVilla.Persistence.Migrations
                     b.HasBaseType("RentVilla.Domain.Entities.Concrete.File");
 
                     b.HasDiscriminator().HasValue("StateImageFile");
+                });
+
+            modelBuilder.Entity("AppRoleEndpoint", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Endpoint", null)
+                        .WithMany()
+                        .HasForeignKey("EndpointsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Identity.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -869,6 +953,15 @@ namespace RentVilla.Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ReservationCart");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Endpoint", b =>
+                {
+                    b.HasOne("RentVilla.Domain.Entities.Concrete.Menu", "Menu")
+                        .WithMany("Endpoints")
+                        .HasForeignKey("MenuId");
+
+                    b.Navigation("Menu");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Region.City", b =>
@@ -1023,6 +1116,11 @@ namespace RentVilla.Persistence.Migrations
                     b.Navigation("Reservations");
 
                     b.Navigation("UserAddress");
+                });
+
+            modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Menu", b =>
+                {
+                    b.Navigation("Endpoints");
                 });
 
             modelBuilder.Entity("RentVilla.Domain.Entities.Concrete.Product", b =>

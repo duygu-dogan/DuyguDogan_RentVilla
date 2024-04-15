@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Repositories;
 using RentVilla.Application.Repositories.AttributeRepo;
+using RentVilla.Application.Repositories.EndpointRepo;
 using RentVilla.Application.Repositories.FileRepo;
+using RentVilla.Application.Repositories.MenuRepo;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Application.Repositories.RegionRepo;
 using RentVilla.Application.Repositories.ReservationCartItemRepo;
@@ -14,7 +16,9 @@ using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Persistance.Contexts;
 using RentVilla.Persistence.Configs;
 using RentVilla.Persistence.Repositories.AttributeCRepo;
+using RentVilla.Persistence.Repositories.EndpointCRepo;
 using RentVilla.Persistence.Repositories.FileCRepo;
+using RentVilla.Persistence.Repositories.MenuCRepo;
 using RentVilla.Persistence.Repositories.ProductCRepo;
 using RentVilla.Persistence.Repositories.RegionCRepo;
 using RentVilla.Persistence.Repositories.RepoCRepo;
@@ -68,15 +72,21 @@ namespace RentVilla.Persistence
             services.AddScoped<IStateImageFileWriteRepository, StateImageFileWriteRepository>();
             services.AddScoped<IStateImageFileReadRepository, StateImageFileReadRepository>();
 
-services.AddScoped<IResCartReadRepository, ResCartReadRepository>();
+            services.AddScoped<IResCartReadRepository, ResCartReadRepository>();
             services.AddScoped<IResCartWriteRepository, ResCartWriteRepository>();
             services.AddScoped<IResCartItemReadRepository, ResCartItemReadRepository>();
             services.AddScoped<IResCartItemWriteRepository, ResCartItemWriteRepository>();
+
+            services.AddScoped<IEndpointWriteRepository, EndpointWriteRepository>();
+            services.AddScoped<IEndpointReadRepository, EndpointReadRepository>();
+            services.AddScoped<IMenuReadRepository, MenuReadRepository>();
+            services.AddScoped<IMenuWriteRepository, MenuWriteRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IRoleService, RoleService>();
         }
     }
 }

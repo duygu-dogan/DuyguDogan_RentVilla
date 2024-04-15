@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.DTOs.TokenDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
@@ -64,6 +65,24 @@ namespace RentVilla.Persistence.Services
                 throw;
             }
         }
+
+        public async Task<List<GetUserDTO>> GetAllUsersAsync(int page, int size)
+        {
+            var users = await _userManager.Users.Skip(page * size).Take(size).ToListAsync();
+            return users.Select(user => new GetUserDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = user.BirthDate,
+                Gender = user.Gender,
+                Address = user.Address
+            }).ToList();
+        }
+
         public async Task<TokenDTO> UpdateRefreshToken(TokenDTO token, string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd)
         {
             try

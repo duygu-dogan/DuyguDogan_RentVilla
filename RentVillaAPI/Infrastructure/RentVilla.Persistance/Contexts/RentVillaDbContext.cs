@@ -31,6 +31,8 @@ namespace RentVilla.Persistance.Contexts
         public DbSet<ProductImageFile> ProductImageFiles { get; set; }
         public DbSet<ReservationCart> ReservationCarts { get; set; }
         public DbSet<ReservationCartItem> ReservationCartItems { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Endpoint> Endpoints { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //builder.Entity<Reservation>()

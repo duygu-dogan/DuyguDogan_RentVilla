@@ -22,5 +22,7 @@ namespace RentVilla.Domain.Entities.Concrete
         public string PaymentId { get; set; }
         public PaymentType PaymentType { get; set; }
         public string PaymentMethod { get; set; }
+        public ReservationStatusType Status { get; set; }
+
     }
 }

@@ -83,6 +83,7 @@ const NewProduct = () => {
         })
             .then((res) => {
                 toast('Product added successfully', { type: 'success' })
+                window.location.href = '/admin/products';
             })
             .catch((err) => {
                 console.log(err);
@@ -176,7 +177,7 @@ const NewProduct = () => {
                     <hr />
                 </CCol>
                 <CCol xs={12} className='d-flex gap-2 justify-content-end'>
-                    <CButton color="secondary" type="button" href='/products'>Back to Products</CButton>
+                    <CButton color="secondary" type="button" href='/admin/products'>Back to Products</CButton>
                     <CButton color="success" type="submit">Add Product</CButton>
                 </CCol>
             </CForm>

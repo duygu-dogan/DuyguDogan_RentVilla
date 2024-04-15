@@ -27,7 +27,6 @@ const ListProducts = () => {
                     isactive: item.isActive
                 }));
                 setItems(newItems);
-                console.log(newItems)
             })
             .catch((err) => {
                 console.log(err)

@@ -17,6 +17,11 @@ import SidebarComponent from './components/SidebarComponent';
 import HeaderComponent from './components/HeaderComponent';
 import MainComponent from './components/MainComponent';
 import ListStateImage from './components/pages/Settings/Region/ListStateImage';
+import ListReservations from './components/pages/Reservations/ListReservations';
+import ListPassiveReservations from './components/pages/Reservations/ListPassiveReservations';
+import RoleAssignment from './components/pages/Roles/RoleAssignment';
+import ListRoles from './components/pages/Roles/ListRoles';
+import ListUsers from './components/pages/Users/ListUsers';
 
 function Layout() {
   return (
@@ -42,6 +47,11 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <MainComponent /> },
       { path: 'products', element: <ListProducts /> },
+      { path: 'users', element: <ListUsers /> },
+      { path: 'reservations', element: <ListReservations /> },
+      { path: 'roleassignment', element: <RoleAssignment /> },
+      { path: 'listroles', element: <ListRoles /> },
+      { path: 'passivereservations', element: <ListPassiveReservations /> },
       { path: 'newproduct', element: <NewProduct /> },
       { path: 'attributetypes', element: <ListAttributeTypes /> },
       { path: 'attributes/:id', element: <ListAttributes /> },

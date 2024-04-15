@@ -43,18 +43,8 @@ const SidebarComponent = () => {
                         </>
                     }
                 >
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
-                </CNavGroup>
-                <CNavGroup
-                    toggler={
-                        <>
-                            <CIcon customClassName="nav-icon" icon={cilUser} /> Customers
-                        </>
-                    }
-                >
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
+                    <CNavItem href="/admin/reservations"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Active Reservations</CNavItem>
+                    <CNavItem href="/admin/passivereservations"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Passive Reservations</CNavItem>
                 </CNavGroup>
                 <CNavGroup
                     toggler={
@@ -63,8 +53,17 @@ const SidebarComponent = () => {
                         </>
                     }
                 >
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
-                    <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item</CNavItem>
+                    <CNavItem href="/admin/roleassignment"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Role Assignment</CNavItem>
+                    <CNavItem href="/admin/listroles"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Role List</CNavItem>
+                </CNavGroup>
+                <CNavGroup
+                    toggler={
+                        <>
+                            <CIcon customClassName="nav-icon" icon={cilUser} /> Manage Users
+                        </>
+                    }
+                >
+                    <CNavItem href="/admin/users"><span className="nav-icon"><span className="nav-icon-customer"></span></span> User List</CNavItem>
                 </CNavGroup>
                 <CNavGroup
                     toggler={

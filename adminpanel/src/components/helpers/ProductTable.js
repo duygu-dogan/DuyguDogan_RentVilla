@@ -31,6 +31,7 @@ const ProductTable = ({ rows, onPagination }) => {
     }
     const handleModalClose = (message, type) => {
         toast(message, { type: type });
+        window.location.reload();
     }
     return (
         <div className='container-fluid'>

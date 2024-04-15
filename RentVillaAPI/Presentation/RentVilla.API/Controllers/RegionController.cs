@@ -1,6 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentVilla.Application.Consts;
+using RentVilla.Application.CustomAttributes;
 using RentVilla.Application.DTOs.RegionDTOs;
+using RentVilla.Application.Enums;
 using RentVilla.Application.Feature.Commands.StateImages.DeleteStateImages;
 using RentVilla.Application.Feature.Commands.StateImages.UploadStateImages;
 using RentVilla.Application.Feature.Queries.Region.GetAllStates;
@@ -51,12 +55,16 @@ namespace RentVilla.API.Controllers
             return Ok(response.imageFiles);
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Regions, Definition = "Uploads state image", ActionType = ActionTypes.Writing)]
         public async Task<IActionResult> UploadStateImage([FromQuery] UploadStateImagesCommandRequest uploadStateImagesCommandRequest)
         {
             var response = await _mediator.Send(uploadStateImagesCommandRequest);
             return Ok(response);
         }
-        [HttpPost]
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Regions, Definition = "Deletes state image", ActionType = ActionTypes.Deleting)]
         public async Task<IActionResult> DeleteStateImage([FromBody] DeleteStateImagesCommandRequest deleteStateImagesCommandRequest)
         {
             var response = await _mediator.Send(deleteStateImagesCommandRequest);

@@ -10,5 +10,7 @@ namespace RentVilla.Domain.Entities.Concrete.Identity
 {
     public class AppRole:IdentityRole<string>
     {
+        public ICollection<Endpoint> Endpoints { get; set; }
+
     }
 }
