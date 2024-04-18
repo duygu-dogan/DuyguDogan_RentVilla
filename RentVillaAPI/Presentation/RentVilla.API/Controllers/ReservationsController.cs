@@ -24,8 +24,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Creates new reservation", ActionType = ActionTypes.Writing)]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Creates new reservation", ActionType = ActionTypes.Writing)]
         public async Task<ActionResult> CreateReservation(CreateReservationCommandRequest request)
         {
            CreateReservationCommandResponse response = await _mediator.Send(request);
@@ -34,7 +34,7 @@ namespace RentVilla.API.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Gets active reservations", ActionType = ActionTypes.Reading)]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Gets active reservations", ActionType = ActionTypes.Reading)]
         public async Task<ActionResult> GetActiveReservations([FromQuery] GetActiveReservationsQueryRequest getReservationsQueryRequest)
         {
             GetActiveReservationsQueryResponse response = await _mediator.Send(getReservationsQueryRequest);
@@ -43,7 +43,7 @@ namespace RentVilla.API.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Gets passive reservations", ActionType = ActionTypes.Reading)]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Gets passive reservations", ActionType = ActionTypes.Reading)]
         public async Task<ActionResult> GetPassiveReservations([FromQuery] GetPassiveReservationsQueryRequest getPassiveReservationsQueryRequest)
         {
             GetPassiveReservationsQueryResponse response = await _mediator.Send(getPassiveReservationsQueryRequest);
@@ -52,7 +52,7 @@ namespace RentVilla.API.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Updates reservation status", ActionType = ActionTypes.Updating)]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Updates reservation status", ActionType = ActionTypes.Updating)]
         public async Task<ActionResult> UpdateReservationStatus([FromBody] UpdateReservationStatusCommandRequest request)
         {
             var response = await _mediator.Send(request);
@@ -61,7 +61,7 @@ namespace RentVilla.API.Controllers
 
         [HttpDelete]
         [Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Deletes given reservation", ActionType = ActionTypes.Deleting)]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Reservations, Definition = "Deletes given reservation", ActionType = ActionTypes.Deleting)]
         public async Task<ActionResult> CancelReservation([FromQuery] CancelReservationCommandRequest request)
         {
             var response = await _mediator.Send(request);

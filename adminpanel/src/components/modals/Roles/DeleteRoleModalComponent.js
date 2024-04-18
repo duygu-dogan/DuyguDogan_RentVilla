@@ -1,10 +1,14 @@
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
+import Cookies from 'js-cookie';
 
 const DeleteRoleModalComponent = (id, onModalClose) => {
     const modalId = `deleteModal${id.id}`;
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     const handleDelete = (e) => {
         e.preventDefault();

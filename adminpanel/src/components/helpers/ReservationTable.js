@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import CancelReservationModal from '../modals/Reservations/CancelReservationModal';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const ReservationTable = ({ rows, onPagination }) => {
     const [page, setPage] = useState(0);
@@ -28,12 +29,13 @@ const ReservationTable = ({ rows, onPagination }) => {
         onPagination(page, newRowsPerPage);
         setPage(0);
     };
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const handleSwitchChange = (index, row, newStatus) => {
         const updatedSwitchState = [...switchState];
         updatedSwitchState[index] = newStatus;
         setSwitchState(updatedSwitchState);
-
-        axios.put(`http://localhost:5006/api/reservations/updatereservationstatus`, { ReservationId: row.id, Status: newStatus })
+        axios.put(`http://localhost:5006/api/reservations/updatereservationstatus`, { ReservationId: row.id, Status: newStatus, withCredentials: true })
             .then((response) => {
                 console.log('Reservation status updated successfully');
                 toast('Reservation status updated successfully', { type: 'success' });
@@ -53,7 +55,7 @@ const ReservationTable = ({ rows, onPagination }) => {
             <ToastContainer
                 position='bottom-right'
             />
-            <div className='paginated-table col-md-11 mt-4 mx-auto'  >
+            <div className='paginated-table col-md-12 mt-4 me-3 mx-auto'  >
                 <table className='table' aria-label="custom pagination table">
                     <thead>
                         <tr className='table-headers row justify-content-center text-center align-items-center'>

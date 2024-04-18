@@ -31,24 +31,24 @@ namespace RentVilla.API.Controllers
             return Ok(response);
         }
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Gets all users", Menu = "Users")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Gets all users", Menu = "Users")]
         public async Task<IActionResult> GetAllUsers(int page, int size)
         {
             var users = await _userService.GetAllUsersAsync(page, size);
             return Ok(users);
         }
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Assings roles to user", Menu = "Users")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Assings roles to user", Menu = "Users")]
         public async Task<IActionResult> AssignRoleToUser(AssignRoleToUserDTO assignRoleToUserDTO)
         {
             await _userService.AssignRoleToUserAsync(assignRoleToUserDTO.UserId, assignRoleToUserDTO.RoleIds);
             return Ok();
         }
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Gets user roles", Menu = "Users")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition ="Gets user roles", Menu = "Users")]
         public async Task<IActionResult> GetUserRoles(string userId)
         {
             var roles = await _userService.GetUserRoles(userId);

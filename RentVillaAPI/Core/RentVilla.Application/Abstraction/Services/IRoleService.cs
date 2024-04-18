@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RentVilla.Application.DTOs.AuthConfigurationDTOs;
+using RentVilla.Domain.Entities.Concrete.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,6 @@ namespace RentVilla.Application.Abstraction.Services
         Task<bool> DeleteRole(string id);
         Task<bool> UpdateRole(string id, string name);
         Task AssignRoleToEndpointAsync(string[] roleIds, string code, Type type, string menu);
-        Task<List<string>> GetRolesToEndpointAsync(string code, string menu);
+        Task<List<GetRolesDTO>> GetRolesToEndpointAsync(string code, string menu);
     }
 }

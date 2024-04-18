@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const AddRoleModalComponent = ({ id, onModalClose }) => {
     const [name, setName] = useState('');
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name) {

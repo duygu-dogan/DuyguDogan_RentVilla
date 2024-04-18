@@ -29,6 +29,8 @@ namespace RentVilla.API.Controllers
         
         [HttpGet]
         [ActionName("GetTypes")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Attributes, Definition = "Gets nondeleted attribute types", ActionType = ActionTypes.Reading)]
         public IActionResult GetAttributeTypes()
         {
             var models = _attributeTypeReadRepository.GetNonDeletedAttributeTypes();
@@ -37,6 +39,8 @@ namespace RentVilla.API.Controllers
         
         [HttpGet]
         [ActionName("GetTypeById")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Attributes, Definition = "Gets attribute types by id", ActionType = ActionTypes.Reading)]
         public async Task<IActionResult> GetAttributeTypeById(string id)
         {
             var attributeType = _attributeTypeReadRepository.AppDbContext.Include(at => at.Attributes).Where(at => at.Id == id).FirstOrDefault();

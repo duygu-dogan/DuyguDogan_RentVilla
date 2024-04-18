@@ -23,13 +23,14 @@ namespace RentVilla.API.Controllers
             _roleService = roleService;
         }
         [HttpGet]
-        [AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition = "Gets authorize definition endpoints", Menu = "AuthConfig")]
+        //[AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition = "Gets authorize definition endpoints", Menu = "AuthConfig")]
         public IActionResult GetAuthorizeDefinitionEndpoints()
         {
            var datas = _configService.GetAuthorizeDefinitionEndpoints(typeof(Program));
             return Ok(datas);
         }
         [HttpPost]
+        //[AuthorizeDefinition(ActionType = ActionTypes.Writing, Definition = "Assigns roles to endpoints", Menu = "AuthConfig")]
         public async Task<IActionResult> AssingRoleEndpoint(AssignRoleDTO assignRoleDTO)
         {
             assignRoleDTO.Type = typeof(Program);
@@ -37,6 +38,7 @@ namespace RentVilla.API.Controllers
             return Ok();
         }
         [HttpGet]
+        //[AuthorizeDefinition(ActionType = ActionTypes.Reading, Definition = "Gets roles of the endpoints", Menu = "AuthConfig")]
         public async Task<IActionResult> GetRolesToEndpoint(string code, string menu)
         {
             var roles = await _roleService.GetRolesToEndpointAsync(code, menu);

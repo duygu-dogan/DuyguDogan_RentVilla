@@ -6,6 +6,7 @@ import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRoun
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const DeletedAttributeTable = () => {
     const [rows, setRows] = useState([]);
@@ -23,7 +24,8 @@ const DeletedAttributeTable = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const fetchItems = useCallback(() => {
         axios.get('http://localhost:5006/api/attributes/getdeletedtypes')
             .then((res) => {

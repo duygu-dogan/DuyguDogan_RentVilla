@@ -2,29 +2,30 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RentVilla.MVC.Services.TokenCookieService;
+using ServiceStack;
 using System.Net.Http.Headers;
 
 namespace RentVilla.MVC.Helpers.TokenHandling
 {
-    public class AccessTokenFilterAttribute : ActionFilterAttribute
+    public class AccessTokenFilter : IAsyncActionFilter
     {
-        [AccessTokenFilterAttribute(Order = int.MinValue)]
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            var request = filterContext.HttpContext.Request;
-            var accessToken = request.Cookies["RentVilla.Cookie_AT"];
+        private readonly ITokenCookieHandlerService _tokenService;
 
-            if (filterContext.ActionDescriptor.EndpointMetadata.Contains("localhost:5006/api"))
-            {
-                if (!string.IsNullOrEmpty(accessToken))
-                {
-                    request.Headers["Authorization"] = $"Bearer {accessToken}";
-                }
-            }
-        }
-        public void OnActionExecuted(ActionExecutedContext filterContext)
+        public AccessTokenFilter(ITokenCookieHandlerService tokenService)
         {
+            _tokenService = tokenService;
         }
-    }
+
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            //var accessToken = _tokenService.GetAccessToken();
+            //if (string.IsNullOrEmpty(accessToken))
+            //{
+            //    await next();
+            //}
+            //context.HttpContext.Request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            await next();
+        }
+    } 
 }
 

@@ -2,12 +2,16 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useState } from 'react'
+import Cookies from 'js-cookie';
 
 const EditAttributeTypeModal = ({ onModalClose, attType }) => {
     const [name, setName] = useState(attType.name);
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name !== '') {

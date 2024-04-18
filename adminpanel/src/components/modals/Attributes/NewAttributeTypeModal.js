@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 const NewAttributeTypeModal = ({ onModalClose }) => {
     const [name, setName] = useState('');
@@ -10,6 +11,8 @@ const NewAttributeTypeModal = ({ onModalClose }) => {
         setName(e.target.value);
         console.log(name)
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name) {

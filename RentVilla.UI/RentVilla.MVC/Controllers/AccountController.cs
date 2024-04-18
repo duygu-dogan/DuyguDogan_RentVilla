@@ -152,6 +152,7 @@ namespace RentVilla.MVC.Controllers
         {
             HttpContext.Response.Cookies.Delete("RentVilla.Cookie");
             HttpContext.Response.Cookies.Delete("RentVilla.Cookie_RT");
+            HttpContext.Response.Cookies.Delete("RentVilla.Cookie_AT");
             TempData["ReturnUrl"] = null;
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _notyf.Success("You are successfully logged out. See you soon!");

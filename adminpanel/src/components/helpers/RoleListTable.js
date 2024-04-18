@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import DeleteRoleModalComponent from '../modals/Roles/DeleteRoleModalComponent';
-import AddRoleModalComponent from '../modals/Roles/AddRoleModalComponent';
 import { ToastContainer, toast } from 'react-toastify';
 import { TablePagination } from '@mui/base';
 import { ChevronLeftRounded, ChevronRightRounded, FirstPageRounded, LastPageRounded } from '@mui/icons-material';

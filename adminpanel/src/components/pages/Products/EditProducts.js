@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
 import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const EditProduct = () => {
     const id = useParams().id;
@@ -30,6 +31,9 @@ const EditProduct = () => {
         properties: '',
         attributeIDs: []
     });
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     useEffect(() => {
         axios(`http://localhost:5006/api/products/getbyid?ProductId=${id}`)
             .then((res) => {

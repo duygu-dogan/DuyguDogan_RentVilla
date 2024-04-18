@@ -1,11 +1,16 @@
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios'
-import React from 'react'
+import axios from 'axios';
+import React from 'react';
+import Cookies from 'js-cookie';
 
 const DeleteUserModal = ({ userId, onModalClose }) => {
     const modalId = `deleteModal${userId}`;
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     const handleHardDelete = (e) => {
         e.preventDefault();
         axios.delete(`http://localhost:5006/api/users/deleteUser?UserId=${userId}`)

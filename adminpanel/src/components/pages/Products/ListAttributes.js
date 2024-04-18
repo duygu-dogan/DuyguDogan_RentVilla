@@ -7,10 +7,13 @@ import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
 
 const ListAttributes = () => {
     const [items, setItems] = useState([]);
     const { id } = useParams();
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const fetchItems = useCallback(() => {
         axios.get(`http://localhost:5006/api/Attributes/GetTypeById?id=${id}`)
             .then((res) => {

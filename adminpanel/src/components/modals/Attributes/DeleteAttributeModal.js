@@ -3,9 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import React from 'react'
+import Cookies from 'js-cookie';
 
 const DeleteAttributeModal = ({ id, onModalClose }) => {
     const modalId = `deleteModal${id}`;
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.delete(`http://localhost:5006/api/attributes/delete?id=${id}`)

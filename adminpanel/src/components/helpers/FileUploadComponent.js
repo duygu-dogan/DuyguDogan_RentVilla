@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
 
 const FileUploadComponent = ({ fileLabel, uploadUrl, id }) => {
     const [selectedFiles, setSelectedFiles] = useState(null);
@@ -22,6 +23,8 @@ const FileUploadComponent = ({ fileLabel, uploadUrl, id }) => {
         setSelectedFiles(null);
         setFilePreviewUrls([]);
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const handleUpload = async () => {
         console.log("upload clicked")
         if (!selectedFiles) return;

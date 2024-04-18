@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import UserTable from '../../helpers/UserTable';
+import Cookies from 'js-cookie';
 
 const ListUsers = () => {
     const [items, setItems] = useState([]);
@@ -13,6 +14,9 @@ const ListUsers = () => {
             { Page: pageSize, Size: rowSize }
         );
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     useEffect(() => {
         axios.get(`http://localhost:5006/api/users/getallusers`, { params: pagination })
             .then((res) => {

@@ -36,6 +36,7 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Admin")]
         [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Gets deleted products", ActionType = ActionTypes.Reading)]
 
         public async Task<IActionResult> GetDeletedProducts([FromQuery] GetDeletedProductsRequest request)
@@ -58,8 +59,8 @@ namespace RentVilla.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = "Admin")]
-        //[AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Adds product", ActionType = ActionTypes.Writing)]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.Products, Definition = "Adds product", ActionType = ActionTypes.Writing)]
         public async Task<IActionResult> Add(CreateProductCommandRequest createProductCommandRequest)
         {
             CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);

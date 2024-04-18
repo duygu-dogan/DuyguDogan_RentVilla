@@ -20,8 +20,11 @@ namespace RentVilla.MVC
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddScoped<ITokenCookieHandlerService, TokenCookieHandlerService>();
+            builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options => 
+                options.Filters.Add<AccessTokenFilter>()
+            );
             builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

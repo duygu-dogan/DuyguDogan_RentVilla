@@ -3,9 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import StateTableComponent from '../../../helpers/StateTableComponent';
+import Cookies from 'js-cookie';
 
 const ListStateImage = () => {
     const [items, setItems] = useState([]);
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const fetchItems = useCallback(() => {
         axios.get('http://localhost:5006/api/region/getallstates')
             .then((res) => {

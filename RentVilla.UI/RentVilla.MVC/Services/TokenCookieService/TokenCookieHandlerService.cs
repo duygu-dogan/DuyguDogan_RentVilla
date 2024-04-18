@@ -38,8 +38,8 @@ namespace RentVilla.MVC.Services.TokenCookieService
                 context.User = principal;
                 context.Response.Cookies.Append("RentVilla.Cookie_AT", model.Token.AccessToken, new CookieOptions
                 {
-                    HttpOnly = true,
-                    Secure = true,
+                    HttpOnly = false,
+                    Secure = false,
                     SameSite = SameSiteMode.Strict,
                     Expires = model.Token.Expiration
                 });
@@ -59,6 +59,11 @@ namespace RentVilla.MVC.Services.TokenCookieService
                 throw;
             }
             
+        }
+        public string GetAccessToken()
+        {
+            HttpContext context = _httpContextAccessor.HttpContext;
+            return context.Request.Cookies["RentVilla.Cookie_AT"];
         }
     }
 }

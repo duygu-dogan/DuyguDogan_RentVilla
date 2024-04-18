@@ -6,9 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import AttributeTypeTable from '../../helpers/AttributeTypeTable';
 import { ToastContainer, toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const ListAttributeTypes = () => {
     const [items, setItems] = useState([]);
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const fetchItems = useCallback(() => {
         axios.get('http://localhost:5006/api/attributes/gettypes')
             .then((res) => {

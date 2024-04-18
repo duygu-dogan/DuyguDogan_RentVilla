@@ -3,6 +3,7 @@ import RoleListTable from '../../helpers/RoleListTable';
 import axios from 'axios';
 import AddRoleModalComponent from '../../modals/Roles/AddRoleModalComponent';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const ListRoles = () => {
     const [roles, setRoles] = useState([]);
@@ -15,6 +16,9 @@ const ListRoles = () => {
             { Page: pageSize, Size: rowSize }
         );
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     useEffect(() => {
         axios.get(`http://localhost:5006/api/roles/getroles`, { params: pagination })
             .then((res) => {

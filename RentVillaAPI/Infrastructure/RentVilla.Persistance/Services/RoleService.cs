@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.Abstraction.Services.AuthConfigurations;
+using RentVilla.Application.DTOs.AuthConfigurationDTOs;
 using RentVilla.Application.Repositories.EndpointRepo;
 using RentVilla.Application.Repositories.MenuRepo;
 using RentVilla.Domain.Entities.Concrete;
@@ -124,14 +125,24 @@ namespace RentVilla.Persistence.Services
             return (id, role);
         }
 
-        public async Task<List<string>> GetRolesToEndpointAsync(string code, string menu)
+        public async Task<List<GetRolesDTO>> GetRolesToEndpointAsync(string code, string menu)
         {
             Endpoint endpoint = await _endpointReadRepository.AppDbContext.Include(e => e.Roles).Include(e => e.Menu).FirstOrDefaultAsync(e => e.Code == code && e.Menu.Name == menu );
             if(endpoint == null)
             {
+                endpoint = new();
                 return new();
             }
-           return endpoint.Roles.Select(r => r.Id).ToList();
+            List<GetRolesDTO> roles = new();
+            foreach (var role in endpoint.Roles)
+            {
+                roles.Add(new GetRolesDTO
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                });
+            }
+            return roles;
         }
 
         public async Task<bool> UpdateRole(string id, string name)
