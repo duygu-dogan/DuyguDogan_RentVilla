@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.CustomAttributes;
-using RentVilla.Application.DTOs.AuthConfigurationDTOs;
-using RentVilla.Domain.Entities.Concrete;
-using System.Globalization;
 using System.Reflection;
 
 namespace RentVilla.API.Filters
