@@ -12,7 +12,7 @@ using RentVilla.Application.Feature.Queries.Carts.GetCartItems;
 
 namespace RentVilla.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(AuthenticationSchemes ="Admin")]
     public class CartItemsController : ControllerBase
@@ -23,7 +23,7 @@ namespace RentVilla.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet(Name ="GetCartItems")]
+        [HttpGet]
         [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.CartItems, Definition = "Gets all cart items", ActionType = ActionTypes.Reading)]
         public async Task<IActionResult> GetCartItems([FromQuery]GetCartItemQueryRequest request) 
         {

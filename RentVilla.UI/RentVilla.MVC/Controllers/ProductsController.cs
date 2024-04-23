@@ -35,5 +35,14 @@ namespace RentVilla.MVC.Controllers
             ProductVM response = JsonSerializer.Deserialize<ProductVM>(contentResponseApi);
             return View(response);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetByRegion(string regionId)
+        {
+            HttpResponseMessage responseMessage = await _clientService.GetHttpResponse($"products/getbyregion?RegionId={regionId}");
+            string contentResponseApi = await responseMessage.Content.ReadAsStringAsync();
+            List<ProductVM>? response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
+            ViewBag.RegionName = response?.FirstOrDefault()?.ProductAddress?.StateName;
+            return View(response);
+        }
     }
 }

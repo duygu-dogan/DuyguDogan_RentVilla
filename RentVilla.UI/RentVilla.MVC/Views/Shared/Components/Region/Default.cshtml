@@ -3,15 +3,15 @@
 <div class="container-fluid ExploreTour py-2">
     <div class="container py-5">
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-            <h5 class="section-title px-3">Destination</h5>
-            <h1 class="mb-0">Popular Destination</h1>
+            <h5 class="section-title px-3">Destinations</h5>
+            <h1 class="mb-0">Popular Destinations</h1>
         </div>
         <div class="tab-class text-center">
             <ul class="nav nav-pills d-flex justify-content-center mb-5">
                 @for (int i = 0; i < 5; i++)
                 {
                     <li class="nav-item ">
-                        <a class="d-flex mx-3 p-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="/region/@Model[i].Id">
+                        <a class="d-flex mx-3 p-3 border border-primary bg-light rounded-pill" asp-controller="products" asp-action="getbyregion" asp-route-regionId =@Model[i].Id>
                             @Model[i].Name
                         </a>
                     </li>
@@ -28,7 +28,7 @@
                                     <div class="national-content">
                                         <div class="national-info">
                                             <h5 class="text-white text-uppercase mb-2">@Model[i].Name</h5>
-                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                            <a asp-controller="Products" asp-action="GetByRegion" asp-route-regionId=@Model[i].Id class="btn-hover text-white">View All Places <i class="fa fa-arrow-right ms-2"></i></a>
                                         </div>
                                     </div>
                                     <div class="national-plus-icon">

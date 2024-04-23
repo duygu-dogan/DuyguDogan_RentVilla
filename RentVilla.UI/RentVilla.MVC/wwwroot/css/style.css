@@ -805,9 +805,10 @@
 .ExploreTour .tab-class .nav-item {
     padding: 0 0 20px 0;
 }
-.ExploreTour .tab-class .nav-item a.active {
-    background: var(--bs-primary) !important;
-}
+    .ExploreTour .tab-class .nav-item a:hover {
+        background: var(--bs-primary) !important;
+        color: var(--bs-white) !important;
+    }
 
 .ExploreTour .tab-class .nav-item a.active span {
     color: var(--bs-white) !important;

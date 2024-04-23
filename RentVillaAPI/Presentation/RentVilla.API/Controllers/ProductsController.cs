@@ -12,6 +12,7 @@ using RentVilla.Application.Feature.Commands.Products.UpdateProduct;
 using RentVilla.Application.Feature.Queries.ProductImages.GetProductImages;
 using RentVilla.Application.Feature.Queries.Products.GetAllProducts;
 using RentVilla.Application.Feature.Queries.Products.GetByIdProduct;
+using RentVilla.Application.Feature.Queries.Products.GetByRegionProducts;
 using RentVilla.Application.Feature.Queries.Products.GetDeletedProducts;
 using System.Net;
 
@@ -55,6 +56,13 @@ namespace RentVilla.API.Controllers
         {
             GetByIdProductQueryResponse response = await _mediator.Send(request);
             return Ok(response.Product);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByRegion([FromQuery] GetByRegionProductsQueryRequest request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response.Products);
         }
 
         [HttpPost]

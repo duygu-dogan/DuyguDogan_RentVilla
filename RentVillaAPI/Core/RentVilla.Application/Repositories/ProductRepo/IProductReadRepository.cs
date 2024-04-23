@@ -14,7 +14,7 @@ namespace RentVilla.Application.Repositories.ProductRepo
         //Fiyat aralığına göre ürünleri getirir.
         Task<IEnumerable<Product>> GetProductsByPriceRange(decimal minPrice, decimal maxPrice);
         //Ürün bölgesine göre ürünleri getirir.
-        Task<IEnumerable<Product>> GetProductsByRegion(string region);
+        Task<IEnumerable<ProductDTO>> GetProductsByRegion(string regionId);
         //En kısa süreliğine kiralanabilir ürünleri getirir.
         Task<IEnumerable<Product>> GetProductsByShortestRentTime();
         //ProductAddress ve ProductAttribute tablolarını join ederek ürünleri getirir.

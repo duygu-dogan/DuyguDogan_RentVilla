@@ -27,7 +27,7 @@ namespace RentVilla.MVC.Controllers
         {
             var userIdentity = HttpContext.User.Identity as ClaimsIdentity;
             var userIdClaim = userIdentity?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            HttpResponseMessage responseMessage = await _clientService.GetHttpResponse("CartItems");
+            HttpResponseMessage responseMessage = await _clientService.GetHttpResponse("CartItems/GetCartItems");
             string contentResponse = await responseMessage.Content.ReadAsStringAsync();
             List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
             CreateReservationVM model = new()

@@ -79,7 +79,7 @@ namespace RentVilla.MVC.Controllers
                         totalCost = model.TotalCost
                     }
                 };
-                var httpResponse = await _clientService.PostHttpRequest("CartItems", requestData);
+                var httpResponse = await _clientService.PostHttpRequest("CartItems/AddItemToCart", requestData);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     _notyf.Success("Reservation request added to chart successfully. You can complete your payment.");
@@ -96,7 +96,7 @@ namespace RentVilla.MVC.Controllers
         {
             try
             {
-                var httpResponse = await _clientService.GetHttpResponse($"CartItems/{cartItemId}");
+                var httpResponse = await _clientService.GetHttpResponse($"CartItems/GetCartItemById/{cartItemId}");
                 string contentResponse = await httpResponse.Content.ReadAsStringAsync();
                 GetCartItemVM model = JsonSerializer.Deserialize<GetCartItemVM>(contentResponse);
                 model.AdultNumber = _adultNumber;
@@ -118,7 +118,7 @@ namespace RentVilla.MVC.Controllers
                         totalCost = model.TotalCost
                     }
                 };
-                HttpResponseMessage httpResponse2 = await _clientService.PutHttpRequest("CartItems", requestData);
+                HttpResponseMessage httpResponse2 = await _clientService.PutHttpRequest("CartItems/UpdateItemInCart", requestData);
                 if (httpResponse.IsSuccessStatusCode)
                     {
                         _notyf.Success("Reservation choices edited successfully. You can complete your payment.");
@@ -141,7 +141,7 @@ namespace RentVilla.MVC.Controllers
         {
             try
             {
-                HttpResponseMessage httpResponse = await _clientService.DeleteHttpRequest($"CartItems/{cartItemId}");
+                HttpResponseMessage httpResponse = await _clientService.DeleteHttpRequest($"CartItems/RemoveItemFromCart/{cartItemId}");
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     _notyf.Success("Item removed from cart successfully.");

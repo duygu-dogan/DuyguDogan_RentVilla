@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace RentVilla.MVC.Models.Address
 {
-    public class StateVM
+    public class UserAddressStateVM
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }

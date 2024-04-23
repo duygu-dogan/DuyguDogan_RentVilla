@@ -40,8 +40,8 @@ namespace RentVilla.MVC.Services.TokenCookieService
                     IsPersistent = true,
                     AllowRefresh = false
                 };
-
-                await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                if(!context.User.Identity.IsAuthenticated)
+                    await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
                 context.User = principal;
                 context.Response.Cookies.Append("RentVilla.Cookie_AT", model.Token.AccessToken, new CookieOptions
                 {
@@ -52,7 +52,14 @@ namespace RentVilla.MVC.Services.TokenCookieService
                 });
                 if(context.Request.Cookies["RentVilla.Cookie_RT"] != null)
                 context.Response.Cookies.Delete("RentVilla.Cookie_RT");
-                context.Response.Cookies.Append("RentVilla.Cookie_RT", model.Token.RefreshToken, new CookieOptions
+                context.Response.Cookies.Append("RentVilla.Cookie_RT", $"{model.Token.RefreshToken}" , new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    //SameSite = SameSiteMode.Strict,
+                    Expires = model.Token.RefreshTokenEndDate
+                });
+                context.Response.Cookies.Append("RentVilla.Cookie_RTED", $"{model.Token.RefreshTokenEndDate}", new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -69,31 +76,45 @@ namespace RentVilla.MVC.Services.TokenCookieService
         }
         public string GetAccessToken()
         {
-            HttpContext context = _httpContextAccessor.HttpContext;
-            var accessToken = context.Request.Cookies["RentVilla.Cookie_AT"];
-            if (!string.IsNullOrEmpty(accessToken))
+            try
             {
-                var expirationDate = context.User.Claims.Where(c => c.Type == "expiration").FirstOrDefault().Value;
-                if (expirationDate == null || DateTimeOffset.Now >= DateTimeOffset.Parse(expirationDate))
+                HttpContext context = _httpContextAccessor.HttpContext;
+                var accessToken = context.Request.Cookies["RentVilla.Cookie_AT"];
+                var refreshToken = context.Request.Cookies["RentVilla.Cookie_RT"];
+                if (!string.IsNullOrEmpty(accessToken))
                 {
-                    var refreshToken = context.Request.Cookies["RentVilla.Cookie_RT"];
+                    return accessToken;
+                }
+                else
+                {
                     if (!string.IsNullOrEmpty(refreshToken))
                     {
-                        JsonWebTokenHandler handler = new JsonWebTokenHandler();
-                        var refreshJsonToken = handler.ReadToken(refreshToken) as JsonWebToken;
-                        var refreshExpirationDate = context.User.Claims.Where(c => c.Type.EndsWith("expiration")).FirstOrDefault().Value;
+                        var refreshExpirationDate = context.Request.Cookies["RentVilla.Cookie_RTED"];
                         if (DateTime.UtcNow >= DateTime.Parse(refreshExpirationDate))
                         {
                             context.Response.Cookies.Delete("RentVilla.Cookie_RT");
+                            context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                             return null;
                         }
                         else
+                        {
                             RefreshToken(context, refreshToken);
+                            var newAccessToken = context.Request.Cookies["RentVilla.Cookie_AT"];
+                            return newAccessToken;
+                        }
                     }
+                    return null;
                 }
-                return accessToken;
             }
-            return null;
+                    //var expirationDate = context.User.Claims.Where(c => c.Type.EndsWith("expiration")).FirstOrDefault().Value;
+
+                    //if (expirationDate == null || DateTimeOffset.Now >= DateTimeOffset.Parse(expirationDate))
+                    //{
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         [HttpPost]
         public async Task RefreshToken(HttpContext context, string refreshToken)

@@ -27,14 +27,14 @@ namespace RentVilla.MVC.Controllers
         {
 
             RegisterVM model = new();
-            List<StateVM>? response = new();
+            List<UserAddressStateVM>? response = new();
             string? baseUrl = _configuration["API:Url"];
             using (HttpClient httpClient = new())
             {
                 httpClient.BaseAddress = new Uri(baseUrl);
                 HttpResponseMessage responseApi = await httpClient.GetAsync("Region/GetAllStates");
                 string contentResponseApi = await responseApi.Content.ReadAsStringAsync();
-                response = System.Text.Json.JsonSerializer.Deserialize<List<StateVM>>(contentResponseApi);
+                response = System.Text.Json.JsonSerializer.Deserialize<List<UserAddressStateVM>>(contentResponseApi);
             }
             model.UserAddress = new UserAddressVM()
             {

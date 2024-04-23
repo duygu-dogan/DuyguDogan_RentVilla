@@ -2,6 +2,7 @@
 using RentVilla.Application.DTOs.ProductDTOs;
 using RentVilla.Application.Repositories.ProductRepo;
 using RentVilla.Domain.Entities.Concrete;
+using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Persistance.Contexts;
 
 namespace RentVilla.Persistence.Repositories.ProductCRepo
@@ -132,9 +133,61 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetProductsByRegion(string region)
+        public async Task<IEnumerable<ProductDTO>> GetProductsByRegion(string regionId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Product> products = _context.Products.Where(x => x.ProductAddress.StateId.ToString() == regionId).ToList();
+                List<ProductDTO> productDTOs = new();
+                foreach (var product in products)
+                {
+                    productDTOs.Add(new ProductDTO
+                    {
+                        Id = product.Id.ToString(),
+                        Name = product.Name,
+                        Description = product.Description,
+                        Price = product.Price,
+                        Deposit = product.Deposit,
+                        MapId = product.MapId,
+                        Address = product.Address,
+                        ShortestRentPeriod = product.ShortestRentPeriod,
+                        Properties = product.Properties,
+                        Rating = product.Rating,
+                        IsActive = product.IsActive,
+                        IsDeleted = product.IsDeleted,
+                        Attributes = _context.ProductAttributes
+                        .Where(pa => pa.Product.Id == product.Id)
+                        .Select(pa => new ProductAttributeDTO
+                        {
+                            Id = pa.Id.ToString(),
+                            Attribute = pa.Attributes.Description,
+                            AttributeType = pa.AttributeType.Name
+                        }).ToList(),
+                        ProductImages = _context.ProductImageFiles
+                        .Where(pif => pif.Product.Any(p => p.Id == product.Id))
+                        .Select(image => new ProductImageDTO
+                        {
+                            FileName = image.FileName,
+                            Path = image.Path,
+                            ProductId = image.Product.Select(p => p.Id.ToString()).ToList()
+                        }).ToList(),
+                        ProductAddress = _context.ProductAddresses
+                        .Where(pa => pa.ProductId == product.Id)
+                        .Select(pa => new ProductAddressDTO
+                        {
+                            CountryName = pa.Country.Name,
+                            StateName = pa.State.Name,
+                            CityName = pa.City.Name,
+                            DistrictName = pa.District.Name
+                        }).FirstOrDefault()
+                    });
+                }
+                return productDTOs;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<IEnumerable<Product>> GetProductsByShortestRentTime()
