@@ -23,7 +23,7 @@ namespace RentVilla.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet]
+        [HttpGet(Name ="GetCartItems")]
         [AuthorizeDefinition(Menu = AuthorizeDefinitionConsts.CartItems, Definition = "Gets all cart items", ActionType = ActionTypes.Reading)]
         public async Task<IActionResult> GetCartItems([FromQuery]GetCartItemQueryRequest request) 
         {

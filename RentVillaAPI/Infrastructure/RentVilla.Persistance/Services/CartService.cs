@@ -93,7 +93,6 @@ namespace RentVilla.Persistence.Services
                     {
                         ReservationCartItem updatedItem = new ReservationCartItem
                         {
-                            Id = cartItem.Id,
                             ProductId = Guid.Parse(cartItemDTO.ProductId),
                             AdultNumber = cartItemDTO.AdultNumber,
                             ChildrenNumber = cartItemDTO.ChildrenNumber,

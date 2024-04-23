@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentVilla.ScheduleTask", "RentVilla.ScheduleTask.csproj", "{B2C440BB-C2E2-420F-9AA7-B159AC8A3008}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2C440BB-C2E2-420F-9AA7-B159AC8A3008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C440BB-C2E2-420F-9AA7-B159AC8A3008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C440BB-C2E2-420F-9AA7-B159AC8A3008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C440BB-C2E2-420F-9AA7-B159AC8A3008}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E0422E1-4078-46A6-BA91-13AE2C42F9A2}
+	EndGlobalSection
+EndGlobal

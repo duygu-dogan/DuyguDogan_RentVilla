@@ -4,11 +4,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { MultiSelect } from 'react-multi-select-component';
+import Cookies from 'js-cookie';
 
 const AssignRoleUserModal = ({ userId, onModalClose }) => {
     const modalId = `assignModal${userId}`;
     const [roles, setRoles] = useState([]);
     const [selectedRoles, setSelectedRoles] = useState([]);
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     useEffect(() => {
         axios.get(`http://localhost:5006/api/roles/getroles`)
@@ -29,8 +33,8 @@ const AssignRoleUserModal = ({ userId, onModalClose }) => {
         setSelectedRoles([]);
         axios.get(`http://localhost:5006/api/Users/GetUserRoles?userId=${userId}`)
             .then((res) => {
+                console.log(res.data)
                 const value = res.data.map(role => role.id);
-                console.log(value);
                 setSelectedRoles(roles.filter(role => value.includes(role.value)))
             })
             .catch((err) => {

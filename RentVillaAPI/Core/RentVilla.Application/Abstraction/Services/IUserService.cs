@@ -16,6 +16,6 @@ namespace RentVilla.Application.Abstraction.Services
         Task<List<GetUserDTO>> GetAllUsersAsync(int page, int size);
         Task AssignRoleToUserAsync(string userId, List<string> roleIds);
         Task<List<AppRole>> GetUserRoles(string userId);
-
+        Task<bool> HasRolePermissionToEndpointAsync(string username, string code);
     }
 }

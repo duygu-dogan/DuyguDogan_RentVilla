@@ -3,12 +3,17 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import ProductTable from '../../helpers/ProductTable';
+import Cookies from 'js-cookie';
 
 const ListProducts = () => {
     const [items, setItems] = useState([]);
     const [pagination, setPagination] = useState(
         { Page: 0, Size: 10 }
     );
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     const handlePagination = (rowSize, pageSize) => {
         console.log(rowSize, pageSize)
         setPagination(

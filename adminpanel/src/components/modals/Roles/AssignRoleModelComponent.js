@@ -1,11 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { MultiSelect } from 'react-multi-select-component';
+import Cookies from 'js-cookie';
 
 const AssignRoleModelComponent = ({ menu, action, onModalClose }) => {
-    const modalId = `assignModal${menu}`;
+    const modalId = `assignModal${action.code}`;
     const [roles, setRoles] = useState([]);
     const [selectedRoles, setSelectedRoles] = useState([]);
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     useEffect(() => {
         axios.get(`http://localhost:5006/api/roles/getroles`)
@@ -23,10 +27,10 @@ const AssignRoleModelComponent = ({ menu, action, onModalClose }) => {
             })
     }, []);
     const handleSelectedRoles = () => {
-        setSelectedRoles([]);
-        const request = axios.get(`http://localhost:5006/api/authConfigs/GetRolesToEndpoint?code=${action.code}&menu=${menu}`, { code: action.code, menu: menu })
+        // setSelectedRoles([]);
+        axios.get(`http://localhost:5006/api/authConfigs/GetRolesToEndpoint?code=${action.code}&menu=${menu}`, { code: action.code, menu: menu })
             .then((res) => {
-                const value = res.data;
+                const value = res.data.map(role => role.id);
                 setSelectedRoles(roles.filter(role => value.includes(role.value)))
             })
             .catch((err) => {
@@ -39,6 +43,7 @@ const AssignRoleModelComponent = ({ menu, action, onModalClose }) => {
         e.preventDefault();
         axios.post(`http://localhost:5006/api/authConfigs/AssingRoleEndpoint`, { roleIds: selectedRoles.map(role => role.value), code: action.code, menu: menu })
             .then(response => {
+                console.log(response)
                 onModalClose("Role assigned successfully.", "success");
             })
             .catch(error => {

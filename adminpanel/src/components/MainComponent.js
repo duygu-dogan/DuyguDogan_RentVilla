@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import WidgetComponent from './WidgetComponent'
 import ReservationTable from './helpers/ReservationTable'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const MainComponent = () => {
     const [items, setItems] = useState([]);
@@ -15,8 +16,15 @@ const MainComponent = () => {
             { Page: pageSize, Size: rowSize }
         );
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    console.log(accessToken);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     useEffect(() => {
-        axios.get(`http://localhost:5006/api/reservations/getactivereservations`, { params: pagination })
+        axios.get(`http://localhost:5006/api/reservations/getactivereservations`,
+            {
+                params: pagination,
+                withCredentials: true
+            })
             .then((res) => {
                 console.log(res);
                 const newItems = res.data.activeReservations.map(item => ({

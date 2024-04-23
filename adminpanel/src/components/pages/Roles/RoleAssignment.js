@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import RoleTable from '../../helpers/RoleTable';
+import Cookies from 'js-cookie';
 
 const RoleAssignment = () => {
     const [items, setItems] = useState([]);
@@ -12,6 +13,9 @@ const RoleAssignment = () => {
             { Page: pageSize, Size: rowSize }
         );
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
     useEffect(() => {
         axios.get(`http://localhost:5006/api/authConfigs/GetAuthorizeDefinitionEndpoints`)
             .then((res) => {

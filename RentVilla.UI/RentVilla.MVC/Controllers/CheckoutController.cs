@@ -1,9 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentVilla.MVC.Models.Cart;
-using System.Net.Http.Headers;
-using System.Reflection;
+using RentVilla.MVC.Services.HttpClientService;
 using System.Text.Json;
 
 namespace RentVilla.MVC.Controllers
@@ -12,32 +10,27 @@ namespace RentVilla.MVC.Controllers
     {
         private readonly INotyfService _notyf;
         private readonly IConfiguration _configuration;
-        public CheckoutController(INotyfService notyf, IConfiguration configuration)
+        private readonly IHttpClientService _clientService;
+        public CheckoutController(INotyfService notyf, IConfiguration configuration, IHttpClientService clientService)
         {
             _notyf = notyf;
             _configuration = configuration;
+            _clientService = clientService;
         }
         public async Task<IActionResult> Index()
         {
-            using (HttpClient client = new())
+            HttpResponseMessage response = await _clientService.GetHttpResponse("CartItems/GetCartItems");
+            var contentResponse = await response.Content.ReadAsStringAsync();
+            List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
+            var reservationCart = new ReservationCartVM();
+            reservationCart.CartItems = cartItems;
+            HttpContext.Response.Cookies.Append("RentVilla.Cookie_SC", cartItems.Count().ToString(), new CookieOptions
             {
-                string baseUrl = _configuration["API:Url"];
-                client.BaseAddress = new Uri(baseUrl);
-                var accessToken = HttpContext.Request.Cookies["RentVilla.Cookie_AT"];
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-                HttpResponseMessage httpResponse = await client.GetAsync("CartItems");
-                string contentResponse = await httpResponse.Content.ReadAsStringAsync();
-                List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
-                var reservationCart = new ReservationCartVM();
-                reservationCart.CartItems = cartItems;
-                HttpContext.Response.Cookies.Append("RentVilla.Cookie_SC", cartItems.Count().ToString(), new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
-                return View(reservationCart);
-            }
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+            return View(reservationCart);
 
         }
         [HttpPost]
@@ -72,12 +65,6 @@ namespace RentVilla.MVC.Controllers
             double childCost = Convert.ToDouble(totalDays * model.ChildrenNumber * model.ProductPrice) * 0.5;
             model.TotalCost = Convert.ToDecimal(adultCost + childCost);
 
-            using (HttpClient client = new())
-            {
-                string baseUrl = _configuration["API:Url"];
-                client.BaseAddress = new Uri(baseUrl);
-                var accessToken = HttpContext.Request.Cookies["RentVilla.Cookie_AT"];
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
                 var requestData = new
                 {
                     cartItemDTO = new
@@ -92,7 +79,7 @@ namespace RentVilla.MVC.Controllers
                         totalCost = model.TotalCost
                     }
                 };
-                HttpResponseMessage httpResponse = await client.PostAsJsonAsync("CartItems", requestData);
+                var httpResponse = await _clientService.PostHttpRequest("CartItems", requestData);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     _notyf.Success("Reservation request added to chart successfully. You can complete your payment.");
@@ -104,42 +91,35 @@ namespace RentVilla.MVC.Controllers
                     return RedirectToAction("GetDetails", "Product", model);
 
                 }
-            }
         }
         public async Task<IActionResult> UpdateItemInCart(string cartItemId, int _adultNumber, int _childrenNumber, int rentDays)
         {
             try
             {
-                using (HttpClient client = new())
+                var httpResponse = await _clientService.GetHttpResponse($"CartItems/{cartItemId}");
+                string contentResponse = await httpResponse.Content.ReadAsStringAsync();
+                GetCartItemVM model = JsonSerializer.Deserialize<GetCartItemVM>(contentResponse);
+                model.AdultNumber = _adultNumber;
+                model.ChildrenNumber = _childrenNumber;
+                double adultCost = Convert.ToDouble(rentDays * _adultNumber * model.Price);
+                double childCost = Convert.ToDouble(rentDays * _childrenNumber * model.Price) * 0.5;
+                model.TotalCost = Convert.ToDecimal(adultCost + childCost);
+                var requestData = new
                 {
-                    string baseUrl = _configuration["API:Url"];
-                    client.BaseAddress = new Uri(baseUrl);
-                    var accessToken = HttpContext.Request.Cookies["RentVilla.Cookie_AT"];
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-                    HttpResponseMessage httpResponse = await client.GetAsync($"CartItems/{cartItemId}");
-                    string contentResponse = await httpResponse.Content.ReadAsStringAsync();
-                    GetCartItemVM model = JsonSerializer.Deserialize<GetCartItemVM>(contentResponse);
-                    model.AdultNumber = _adultNumber;
-                    model.ChildrenNumber = _childrenNumber;
-                    double adultCost = Convert.ToDouble(rentDays * _adultNumber * model.Price);
-                    double childCost = Convert.ToDouble(rentDays * _childrenNumber * model.Price) * 0.5;
-                    model.TotalCost = Convert.ToDecimal(adultCost + childCost);
-                    var requestData = new
+                    cartItemDTO = new
                     {
-                        cartItemDTO = new
-                        {
-                            cartItemId = model.CartItemId,
-                            startDate = model.StartDate,
-                            endDate = model.EndDate,
-                            adultNumber = _adultNumber,
-                            childrenNumber = _childrenNumber,
-                            note = model.Note,
-                            price = model.Price,
-                            totalCost = model.TotalCost
-                        }
-                    };
-                    HttpResponseMessage httpResponse2 = await client.PutAsJsonAsync("CartItems", requestData);
-                    if (httpResponse.IsSuccessStatusCode)
+                        cartItemId = model.CartItemId,
+                        startDate = model.StartDate,
+                        endDate = model.EndDate,
+                        adultNumber = _adultNumber,
+                        childrenNumber = _childrenNumber,
+                        note = model.Note,
+                        price = model.Price,
+                        totalCost = model.TotalCost
+                    }
+                };
+                HttpResponseMessage httpResponse2 = await _clientService.PutHttpRequest("CartItems", requestData);
+                if (httpResponse.IsSuccessStatusCode)
                     {
                         _notyf.Success("Reservation choices edited successfully. You can complete your payment.");
                         return RedirectToAction("Index");
@@ -150,7 +130,6 @@ namespace RentVilla.MVC.Controllers
                         return RedirectToAction("GetDetails", "Product", model);
 
                     }
-                }
             }
             catch (Exception)
             {
@@ -162,23 +141,16 @@ namespace RentVilla.MVC.Controllers
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                HttpResponseMessage httpResponse = await _clientService.DeleteHttpRequest($"CartItems/{cartItemId}");
+                if (httpResponse.IsSuccessStatusCode)
                 {
-                    string baseUrl = _configuration["API:Url"];
-                    client.BaseAddress = new Uri(baseUrl);
-                    var accessToken = HttpContext.Request.Cookies["RentVilla.Cookie_AT"];
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-                    HttpResponseMessage httpResponse = await client.DeleteAsync($"CartItems/{cartItemId}");
-                    if (httpResponse.IsSuccessStatusCode)
-                    {
-                        _notyf.Success("Item removed from cart successfully.");
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        _notyf.Error("An error occurred while removing item from cart. Please try again.");
-                        return RedirectToAction("Index");
-                    }
+                    _notyf.Success("Item removed from cart successfully.");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    _notyf.Error("An error occurred while removing item from cart. Please try again.");
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)

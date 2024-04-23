@@ -6,7 +6,9 @@ using RentVilla.Application.DTOs.TokenDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
 using RentVilla.Application.Exceptions;
 using RentVilla.Application.Feature.Commands.AppUser.CreateUser;
+using RentVilla.Application.Repositories.EndpointRepo;
 using RentVilla.Application.Repositories.RegionRepo;
+using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Identity;
 using RentVilla.Domain.Entities.Concrete.Region;
 
@@ -20,9 +22,10 @@ namespace RentVilla.Persistence.Services
         private readonly ICityReadRepository _cityReadRepository;
         private readonly IDistrictReadRepository _districtReadRepository;
         private readonly ICountryReadRepository _countryReadRepository;
+        private readonly IEndpointReadRepository _endpointReadRepository;
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IMapper mapper, RoleManager<AppRole> roleManager)
+        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IMapper mapper, RoleManager<AppRole> roleManager, IEndpointReadRepository endpointReadRepository)
         {
             _userManager = userManager;
             _stateReadRepository = stateReadRepository;
@@ -31,6 +34,7 @@ namespace RentVilla.Persistence.Services
             _countryReadRepository = countryReadRepository;
             _mapper = mapper;
             _roleManager = roleManager;
+            _endpointReadRepository = endpointReadRepository;
         }
 
         public async Task AssignRoleToUserAsync(string userId, List<string> roleIds)
@@ -130,6 +134,25 @@ namespace RentVilla.Persistence.Services
             {
                 throw new NotFoundUserException();
             }
+        }
+
+        public async Task<bool> HasRolePermissionToEndpointAsync(string username, string code)
+        {
+            AppUser user = _userManager.Users.FirstOrDefault(u => u.UserName == username);
+            var userRoles = await GetUserRoles(user.Id);
+            if (!userRoles.Any()) return false;
+            Endpoint endpoint = await _endpointReadRepository.AppDbContext.Include(e => e.Roles).FirstOrDefaultAsync(e => e.Code == code);
+            if (endpoint == null)
+                return true;
+            var endpointRoles = endpoint.Roles.Select(r => r.Name);
+            foreach (var role in userRoles)
+            {
+                if (endpointRoles.Contains(role.Name))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public async Task<TokenDTO> UpdateRefreshToken(TokenDTO token, string refreshToken, AppUser user, DateTime accessTokenDate, int addOnrefreshTokenEnd)

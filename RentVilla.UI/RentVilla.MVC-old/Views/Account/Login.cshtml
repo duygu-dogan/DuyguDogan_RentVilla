@@ -1,0 +1,60 @@
+﻿@model LoginVM
+@{
+    var returnUrl = TempData["ReturnUrl"];
+}
+<!-- Header Start -->
+<div class="container-fluid bg-login">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+        </h3>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Packages Start -->
+<div class="container-fluid packages py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Login</h5>
+            <h1 class="mb-0">Login To Your Account</h1>
+        </div>
+        <div class="container w-50 mt-5">
+            <hr />
+            <form asp-area=""
+                  asp-controller="Account"
+                  asp-action="Login"
+                  method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group mb-2">
+                            <label asp-for="UsernameOrEmail"></label>
+                            <input class="form-control" asp-for="UsernameOrEmail" />
+                            <span asp-validation-for="UsernameOrEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group mb-2">
+                            <label asp-for="Password"></label>
+                            <input class="form-control" asp-for="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <div class="form-check mb-2">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label" id="RememberMe">Remember Me</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Login</button>
+                        <a asp-area="" asp-controller="account" asp-action="ForgotPassword" class="btn btn-link pl-0 mt-2 text-end">I forgot my password</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

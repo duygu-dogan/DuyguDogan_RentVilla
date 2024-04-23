@@ -1,0 +1,162 @@
+﻿@model ProductVM
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            @Model.Name
+        </h3>
+    </div>
+</div>
+<!-- Header End -->
+<div class="container-fluid align-items-center packages-2 py-5">
+    <div class="container-fluid px-5 row g-5">
+        <div class="container py-5 col-lg-5 col-md-12">
+            <div class="carousel-header">
+                @for(int i=0; i < Model.ProductImages.Count; i++)
+                {           
+                <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#carouselId" data-bs-slide-to=@i class="active"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img src=@Model.ProductImages[i].Path class="img-fluid" alt="Image">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon btn bg-primary" aria-hidden="false"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon btn bg-primary" aria-hidden="false"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="container py-5 about col-lg-6 col-md-12 d-flex flex-column justify-content-between ">
+            <form
+            asp-controller="Checkout"
+            asp-action="AddToCart"
+            method="post"
+            id="reservation-form"
+            >
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <input type="hidden" name="ShortestRent" value="@Model.ShortestRentPeriod" />
+                <input type="hidden" name="ProductPrice" value="@Model.Price" />
+                <input type="hidden" name="StartDate" id="start-date-value" />
+                <input type="hidden" name="EndDate" id="end-date-value" />
+                <input type="hidden" name="AdultNumber" id="adult-number" />
+                <input type="hidden" name="ChildrenNumber" id="children-number" />
+            <div>
+                <h5 class="section-about-title pe-3">@Model.ProductAddress.DistrictName, @Model.ProductAddress.CityName</h5>
+                <h1 class="mb-4"><span class="text-primary">@Model.Name</span></h1>
+                <div>
+                    <h5 class="section-about-title pe-3">Villa Properties: </h5>
+                    <p class="mb-4"> @Model.Description</p>
+                </div>
+            </div>
+            <div class="row gy-2 gx-4 mb-4">
+                @foreach (var att in Model.Attributes)
+                {
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>@att.Attribute</p>
+                    </div>
+                }
+            </div>
+            <div class="row gy-2 gx-4 mb-4 ">
+                <div class="col-sm-6 d-flex">
+                    <p class="section-about-title pe-3 fw-bold">Price: </p>
+                    <span class="fw-light"> @($"{Model.Price:C0}")</span>
+                </div>
+                <div class="col-sm-6 d-flex">
+                    <p class="section-about-title pe-3 fw-bold">Shortest Rent Period: </p>
+                    <span id="shortestRent" class="fw-light"> @Model.ShortestRentPeriod Days</span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3003.7706350803737!2d28.998362075866652!3d41.161355971329435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDA5JzQwLjkiTiAyOcKwMDAnMDMuNCJF!5e0!3m2!1str!2str!4v1712533658428!5m2!1str!2str" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="col-12 border-0 mt-3 d-flex row">
+                <div class="col-md-12 d-flex">
+                    <div class="form-group mb-3 me-3 date col-6" data-target-input="nearest">
+                        <label>
+                            Pick a start date
+                        </label>
+                            <input class="form-control" asp-for="AddCartItem.StartDate" id="start-date" value="" type="date" for="start-date" />
+                    </div>
+                    <div class="form-group mb-3 date col-6" data-target-input="nearest">
+                        <label>
+                            Pick an end date
+                        </label>
+                        <input class="form-control" asp-for="AddCartItem.EndDate" id="end-date" value="" type="date" min="2024-04-09" for="end-date" />
+                            <span id="date-warning" style="display: none; color: red;">The rental period must be at least @Model.ShortestRentPeriod days.</span>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex">
+                    <div class="col-6 mb-3 me-3">
+                        <label>Select Adult Number</label>
+                    <select asp-for="AddCartItem.AdultNumber" id="Reservation_AdultNumber" class="form-select" aria-label="Default select example">
+                        <option selected>Select number of adults</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                        </div>
+                        <div class="col-6">
+                            <label>Select Children Number</label>
+                    <select asp-for="AddCartItem.ChildrenNumber" id="Reservation_ChildrenNumber" width="50%" class="form-select col-6" aria-label="Default select example">
+                        <option selected>Select number of children</option>
+                        <option value="0">No children</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                            <span class="fst-italic fw-lighter">Children will be charged half.</span>
+                        </div>
+                </div>
+                <div class="col-md-12 d-flex mt-3 justify-content-end">
+                        <button type="submit" id="submitBtn" class="btn btn-primary py-2 px-2 rounded-pill mt-2 float-end">Add to Cart</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("start-date").setAttribute('min', today);
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("end-date").setAttribute('min', today);
+
+            document.getElementById("start-date").addEventListener('change', function () {
+                var startDate = this.value;
+                document.getElementById("end-date").setAttribute('min', startDate);
+            });
+
+            var startDate = $("#start-date");
+            var endDate = $("#end-date");
+            document.getElementById("end-date").addEventListener('change', function () {
+                var startDate = new Date(document.getElementById("start-date").value);
+            });
+        });
+        
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+            $("#start-date-value").val($("#start-date").val());
+            $("#end-date-value").val($("#end-date").val());
+            $("#adult-number").val($('#Reservation_AdultNumber').val());
+            $("#children-number").val($('#Reservation_ChildrenNumber').val());
+        });
+    });
+
+    </script>
+}
+
+

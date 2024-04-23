@@ -5,12 +5,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { CFormSelect } from '@coreui/react';
 import { MultiSelect } from 'react-multi-select-component';
+import Cookies from 'js-cookie';
 
 const ProductAttributesModal = ({ onModalClose, onAttributeChange }) => {
     const [attributeTypes, setAttributeTypes] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
     const [attributes, setAttributes] = useState([]);
     const [selectedAttributes, setSelectedAttributes] = useState([]);
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     useEffect(() => {
         axios.get('http://localhost:5006/api/attributes/gettypes')

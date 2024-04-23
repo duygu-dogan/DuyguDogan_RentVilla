@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RentVilla.MVC</title>
+       @await Html.PartialAsync("_Styles") 
+</head>
+<body>
+    <header>
+        @await Component.InvokeAsync("Spinner")
+        @await Component.InvokeAsync("Navbar")
+
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        @await Component.InvokeAsync("Booking")
+        @await Component.InvokeAsync("Footer")
+        @await Component.InvokeAsync("Copyright")
+       
+
+    </footer>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    @await Html.PartialAsync("_Scripts")
+    @await Component.InvokeAsync("Notyf")
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

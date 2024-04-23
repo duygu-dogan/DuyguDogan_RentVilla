@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductAttributesModal from '../../modals/Products/ProductAttributesModal';
 import { ToastContainer, toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const NewProduct = () => {
     const [States, setStates] = useState([]);
@@ -12,6 +13,9 @@ const NewProduct = () => {
     const [Districts, setDistricts] = useState([]);
     const [selectedAttributes, setSelectedAttributes] = useState([]);
     const [validated, setValidated] = useState(false);
+
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     useEffect(() => {
         axios('http://localhost:5006/api/region/getallstates')

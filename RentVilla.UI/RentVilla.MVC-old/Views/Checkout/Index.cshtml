@@ -1,0 +1,171 @@
+﻿@model ReservationCartVM
+@{
+    var items = Model.CartItems;
+    var cartSubTotal = Model.TotalCost() / 1.2m;
+    var cartTotal = Model.TotalCost();
+}
+<div class="container-fluid bg-checkout">
+    <div class="container text-center" style="max-width: 900px;">
+        <h2 class="text-white py-3 fw-bold mt-5">
+        </h2>
+    </div>
+</div>
+<div class="container-fluid packages py-5">
+    <div class="container py-3">
+        <div class="mx-auto text-center mb-3" style="max-width: 900px;">
+            <h5 class="section-title px-3">Checkout</h5>
+        </div>
+    </div>
+</div>
+<div class="container">
+    @if (items.Count == 0)
+    {
+        <div style="height: 150px">
+            <div class="alert alert-warning text-center mt-5 mb-5 p-4">Please make a reservation request to see your checkouts!</div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Villa</th>
+                                <th scope="col">Price (per day)</th>
+                                <th scope="col">Adult Number</th>
+                                <th scope="col">Children Number</th>
+                                <th scope="col">Rent Period (day)</th>
+                                <th scope="col">Total Cost</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @foreach(var item in items)
+                        {
+                            <tr class="text-center">
+                                
+                                <td scope="row" class="cart__product__item">
+                                    <div class="cart__product__item__title">
+                                        <input type="hidden" name="ProductId" value="@item.Product.Id" />
+                                            <input type="hidden" name="ProductName" value="@item.Product.Name" />
+                                        <h6>@item.Product.Name</h6>
+                                    </div>
+                                </td>
+                                <td class="cart__price">@($"{item.Price:C0}")</td>
+                                <input type="hidden" name="ProductPrice" value="@item.Price" />
+                                <td class="cart__price">@item.AdultNumber</td>
+                                <input type="hidden" name="AdultNumber" value="@item.AdultNumber" />
+
+                                <td>@item.ChildrenNumber</td>
+                                <input type="hidden" name="ChildrenNumber" value="@item.ChildrenNumber" />
+                                @{
+                                    var rentPeriod = (item.EndDate - item.StartDate).TotalDays;
+                                }
+                                <input type="hidden" name="StartDate" value="@item.StartDate" />
+                                <input type="hidden" name="EndDate" value="@item.EndDate" />
+
+                                <td>@rentPeriod</td>
+                                <td id="product-price" class="cart__total">@($"{item.TotalCost:C0}")</td>
+                                <input type="hidden" name="TotalCost" value="@item.TotalCost" />
+
+                                <td >
+                                    <div class="d-flex justify-content-around align-content-center g-2">
+                                    <a class="edit-btn" data-item-id="@item.CartItemId"
+                                            style="color: darkgray; cursor: pointer;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a asp-area=""
+                                       asp-controller="Checkout"
+                                       asp-action="DeleteFromCart"
+                                       asp-route-cartItemId="@item.CartItemId"
+                                       style="color: darkgray">
+                                        <i class="fa fa-window-close"></i>
+                                    </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="edit-row" style="display: none;">
+                                <td colspan="7">
+                                    <form class="edit-form" asp-controller="Checkout" asp-action="UpdateItemInCart" method="post">
+                                        <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                        <input type="hidden" name="productId" value="@item.Product.Id" />
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="adultNumber">Adult Number:</label>
+                                                    <input type="number" class="form-control" name="_adultNumber" value="@item.AdultNumber" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="childrenNumber">Children Number:</label>
+                                                    <input type="number" class="form-control" name="_childrenNumber" value="@item.ChildrenNumber" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="rentDays">Rent Period:</label>
+                                                    <input type="number" class="form-control" name="rentDays" value="@Convert.ToInt32((item.EndDate - item.StartDate).TotalDays)" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 d-flex justify-content-end flex-column">
+                                                <button type="submit" class="btn btn-success save-btn">Save</button>
+                                            </div>
+                                        </div>
+                                        
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end gap-5 mt-5 px-3 mb-4">
+                        <h4>Reservation Total: </h4>
+                        <h5>@($"{cartTotal:C0}")</h5>
+                    </div>
+                        <div class="d-flex justify-content-end gap-2 px-3">
+                            <div>
+                                <a class="btn btn-light" asp-area=""
+                                   asp-controller="Home"
+                                   asp-action="Index">Continue to search</a>
+                            </div>
+                            <div>
+                                <a asp-controller="Reservation"
+                                asp-action="Index"
+                                        class="btn btn-primary">
+                                    Proceed Payment
+                                </a>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-between mb-5">
+            <div class="col-lg-4 mb-3">
+                <div class="form-group mb-3 mt-3">
+                    <label for="discount-coupon" class="me-3 mb-4 fw-bold">Discount Coupon</label>
+                    <div class="d-flex gap-3">
+                        <input class="form-control px-3" for="discount-coupon" />
+                        <a class="btn btn-danger text-white px-3" asp-controller="" asp-action="" class="px-3">Apply</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".edit-btn").click(function () {
+                var itemId = $(this).data("item-id");
+                $(".edit-row").hide();
+                $(".edit-btn").show();
+                $(".save-btn").show();
+                $(this).hide();
+                $(this).closest("tr").next(".edit-row").show();
+            });
+        });
+    </script>
+}

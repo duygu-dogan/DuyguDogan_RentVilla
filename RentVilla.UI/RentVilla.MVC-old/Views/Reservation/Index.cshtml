@@ -1,0 +1,182 @@
+﻿@model CreateReservationVM
+<div class="container-fluid bg-checkout">
+    <div class="container text-center" style="max-width: 900px;">
+        <h2 class="text-white py-3 fw-bold mt-5">
+        </h2>
+    </div>
+</div>
+<div class="container-fluid packages py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-3" style="max-width: 900px;">
+            <h5 class="section-title px-3">Payment</h5>
+        </div>
+        <div class="container my-5 px-5">
+            <form asp-area=""
+                  asp-controller="Reservation"
+                  asp-action="Index"
+                  method="post">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-md-6">
+                        <h5 class="text-primary py-3">Invoice Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.FirstName"></label>
+                                    <input class="form-control" asp-for="PaymentData.FirstName" />
+                                    <span asp-validation-for="PaymentData.FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.LastName"></label>
+                                    <input class="form-control" asp-for="PaymentData.LastName" />
+                                    <span asp-validation-for="PaymentData.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.Address"></label>
+                                    <input class="form-control" asp-for="PaymentData.Address" />
+                                    <span asp-validation-for="PaymentData.Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.City"></label>
+                                    <input class="form-control" asp-for="PaymentData.City" />
+                                    <span asp-validation-for="PaymentData.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.Email"></label>
+                                    <input class="form-control" asp-for="PaymentData.Email" />
+                                    <span asp-validation-for="PaymentData.Email" class="text-danger"></span>
+                                </div>
+                            </div>                            
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.PhoneNumber"></label>
+                                    <input class="form-control" asp-for="PaymentData.PhoneNumber" />
+                                    <span asp-validation-for="PaymentData.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.Note"></label>
+                                    <input class="form-control" asp-for="PaymentData.Note" />
+                                    <span asp-validation-for="PaymentData.Note" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="text-primary py-3">Payment Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.CardNumber"></label>
+                                    <input class="form-control" asp-for="PaymentData.CardNumber" />
+                                    <span asp-validation-for="PaymentData.CardNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.CardName"></label>
+                                    <input class="form-control" asp-for="PaymentData.CardName" />
+                                    <span asp-validation-for="PaymentData.CardName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label>Expiration Date: </label>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-md-4">
+                                            <input class="form-control" asp-for="PaymentData.ExpirationMonth">
+                                            <span class="text-danger" asp-validation-for="PaymentData.ExpirationMonth"></span>
+                                        </div>
+                                        <span class="fs-4">/</span>
+                                        <div class="col-md-4">
+                                            <input class="form-control" asp-for="PaymentData.ExpirationYear" />
+                                            <span class="text-danger" asp-validation-for="PaymentData.ExpirationYear"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label asp-for="PaymentData.Cvc"></label>
+                                    <input class="form-control" asp-for="PaymentData.Cvc">
+                                    <span class="text-danger" asp-validation-for="PaymentData.Cvc"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                            <h5 class="text-primary py-3">Payment Details</h5>
+                        <div class="row mt-3">
+                            <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">Product Name : </span>
+                                   <span>@Model.ProductName </span>
+                                <input type="hidden" name="ProductName" value="@Model.ProductName" />
+                                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                                </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <span class="fw-bold">Price (Per Day) : </span>
+                                <span>@Model.ProductPrice </span>
+                                <input type="hidden" name="ProductPrice" value="@Model.ProductPrice" />
+
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <span class="fw-bold">Rent Period : </span>
+                                <span>@Model.StartDate.ToShortDateString() - @Model.EndDate.ToShortDateString() </span>
+                                <input type="hidden" name="StartDate" value="@Model.StartDate" />
+                                <input type="hidden" name="EndDate" value="@Model.EndDate" />
+
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <span class="fw-bold">Adult Number : </span>
+                                <span>@Model.AdultNumber </span>
+                                <input type="hidden" name="AdultNumber" value="@Model.AdultNumber" />
+
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <span class="fw-bold">Children Number : </span>
+                                <span>@Model.ChildrenNumber </span>
+                                <input type="hidden" name="ChildrenNumber" value="@Model.ChildrenNumber" />
+
+                            </div>
+                            <div class="d-flex justify-content-between mt-5">
+                                <h5>Total Amount : </h5> <span class="fw-bold">@($"{Model.TotalCost:C0}")</span>
+                                <input type="hidden" name="TotalCost" value="@Model.TotalCost" />
+                            </div>
+                            </div>
+                        <button type="button" class="btn btn-primary float-end mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Complete Payment
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are sure you want to complete payment?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary ">Complete Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

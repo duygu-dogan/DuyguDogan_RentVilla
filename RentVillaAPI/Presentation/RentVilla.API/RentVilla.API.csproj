@@ -32,7 +32,9 @@
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Infrastructure\RentVilla.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Iyzico\RentVilla.Iyzico.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.Persistance\RentVilla.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RentVilla.ScheduleTask\RentVilla.ScheduleTask.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RentVilla.SignalR\RentVilla.SignalR.csproj" />
+    <ProjectReference Include="..\..\RentVilla.ScheduleTask\RentVilla.ScheduleTask.csproj" />
   </ItemGroup>
 
   <ItemGroup>

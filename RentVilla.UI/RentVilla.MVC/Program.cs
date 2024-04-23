@@ -1,16 +1,9 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using RentVilla.MVC.Helpers.ErrorHandling;
-using RentVilla.MVC.Helpers.TokenHandling;
 using RentVilla.MVC.Services.HttpClientService;
 using RentVilla.MVC.Services.TokenCookieService;
-using System.Text;
-using System.Xml.Linq;
 
 namespace RentVilla.MVC
 {
@@ -20,6 +13,7 @@ namespace RentVilla.MVC
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddScoped<ITokenCookieHandlerService, TokenCookieHandlerService>();
+            builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
@@ -57,7 +51,6 @@ namespace RentVilla.MVC
             };
             app.UseCookiePolicy(cookiePolicyOptions);
 
-            app.UseMiddleware<TokenExpirationValidationMiddleware>();
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseRouting();

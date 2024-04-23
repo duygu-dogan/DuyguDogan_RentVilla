@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import ReservationTable from '../../helpers/ReservationTable';
+import Cookies from 'js-cookie';
 
 const ListPassiveReservations = () => {
     const [items, setItems] = useState([]);
@@ -13,6 +14,8 @@ const ListPassiveReservations = () => {
             { Page: pageSize, Size: rowSize }
         );
     }
+    const accessToken = Cookies.get('RentVilla.Cookie_AT')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     useEffect(() => {
         axios.get(`http://localhost:5006/api/reservations/getpassivereservations`, { params: pagination })
             .then((res) => {
@@ -46,7 +49,7 @@ const ListPassiveReservations = () => {
                 </div>
 
             </div>
-            <div>
+            <div className='col-md-11'>
                 <ReservationTable rows={items} onPagination={handlePagination} />
             </div>
         </div>

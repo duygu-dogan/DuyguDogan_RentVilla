@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Tokens;
 using RentVilla.API.Configurations.ColumnWriters;
 using RentVilla.API.Extensions;
+using RentVilla.API.Filters;
 using RentVilla.Application;
 using RentVilla.Application.Validators;
 using RentVilla.Infrastructure;
@@ -11,6 +12,7 @@ using RentVilla.Infrastructure.Filters;
 using RentVilla.Infrastructure.Services.Storage.Azure;
 using RentVilla.Iyzico;
 using RentVilla.Persistence;
+using RentVilla.ScheduleTask;
 using RentVilla.SignalR;
 using Serilog;
 using Serilog.Context;
@@ -27,6 +29,7 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddSignalRServices();
 builder.Services.AddIyzicoServices();
+builder.Services.AddScheduledTaskServices();
 
 //builder.Services.AddStorage(StorageType.Local);
 //builder.Services.AddStorage<LocalStorage>();
@@ -64,7 +67,9 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 
-builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
+builder.Services.AddControllers(options => {options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<RolePermissionFilter>();
+})
     .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
     .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
