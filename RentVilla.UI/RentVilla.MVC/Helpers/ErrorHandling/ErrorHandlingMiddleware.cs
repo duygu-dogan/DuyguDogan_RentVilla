@@ -48,7 +48,7 @@ namespace RentVilla.MVC.Helpers.ErrorHandling
 
         private static async Task HandleErrorAsync(HttpContext context)
         {
-            string messagesJson = context.Items["ErrorMessageJson"] as string;
+            string? messagesJson = context.Items["ErrorMessageJson"] as string;
             string redirectUrl = $"/Error?messagesJson={messagesJson}";
             context.Response.Redirect(redirectUrl);
         }

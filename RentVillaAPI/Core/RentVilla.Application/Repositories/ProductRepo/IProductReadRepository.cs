@@ -18,8 +18,11 @@ namespace RentVilla.Application.Repositories.ProductRepo
         //En kısa süreliğine kiralanabilir ürünleri getirir.
         Task<IEnumerable<Product>> GetProductsByShortestRentTime();
         //ProductAddress ve ProductAttribute tablolarını join ederek ürünleri getirir.
+        Task<IEnumerable<ProductDTO>> GetProductsByFilter(ProductFilterDTO filters);
+
         Task<ProductDTO> GetJoinedProductByIdAsync(string id);
         ICollection<ProductDTO> GetAllProducts();
+
 
     }
 }

@@ -44,5 +44,23 @@ namespace RentVilla.MVC.Controllers
             ViewBag.RegionName = response?.FirstOrDefault()?.ProductAddress?.StateName;
             return View(response);
         }
+        [HttpPost]
+        public async Task<IActionResult> FilterProducts(ProductFilterVM model)
+        {
+            var requestData = new
+            {
+                Filters = new
+                {
+                    selectedState = model.SelectedState,
+                    selectedAttribute = model.SelectedAttribute,
+                    startDate = model.StartDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                    endDate = model.EndDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")
+                }
+            };
+            HttpResponseMessage responseMessage = await _clientService.PostHttpRequest($"Products/FilterProducts", requestData);
+            string contentResponseApi = await responseMessage.Content.ReadAsStringAsync();
+            List<ProductVM> response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
+            return View(response);
+        }
     }
 }

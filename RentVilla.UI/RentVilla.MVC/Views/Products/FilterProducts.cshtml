@@ -1,0 +1,72 @@
+﻿@model List<ProductVM>
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-2" style="max-width: 900px;">
+        @if (Model.Count == 0)
+        {
+            <h3 class="text-white display-3 mb-4">No Villas Found :(</h3>
+        }
+        else
+        {
+            <h3 class="text-white display-3 mb-4">Available Villas </h3>
+        }
+    </div>
+</div>
+<!-- Header End -->
+<div class="container-fluid align-items-center packages-2 py-5">
+    <div class="container-fluid px-5 row g-5">
+        <div class="container-fluid ExploreTour py-5">
+            <div class="container py-5">
+                @{
+                    if (Model.Count == 0)
+                    {
+                        <div class="alert alert-warning text-center w-75 mx-auto">There are currently no villas available matching with selections. <a asp-controller="Products" asp-action="Index">Check other villas</a></div>
+                    }
+                    else
+                    {
+                        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                            <h1 class="mb-4">Explore Now</h1>
+                            <p class="mb-0">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum tempore nam, architecto doloremque velit explicabo? Voluptate sunt eveniet fuga eligendi! Expedita laudantium fugiat corrupti eum cum repellat a laborum quasi.
+                            </p>
+                        </div>
+                        <div class="tab-class text-center">
+
+                            <div class="tab-content">
+                                <div id="NationalTab-1" class="tab-pane fade show p-0 active">
+                                    <div class="row g-4">
+                                        @{
+                                            foreach (var p in Model)
+                                            {
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="national-item">
+                                                        @if (p.ProductImages != null && p.ProductImages.Any())
+                                                        {
+                                                            <img style="height: 200px" src="@p.ProductImages[0]?.Path" class="img-fluid w-100 rounded" alt="Image">
+                                                        }
+                                                        <div class="national-content">
+                                                            <div class="national-info">
+                                                                <h5 class="text-white text-uppercase mb-2">@p.Name</h5>
+                                                                <a asp-controller="products" asp-action="getdetails" asp-route-id=@p.Id class="btn-hover text-white">View Details<i class="fa fa-arrow-right ms-2"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="national-plus-icon">
+                                                            <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RentVilla.Application.ViewModels.Attribute
+namespace RentVilla.Application.DTOs.Attributes
 {
-    public class AttributeTypeReadVM
+    public class GetAttributeTypeDTO
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public List<AttributeReadVM> Attributes { get; set; } = null;
     }
 }

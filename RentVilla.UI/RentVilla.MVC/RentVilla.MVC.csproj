@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
+    <PackageReference Include="chosen" Version="1.2.0" />
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.35.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.35.0" />
     <PackageReference Include="ServiceStack.Text" Version="8.2.2" />

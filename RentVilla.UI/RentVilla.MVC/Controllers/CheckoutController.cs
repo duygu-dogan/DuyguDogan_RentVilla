@@ -21,7 +21,7 @@ namespace RentVilla.MVC.Controllers
         {
             HttpResponseMessage response = await _clientService.GetHttpResponse("CartItems/GetCartItems");
             var contentResponse = await response.Content.ReadAsStringAsync();
-            List<GetCartItemVM> cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
+            List<GetCartItemVM>? cartItems = JsonSerializer.Deserialize<List<GetCartItemVM>>(contentResponse);
             var reservationCart = new ReservationCartVM();
             reservationCart.CartItems = cartItems;
             HttpContext.Response.Cookies.Append("RentVilla.Cookie_SC", cartItems.Count().ToString(), new CookieOptions
@@ -98,7 +98,7 @@ namespace RentVilla.MVC.Controllers
             {
                 var httpResponse = await _clientService.GetHttpResponse($"CartItems/GetCartItemById/{cartItemId}");
                 string contentResponse = await httpResponse.Content.ReadAsStringAsync();
-                GetCartItemVM model = JsonSerializer.Deserialize<GetCartItemVM>(contentResponse);
+                GetCartItemVM? model = JsonSerializer.Deserialize<GetCartItemVM>(contentResponse);
                 model.AdultNumber = _adultNumber;
                 model.ChildrenNumber = _childrenNumber;
                 double adultCost = Convert.ToDouble(rentDays * _adultNumber * model.Price);

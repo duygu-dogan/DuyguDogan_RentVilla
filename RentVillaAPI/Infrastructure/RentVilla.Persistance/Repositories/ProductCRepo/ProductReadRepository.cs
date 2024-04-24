@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentVilla.Application.DTOs.ProductDTOs;
 using RentVilla.Application.Repositories.ProductRepo;
+using RentVilla.Domain.Entities.ComplexTypes;
 using RentVilla.Domain.Entities.Concrete;
 using RentVilla.Domain.Entities.Concrete.Attribute;
 using RentVilla.Persistance.Contexts;
@@ -194,5 +195,70 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
         {
             throw new NotImplementedException();
         }
+        public async Task<IEnumerable<ProductDTO>> GetProductsByFilter(ProductFilterDTO filters)
+        {
+            try
+            {
+                var products = await _context.Products
+                    .Include(p => p.Reservations.Where(r => r.StartDate <= filters.EndDate.ToUniversalTime() && r.EndDate >= filters.StartDate.ToUniversalTime()))
+                    .Include(p => p.ProductAddress)
+                    .Include(p => p.Attributes)
+                    .Include(p => p.ProductImageFiles)
+                    .Where(p => p.ProductAddress.StateId == Guid.Parse(filters.SelectedState) && p.Attributes.Any(a => a.AttributeType.Id == Guid.Parse(filters.SelectedAttribute)))
+                    .ToListAsync();
+                var availableProducts = products.Where(p => p.Reservations.Count == 0).ToList();
+                List<ProductDTO> productDTOs = new();
+                foreach (var product in availableProducts)
+                {
+                    productDTOs.Add(new ProductDTO
+                    {
+                        Id = product.Id.ToString(),
+                        Name = product.Name,
+                        Description = product.Description,
+                        Price = product.Price,
+                        Deposit = product.Deposit,
+                        MapId = product.MapId,
+                        Address = product.Address,
+                        ShortestRentPeriod = product.ShortestRentPeriod,
+                        Properties = product.Properties,
+                        Rating = product.Rating,
+                        IsActive = product.IsActive,
+                        IsDeleted = product.IsDeleted,
+                        Attributes = _context.ProductAttributes
+                        .Where(pa => pa.Product.Id == product.Id)
+                        .Select(pa => new ProductAttributeDTO
+                        {
+                            Id = pa.Id.ToString(),
+                            Attribute = pa.Attributes.Description,
+                            AttributeType = pa.AttributeType.Name
+                        }).ToList(),
+                        ProductImages = _context.ProductImageFiles
+                        .Where(pif => pif.Product.Any(p => p.Id == product.Id))
+                        .Select(image => new ProductImageDTO
+                        {
+                            FileName = image.FileName,
+                            Path = image.Path,
+                            ProductId = image.Product.Select(p => p.Id.ToString()).ToList()
+                        }).ToList(),
+                        ProductAddress = _context.ProductAddresses
+                        .Where(pa => pa.ProductId == product.Id)
+                        .Select(pa => new ProductAddressDTO
+                        {
+                            CountryName = pa.Country.Name,
+                            StateName = pa.State.Name,
+                            CityName = pa.City.Name,
+                            DistrictName = pa.District.Name
+                        }).FirstOrDefault()
+                    });
+                }
+                return productDTOs;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

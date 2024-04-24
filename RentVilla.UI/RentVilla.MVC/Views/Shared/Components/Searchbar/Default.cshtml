@@ -1,0 +1,64 @@
+﻿@model ProductFilterVM
+
+<div class="container-fluid search-bar mt-5" >
+    <div class="container">
+        <div class="position-relative rounded-pill w-100 mx-auto px-5 pt-5" style="background: rgba(19, 53, 123, 0.8);">
+            <form 
+                asp-controller="Products"
+                  asp-action="FilterProducts"
+            method="post">
+                <div class="d-flex justify-content-between row row-cols-2 g-4">
+                    <div class="col ps-4 d-flex justify-content-center">)
+                        @* <select id="productStates" name="ProductStateList" class="w-100 border-0 rounded-pill py-3 ps-4 pe-5" asp-items=@Model.ProductStateList>
+                            <option class="py-3 mb-2" value=@Model.ProductStateList.Select(a => a.Value)>Select Region</option>
+                        </select> *@
+                        @Html.DropDownListFor(m => m.SelectedState, Model.ProductStateList, "Select Region", new { @class= "w-100 border-0 rounded-pill py-3 ps-4 pe-5"})
+                    </div>
+                    <div class="col ps-4 d-flex justify-content-center">
+                        @* <select id="productAttributes" name="ProductAttributeTypeList" class="w-100 border-0 rounded-pill py-3 ps-4 pe-5" asp-items=@Model.ProductAttributeTypeList>
+                            <option class="py-3 mb-2" value=@Model.ProductAttributeTypeList.Select(a => a.Value)>Select Property</option>
+                        </select> *@
+                        @Html.DropDownListFor(m => m.SelectedAttribute, Model.ProductAttributeTypeList, "Select Property", new { @class = "w-100 border-0 rounded-pill py-3 ps-4 pe-5" })
+                    </div>
+                    <div class="col ps-4 d-flex justify-content-center">
+                        <input class="w-100 border-0 rounded-pill py-3 ps-4 pe-4" asp-for="@Model.StartDate" id="start-date" value="" type="date"  for="start-date" />
+                    </div>
+                    <div class="col ps-4 d-flex justify-content-center">
+                        <input class="w-100 border-0 rounded-pill py-3 ps-4 pe-4" asp-for="@Model.EndDate" id="end-date" value="" type="date" for="end-date" />
+                    </div>
+                    
+                </div>
+                <div class="pb-3 pt-4 col-md-12 d-flex justify-content-center">
+                    <button type="submit" id="submitBtn" class="btn btn-primary w-25 rounded-pill py-3 px-4 me-2">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section _Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("start-date").setAttribute('min', today);
+            document.getElementById("end-date").setAttribute('min', today);
+
+            document.getElementById("start-date").addEventListener('change', function () {
+                var startDate = this.value;
+                document.getElementById("end-date").setAttribute('min', startDate);
+            });
+
+            var startDateInput = document.getElementById("start-date");
+            var endDateInput = document.getElementById("end-date");
+            endDateInput.addEventListener('change', function () {
+                var startDate = new Date(startDateInput.value);
+            });
+
+            document.getElementById("submitBtn").addEventListener('click', function () {
+                document.getElementById("start-date-value").value = startDateInput.value;
+                document.getElementById("end-date-value").value = endDateInput.value;
+            });
+        });
+
+
+    </script>
+}

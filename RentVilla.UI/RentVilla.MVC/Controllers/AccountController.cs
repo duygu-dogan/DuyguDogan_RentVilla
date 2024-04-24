@@ -49,10 +49,10 @@ namespace RentVilla.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
          {
-            string baseUrl = _configuration["API:Url"];
+            string? baseUrl = _configuration["API:Url"];
             PostUserAddressVM postUserAddressVM = new()
             {
-                StateId = model?.UserAddress.SelectedStateId,
+                StateId = model.UserAddress.SelectedStateId,
                 CityId = model.UserAddress.SelectedCityId,
                 DistrictId = model.UserAddress.SelectedDistrictId
             };

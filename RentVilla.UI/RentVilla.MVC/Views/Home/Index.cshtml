@@ -65,15 +65,9 @@
     </div>
 </div>
 <!-- Carousel End -->
-<div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);">
-    <div class="container">
-        <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
-            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Fethiye">
-            <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
-        </div>
-    </div>
-</div>
-</div>
+<!-- SearchBar Start-->
+@await Component.InvokeAsync("Searchbar")
+<!-- SearchBar End-->
 <!-- About Start -->
 <div class="container-fluid about py-5">
     <div class="container py-5">
@@ -144,7 +138,7 @@
                                         <div class="national-content">
                                             <div class="national-info">
                                                 <h5 class="text-white text-uppercase mb-2">@Model[i].Name</h5>
-                                                <a href="#" class="btn-hover text-white">View Details<i class="fa fa-arrow-right ms-2"></i></a>
+                                                <a asp-controller="Products" asp-action="GetDetails" asp-route-id=@Model[i].Id class="btn-hover text-white">View Details<i class="fa fa-arrow-right ms-2"></i></a>
                                             </div>
                                         </div>
                                         <div class="national-plus-icon">
