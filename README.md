@@ -22,5 +22,21 @@
 ## Login information
 To review the project, you can create a new registration or log in with the following information. In order to access the admin panel, you need to log in with the user who has the following admin role:
 
-Admin    --> **Email:** exampleadmin@gmail.com **Password:** Sample1234+
-User     --> **Email:** exampleuser@gmail.com **Password:** Sample1234+
+- Admin    --> **Email:** exampleadmin@gmail.com **Password:** Sample1234+
+- User     --> **Email:** exampleuser@gmail.com **Password:** Sample1234+
+
+## Homepage
+
+![RentVilla-HP1](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/3eb61211-b26e-4cf9-9913-dcff1f98f855)
+
+![RentVilla-HP'](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/d18e4a6b-a201-41ea-964c-e696aedcd7a0)
+
+![RentVilla-HP3](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/ce0acade-6bae-4caa-a10b-eb528730e6c5)
+
+![RentVilla-HP4](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/7d8fc49c-1173-4fb9-a793-1b122061cca0)
+
+## Products
+
+
+
+
