@@ -1,12 +1,13 @@
 ## Rent-Villa
  This is a rental villa website project developed with ASP.NET Core Web API, MVC, and React.Js.
  
-## Language and Technologies Used
+## Language and Technologies
 - C#, JavaScript, CSS, HTML
 - **API Project:** AutoMapper, Azure.Storage.Blob, FluentValidation, Iyzipay, MediatR, Jwt Authentication, ASP.Net Entity Framework, EF Identity, SignalR, Serilog, NCronTab
 - **MVC Project:** IdentityModel.Tokens, Cookie-Based Authentication, IdentityModel.Logging, Chosen, OwlCarousel, AspNetCoreHero.ToastNotification, JQuery, AJAX, Bootstrap
 - **React.Js Project:** CoreUI, SignalR, Material UI, Axios, Bootstrap, React-Paginate, MDBReact, React-Router-Dom, React-Toastify, Js-Cookie
 - **Database:** There are two versions of the project, SQLite and PostgreSQL. In the SQLite version (main), there is a possibility of some bugs caused by type conversions. The PostgreSQL (current) version can be found under the ‘Scheduled’ branch.
+- **Architecture and patterns:** Onion architecture, CQRS pattern, Mediator Pattern.
   
 ## Project Features
 - You can list related products by selecting the region, property, and date range on the homepage, or by selecting the regions directly.
@@ -24,6 +25,13 @@ To review the project, you can create a new registration or log in with the foll
 
 - Admin    --> **Email:** exampleadmin@gmail.com **Password:** Sample1234+
 - User     --> **Email:** exampleuser@gmail.com **Password:** Sample1234+
+
+## Features to be developed in the project and planned to be added in the future:
+- Two-factor verification by phone or mail
+- User account page, reset password, update account information features
+- Filtering by attributes on product pages
+- Gallery to display product photos on the admin panel
+- Development of mobile application with React Native
 
 ## Homepage
 
