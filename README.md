@@ -33,10 +33,33 @@ To review the project, you can create a new registration or log in with the foll
 
 ![RentVilla-HP3](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/ce0acade-6bae-4caa-a10b-eb528730e6c5)
 
-![RentVilla-HP4](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/7d8fc49c-1173-4fb9-a793-1b122061cca0)
+![RentVilla-HP4](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/3dbbe63d-f241-497c-8576-8eeac3793b71)
+
 
 ## Products
 
+![RentVilla-PP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/14c95017-8bde-4435-ba47-7f4124ce119e)
 
+![RentVilla-PD](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/a669fecf-6e8e-4889-a082-a369b5b10c5c)
+
+## Login-Register
+
+![RentVilla-RP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/416cbd2a-6ebf-4fda-b0ca-eb89779bf762)
+
+![RentVilla-LP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/f4936655-a7b3-4ba0-8795-af76b64a227f)
+
+## Checkout-Payment
+
+![RentVilla-CP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/6c6fdbc1-f519-4d9b-aba2-f0e52135939a)
+
+![RentVilla-PayP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/9e8fea2a-825c-41ef-bcd9-169eac936dff)
+
+## Admin Panel
+
+![RentVilla-AD](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/a634baa4-36b3-4c05-a784-08526a5cd124)
+
+![RentVilla-APP](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/d93a891f-46eb-4548-9355-190e96742df6)
+
+![RentVilla-RA](https://github.com/duygu-dogan/DuyguDogan_RentVilla/assets/136385140/c27f9b0f-0706-4bd4-a04d-d17616ac2b36)
 
 
