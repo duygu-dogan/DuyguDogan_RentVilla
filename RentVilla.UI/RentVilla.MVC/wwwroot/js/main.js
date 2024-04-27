@@ -110,7 +110,7 @@
                 items:3
             }
         }
-    }); carousel
+    }); 
 
 
     // testimonial carousel

@@ -25,6 +25,7 @@ namespace RentVilla.MVC.ViewComponents
                 foreach (var state in states)
                 {
                     model.ProductStateList.Add(new SelectListItem { Text = state.Name, Value = state.Id });
+                    model.StateIds.Add(state.Id);
                 }
             }
             HttpResponseMessage attResponseMessage = await _clientService.GetHttpResponse("Attributes/GetTypes");
@@ -34,6 +35,7 @@ namespace RentVilla.MVC.ViewComponents
                 foreach (var types in attributeTypes)
                 {
                     model.ProductAttributeTypeList.Add(new SelectListItem { Text = types.TypeName, Value = types.Id });
+                    model.AttributeIds.Add(types.Id);
                 }
             }
             return View(model);

@@ -1,7 +1,7 @@
 ﻿@model List<ProductVM>
 <!-- Header Start -->
 <div class="container-fluid bg-breadcrumb">
-    <div class="container text-center py-2" style="max-width: 900px;">
+    <div class="container text-center py-0" style="max-width: 900px;">
         @if (Model.Count == 0)
         {
             <h3 class="text-white display-3 mb-4">No Villas Found :(</h3>
@@ -15,8 +15,39 @@
 <!-- Header End -->
 <div class="container-fluid align-items-center packages-2 py-5">
     <div class="container-fluid px-5 row g-5">
-        <div class="container-fluid ExploreTour py-5">
-            <div class="container py-5">
+        <div class="container-fluid ExploreTour d-flex py-3">
+            <!-- Side Menu -->
+            <div id="aside" class="container py-5 col-md-3">
+                <form id="filterForm" method="GET" asp-area="" asp-controller="Products" asp-action="GetProductsByAttribute">
+                    <div class="">
+                        <h3 class="">Product Properties</h3>
+                        <div class="checkbox-filter">
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id="subcategory" name="subCategoryId" value="">
+                                    <label for="subcategory">
+                                        <span></span>
+                                    </label>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <h3 class="">Markalar</h3>
+                        <div class="checkbox-filter">
+
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id="brand" name="brandId" value="">
+                                    <label for="brand">
+                                        <span></span>
+                                    </label>
+                                </div>
+                        </div>
+                    </div>
+                    <button style="margin-top:50px;background-color:darkred; " class="btn btn-danger btn-block" type="submit" >Filtrele</button>
+                </form>
+            </div>
+            <!-- /Side Menu -->
+
+            <div class="container py-5 col-md-9">
                 @{
                     if (Model.Count == 0)
                     {
