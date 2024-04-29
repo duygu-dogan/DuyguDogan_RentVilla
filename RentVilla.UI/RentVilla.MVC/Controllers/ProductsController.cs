@@ -51,8 +51,8 @@ namespace RentVilla.MVC.Controllers
             {
                 Filters = new
                 {
-                    selectedState = model.SelectedState,
-                    selectedAttribute = model.SelectedAttribute,
+                    selectedStates = model.SelectedStates,
+                    selectedAttributes = model.SelectedAttributes,
                     startDate = model.StartDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
                     endDate = model.EndDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")
                 }

@@ -70,7 +70,7 @@
 
 <!-- SearchBar End-->
 <!-- About Start -->
-<div class="container-fluid about py-5">
+ <div class="container-fluid about py-5">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
@@ -134,7 +134,7 @@
                                     <div class="national-item">
                                         @if (Model[i].ProductImages != null && Model[i].ProductImages.Any())
                                         {
-                                            <img style="height: 200px" src="@Model[i].ProductImages[0]?.Path" class="img-fluid w-100 rounded" alt="Image">
+                                            <img style="height: 200px" src="@Model[i]?.ProductImages?[0]?.Path" class="img-fluid w-100 rounded" alt="Image">
                                         }
                                         <div class="national-content">
                                             <div class="national-info">
@@ -149,7 +149,6 @@
                                 </div>
                             }
                         }
-                        
                     </div>
                 </div>
             </div>

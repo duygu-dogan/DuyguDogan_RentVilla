@@ -41,5 +41,6 @@ namespace RentVilla.MVC.Models.Product
         public bool IsDeleted { get; set; }
         [JsonPropertyName("reservation")]
         public AddCartItemVM? AddCartItem { get; set; }
+        public ProductFilterVM FilterModel { get; set; }
     }
 }

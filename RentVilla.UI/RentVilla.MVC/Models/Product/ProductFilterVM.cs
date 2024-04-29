@@ -10,29 +10,21 @@ namespace RentVilla.MVC.Models.Product
         {
             ProductStateList = new List<SelectListItem>();
             ProductAttributeTypeList = new List<SelectListItem>();
-            StateIds = new List<string>();
-            AttributeIds = new List<string>();
+            SelectedStates = new List<string>();
+            SelectedAttributes = new List<string>();
         }
 
         [DisplayName("StateList")]
-        [JsonPropertyName("ProductStateList")]
         public List<SelectListItem> ProductStateList { get; set; }
 
-        [JsonPropertyName("SelectedState")]
-        public string SelectedState { get; set; }
-
-        [DisplayName("States")]
-        public List<string> StateIds { get; set; }
+        [JsonPropertyName("SelectedStates")]
+        public List<string> SelectedStates { get; set; }
 
         [DisplayName("AttributeList")]
-        [JsonPropertyName("ProductAttributeTypeList")]
         public List<SelectListItem> ProductAttributeTypeList { get; set; }
 
-        [JsonPropertyName("SelectedAttribute")]
-        public string SelectedAttribute { get; set; }
-
-        [DisplayName("Attributes")]
-        public List<string> AttributeIds { get; set; }
+        [JsonPropertyName("SelectedAttributes")]
+        public List<string> SelectedAttributes { get; set; }
 
         [DisplayName("StartDate")]
         [JsonPropertyName("StartDate")]

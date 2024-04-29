@@ -2,34 +2,30 @@
 @{
     Layout = "_LayoutVC";
 }
-<div class="container-fluid search-bar mt-5" >
+<div class="container-fluid search-bar mt-5">
     <div class="container">
         <div class="position-relative rounded-pill w-100 mx-auto px-5 pt-5" style="background: rgba(19, 53, 123, 0.8);">
-            <form 
-                asp-controller="Products"
+            <form asp-controller="Products"
                   asp-action="FilterProducts"
-            method="post">
+                  method="post">
                 <div class="d-flex justify-content-between row row-cols-2 g-4">
                     <div class="col ps-4 d-flex justify-content-center">
-                        @* <select id="states_dropdown" name="ProductStateList" class="w-100 border-0 rounded-pill py-3 ps-4 pe-5" asp-items=@Model.ProductStateList>
+                        <select id="states_dropdown" multiple asp-for=@Model.SelectedStates asp-items=@Model.ProductStateList>
                             <option class="py-3 mb-2" value=@Model.ProductStateList.Select(a => a.Value)>Select Region</option>
-                        </select> *@
-                        @Html.DropDownListFor(m => m.SelectedState, Model.ProductStateList, "Select Region", new { @class= "w-100 border-0 rounded-pill py-3 ps-4 pe-5"})
-@*                         @Html.ListBoxFor(model => model.SelectedState, new MultiSelectList(Model.ProductStateList, "Value", "Text"), new { @class = "form-control w-100 border-0 rounded-pill py-3 ps-4 pe-5", multiple = "multiple", id = "states_dropdown" }) *@
+                        </select>
                     </div>
                     <div class="col ps-4 d-flex justify-content-center">
-                        @* <select id="productAttributes" name="ProductAttributeTypeList" class="w-100 border-0 rounded-pill py-3 ps-4 pe-5" asp-items=@Model.ProductAttributeTypeList>
+                        <select asp-for=@Model.SelectedAttributes id="attributes_dropdown" multiple asp-items=@Model.ProductAttributeTypeList>
                             <option class="py-3 mb-2" value=@Model.ProductAttributeTypeList.Select(a => a.Value)>Select Property</option>
-                        </select> *@
-                        @Html.DropDownListFor(m => m.SelectedAttribute, Model.ProductAttributeTypeList, "Select Property", new { @class = "w-100 border-0 rounded-pill py-3 ps-4 pe-5" })
+                        </select>
                     </div>
                     <div class="col ps-4 d-flex justify-content-center">
-                        <input class="w-100 border-0 rounded-pill py-3 ps-4 pe-4" asp-for="@Model.StartDate" id="start-date" value="" type="date"  for="start-date" />
+                        <input class="w-100 border-0 rounded-pill py-3 ps-4 pe-4" asp-for="@Model.StartDate" id="start-date" value="" type="date" for="start-date" />
                     </div>
                     <div class="col ps-4 d-flex justify-content-center">
                         <input class="w-100 border-0 rounded-pill py-3 ps-4 pe-4" asp-for="@Model.EndDate" id="end-date" value="" type="date" for="end-date" />
                     </div>
-                    
+
                 </div>
                 <div class="pb-3 pt-4 col-md-12 d-flex justify-content-center">
                     <button type="submit" id="submitBtn" class="btn btn-primary w-25 rounded-pill py-3 px-4 me-2">Search</button>
@@ -58,11 +54,13 @@
             });
         });
 
-        // $(document).ready(function () {
-        //     console.log("works")
-        //     $('#states_dropdown').multiselect();
-        // });
-
+        $('#states_dropdown').multiSelect({
+            containerHTML: '<div class="multi-select-container col d-flex justify-content-center">',
+            buttonHTML: '<span class="multi-select-button w-100 border-0 rounded-pill text-black py-3 ps-4 pe-5">'
+        });
+                $('#attributes_dropdown').multiSelect({
+                containerHTML: '<div class="multi-select-container col d-flex justify-content-center">',
+                    buttonHTML: '<span class="multi-select-button w-100 border-0 text-black rounded-pill py-3 ps-4 pe-5">'
+                });
     </script>
 }
-                        

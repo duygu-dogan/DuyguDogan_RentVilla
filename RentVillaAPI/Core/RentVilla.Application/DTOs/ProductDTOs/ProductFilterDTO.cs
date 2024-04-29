@@ -10,8 +10,8 @@ namespace RentVilla.Application.DTOs.ProductDTOs
 {
     public class ProductFilterDTO
     {
-        public string SelectedState { get; set; }
-        public string SelectedAttribute { get; set; }
+        public List<string> SelectedStates { get; set; }
+        public List<string> SelectedAttributes { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

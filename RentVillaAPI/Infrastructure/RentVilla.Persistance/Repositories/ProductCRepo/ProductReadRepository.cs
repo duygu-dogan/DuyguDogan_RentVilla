@@ -204,7 +204,8 @@ namespace RentVilla.Persistence.Repositories.ProductCRepo
                     .Include(p => p.ProductAddress)
                     .Include(p => p.Attributes)
                     .Include(p => p.ProductImageFiles)
-                    .Where(p => p.ProductAddress.StateId == Guid.Parse(filters.SelectedState) && p.Attributes.Any(a => a.AttributeType.Id == Guid.Parse(filters.SelectedAttribute)))
+                    .Where(p => filters.SelectedStates.Contains(p.ProductAddress.StateId.ToString()) &&
+                    filters.SelectedAttributes.All(selectedAttribute => p.Attributes.Any(attribute => attribute.AttributeType.Id == Guid.Parse(selectedAttribute))))
                     .ToListAsync();
                 var availableProducts = products.Where(p => p.Reservations.Count == 0).ToList();
                 List<ProductDTO> productDTOs = new();

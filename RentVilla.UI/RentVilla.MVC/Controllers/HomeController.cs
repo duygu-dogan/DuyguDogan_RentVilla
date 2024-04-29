@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using RentVilla.MVC.Models.Address;
 using RentVilla.MVC.Models.Cart;
 using RentVilla.MVC.Models.Product;
 using RentVilla.MVC.Services.HttpClientService;
@@ -25,6 +27,7 @@ namespace RentVilla.MVC.Controllers
             HttpResponseMessage responseMessage = await _clientService.GetHttpResponse("products/get");
             string contentResponseApi = await responseMessage.Content.ReadAsStringAsync();
             List<ProductVM>? response = JsonSerializer.Deserialize<List<ProductVM>>(contentResponseApi);
+
             return View(response);
         }   
     }
