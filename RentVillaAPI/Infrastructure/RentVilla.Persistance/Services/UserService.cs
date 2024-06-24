@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
 using RentVilla.Application.Abstraction.Services;
 using RentVilla.Application.DTOs.TokenDTOs;
 using RentVilla.Application.DTOs.UserDTOs;
@@ -23,16 +21,13 @@ namespace RentVilla.Persistence.Services
         private readonly IDistrictReadRepository _districtReadRepository;
         private readonly ICountryReadRepository _countryReadRepository;
         private readonly IEndpointReadRepository _endpointReadRepository;
-        private readonly IMapper _mapper;
-
-        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, IMapper mapper, RoleManager<AppRole> roleManager, IEndpointReadRepository endpointReadRepository)
+        public UserService(UserManager<AppUser> userManager, IStateReadRepository stateReadRepository, ICityReadRepository cityReadRepository, IDistrictReadRepository districtReadRepository, ICountryReadRepository countryReadRepository, RoleManager<AppRole> roleManager, IEndpointReadRepository endpointReadRepository)
         {
             _userManager = userManager;
             _stateReadRepository = stateReadRepository;
             _cityReadRepository = cityReadRepository;
             _districtReadRepository = districtReadRepository;
             _countryReadRepository = countryReadRepository;
-            _mapper = mapper;
             _roleManager = roleManager;
             _endpointReadRepository = endpointReadRepository;
         }
